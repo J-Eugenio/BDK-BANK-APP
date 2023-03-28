@@ -4,6 +4,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import styled from 'styled-components/native'
 
 const Stack = createStackNavigator();
 
