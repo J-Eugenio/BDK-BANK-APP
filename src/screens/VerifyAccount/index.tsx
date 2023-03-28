@@ -1,4 +1,5 @@
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import loginAsset from '../../assets/login-page-asset.png';
+import { ImageBackground } from 'react-native';
 import {
   Container,
   PrimaryTitle,
@@ -13,36 +14,48 @@ import {
 function VerifyAccount(){
   return (
     <Container>
-      <TextContainer>
-        <PrimaryTitle>Confirmação</PrimaryTitle>
-        <SecondTitle>de Login</SecondTitle>
-      </TextContainer>
+      <ImageBackground
+        source={loginAsset}
+        imageStyle={{
+          resizeMode: "contain",
+        }}
+      >
+        <TextContainer>
+          <PrimaryTitle>Confirmação</PrimaryTitle>
+          <SecondTitle>de Login</SecondTitle>
+        </TextContainer>
 
-      <CodeGroup>
-        <Code
-          keyboardType='decimal-pad'
-        />
-        <Code
-          keyboardType='decimal-pad'
-        />
-        <Code
-          keyboardType='decimal-pad'
-        />
-        <Code
-          keyboardType='decimal-pad'
-        />
-        <Code
-          keyboardType='decimal-pad'
-        />
-        <Code
-          keyboardType='decimal-pad'
-        />
-      </CodeGroup>
-      
-      <Confirm>
-        <ConfirmText>Confirmar</ConfirmText>
-      </Confirm>
-    
+        <CodeGroup>
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+          <Code
+            keyboardType='decimal-pad'
+            maxLength={1}
+          />
+        </CodeGroup>
+        
+        <Confirm>
+          <ConfirmText>Confirmar</ConfirmText>
+        </Confirm>
+      </ImageBackground>
     </Container>
   )
 }

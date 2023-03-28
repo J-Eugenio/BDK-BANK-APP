@@ -14,7 +14,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="VerifyAccount"
           screenOptions={{
             headerShown: false,
             headerTransparent: false
