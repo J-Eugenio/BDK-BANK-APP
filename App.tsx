@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -46,8 +47,8 @@ function MyTabs() {
             break;
           case 'Sair':
             iconName = focused
-            ? 'log-in'
-            : 'log-in-outline';
+            ? 'cash'
+            : 'cash-outline';
             break;
           default:
             break;
@@ -79,21 +80,27 @@ function MyTabs() {
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="MyTabs"
-          screenOptions={{
-            headerShown: false,
-            headerTransparent: false
-          }}
-        >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
-          <Stack.Screen name="MyTabs" component={MyTabs} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ThemeProvider>
-    
+   <>
+     <StatusBar 
+        barStyle={"default"}
+        showHideTransition="fade"
+        animated
+      />
+      <ThemeProvider theme={theme}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="MyTabs"
+            screenOptions={{
+              headerShown: false,
+              headerTransparent: false
+            }}
+          >
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
+            <Stack.Screen name="MyTabs" component={MyTabs} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ThemeProvider>
+   </>
   );
 }
