@@ -2,6 +2,10 @@ import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
+  
+`;
+
+export const Main = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -11,6 +15,8 @@ export const Container = styled.View`
   padding: 0 ${RFValue(5)}px;
   border-radius: ${RFValue(10)}px;
   margin-bottom: ${RFValue(15)}px;
+  border: 1px solid #E9E9E9;
+  overflow: hidden;
 `;
 
 export const TextInput = styled.TextInput`
@@ -22,4 +28,10 @@ export const TextInput = styled.TextInput`
 `;
 
 export const ShowPassword = styled.TouchableOpacity`
+`;
+
+export const OverTitle = styled.Text`
+  font-size: ${RFValue(20)}px;
+  margin-bottom: 5px;
+  color: #616161;
 `;

@@ -11,15 +11,49 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Login } from './src/screens/Login';
 import { VerifyAccount } from './src/screens/VerifyAccount';
 import { MainPage } from './src/screens/MainPage';
+import { Transfer } from './src/screens/Transfer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function MyStack(){
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        headerShown: false,
+        headerTransparent: false
+      }}
+    >
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
+      <Stack.Screen name="MyTabs" component={MyTabs} />
+      <Stack.Screen name="Transfer" component={Transfer} />
+    </Stack.Navigator>
+  )
+}
+
+function MyStackSecondary(){
+  return (
+    <Stack.Navigator
+      initialRouteName="Transfer"
+      screenOptions={{
+        headerShown: false,
+        headerTransparent: false
+      }}
+    >
+      <Stack.Screen name="MainPage" component={MainPage} />
+      <Stack.Screen name="Transfer" component={Transfer} />
+    </Stack.Navigator>
+  )
+}
 
 function MyTabs() {
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
+      tabBarHideOnKeyboard: true,
       tabBarStyle: {
         display: 'flex',
         flexDirection: 'row',
@@ -73,11 +107,10 @@ function MyTabs() {
     >
       <Tab.Screen name="Início" component={MainPage} />
       <Tab.Screen name="Perfil" component={MainPage} />
-      <Tab.Screen name="Pagamentos" component={MainPage}/>
+      <Tab.Screen name="Pagamentos" component={MyStackSecondary}/>
     </Tab.Navigator>
   );
 }
-
 export default function App() {
   return (
    <>
@@ -88,17 +121,7 @@ export default function App() {
       />
       <ThemeProvider theme={theme}>
         <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="MyTabs"
-            screenOptions={{
-              headerShown: false,
-              headerTransparent: false
-            }}
-          >
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
-            <Stack.Screen name="MyTabs" component={MyTabs} />
-          </Stack.Navigator>
+          {MyTabs()}
         </NavigationContainer>
       </ThemeProvider>
    </>
