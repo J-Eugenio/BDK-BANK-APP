@@ -81,9 +81,24 @@ function MainPage(){
 
         <SecondaryText>Últimas transações</SecondaryText>
 
-        <LastTransactionItem />
-        <LastTransactionItem />
-        <LastTransactionItem />
+        <LastTransactionItem 
+          client='Teste User'
+          paymentDate={new Date().toLocaleString()}
+          paymentType='received'
+          paymentValue={200}
+        />
+        <LastTransactionItem 
+          client='Teste User2'
+          paymentDate={new Date().toLocaleString()}
+          paymentType='withdrew'
+          paymentValue={100}
+        />
+        <LastTransactionItem 
+          client='Teste User2'
+          paymentDate={new Date().toLocaleString()}
+          paymentType='withdrew'
+          paymentValue={10000}
+        />
 
         <Separete />
       </Main>

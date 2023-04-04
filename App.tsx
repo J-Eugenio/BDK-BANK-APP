@@ -45,7 +45,7 @@ function MyTabs() {
             ? 'people'
             : 'people-outline';
             break;
-          case 'Sair':
+          case 'Pagamentos':
             iconName = focused
             ? 'cash'
             : 'cash-outline';
@@ -73,7 +73,7 @@ function MyTabs() {
     >
       <Tab.Screen name="Início" component={MainPage} />
       <Tab.Screen name="Perfil" component={MainPage} />
-      <Tab.Screen name="Sair" component={MainPage}/>
+      <Tab.Screen name="Pagamentos" component={MainPage}/>
     </Tab.Navigator>
   );
 }
