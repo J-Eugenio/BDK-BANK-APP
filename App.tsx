@@ -12,6 +12,7 @@ import { Login } from './src/screens/Login';
 import { VerifyAccount } from './src/screens/VerifyAccount';
 import { MainPage } from './src/screens/MainPage';
 import { Transfer } from './src/screens/Transfer';
+import { Profile } from './src/screens/Profile';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,7 +107,7 @@ function MyTabs() {
     })}
     >
       <Tab.Screen name="Início" component={MainPage} />
-      <Tab.Screen name="Perfil" component={MainPage} />
+      <Tab.Screen name="Perfil" component={Profile} />
       <Tab.Screen name="Pagamentos" component={MyStackSecondary}/>
     </Tab.Navigator>
   );
