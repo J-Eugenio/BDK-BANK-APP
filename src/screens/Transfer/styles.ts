@@ -29,9 +29,9 @@ export const Image = styled.Image`
 export const TransferInfoContainer = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 export const TransferInfoText = styled.Text`
