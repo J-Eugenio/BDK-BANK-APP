@@ -13,7 +13,7 @@ export const Container = styled.View`
 `;
 
 export const Logo = styled.Image`
-  width: ${RFValue(80)}px;
+  width: ${RFValue(120)}px;
   height: ${RFValue(80)}px;
 `;
 export const BtnNotifycation = styled.TouchableOpacity``;
