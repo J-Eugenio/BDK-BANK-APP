@@ -42,6 +42,7 @@ function Billet() {
       <Header />
 
       <Main>
+       
         <Title>Boleto</Title>
         {showPassword === false ? (
           <>
@@ -71,7 +72,6 @@ function Billet() {
                 {
                   showDateInput ? <DateInput value={datePayment} setValue={setDatePayment} closeModal={setShowDateInput} /> : <></>
                 }
-                {/* <DateInput value={datePayment} overTitle="Data de pagamento" /> */}
               </AmountView>
             </TransferInfoContainer>
 

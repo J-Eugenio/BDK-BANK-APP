@@ -6,18 +6,19 @@ interface InputProps {
   value: Date;
   setValue?: (value: any) => void;
   overTitle?: string;
-  closeModal?: any;
+  closeModal?: (value: any) => void;
 }
 function DateInput({ value, setValue, overTitle, closeModal }: InputProps) {
   const [mode, setMode] = useState<any>("date");
   const [show, setShow] = useState(false);
 
-  const onChange = (event: any, selectedDate: any) => {
+  const onChangeValue = (event: any, selectedDate: any) => {
     const currentDate: string = selectedDate;
     setShow(false);
     // @ts-ignore
     setValue(currentDate);
-    closeModal = false
+    // @ts-ignore
+    closeModal(false)
   };
 
   const showMode = (currentMode: any) => {
@@ -28,17 +29,8 @@ function DateInput({ value, setValue, overTitle, closeModal }: InputProps) {
   return (
     <Container>
       <Main>
-        {show === true ? (
-          <DatePicker
-            testID="dateTimePicker"
-            value={value}
-            mode={mode}
-            dateFormat="day month year"
-            locale="pt-BR"
-            onChange={onChange}
-          />
-        ) : ""}
-        <DatePicker value={value} onChange={setValue} />
+        
+        <DatePicker value={value} onChange={onChangeValue} />
       </Main>
     </Container>
   );
