@@ -31,6 +31,8 @@ function CopyAndPastePix() {
   const [pixCopyAndPasteKey, setPixCopyAndPasteKey] = useState("");
   const [pixCopyAndPasteValue, setPixCopyAndPasteValue] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigation = useNavigation<any>();
 
   return (
@@ -38,58 +40,82 @@ function CopyAndPastePix() {
       <Main>
         <Title>Pix Copia e Cola</Title>
 
-        <Box>
-          <Input
-            overTitle="Cole ou digite a chave aleatória"
-            setValue={setPixCopyAndPasteKey}
-          />
-          {pixCopyAndPasteKey.length > 0 ? (
-            <>
-              <AmountInput
-                overTitle="Digite o valor"
-                setValue={setPixCopyAndPasteValue}
+        {showPassword === false ? (
+          <>
+            <Box>
+              <Input
+                overTitle="Cole ou digite a chave aleatória"
+                setValue={setPixCopyAndPasteKey}
               />
-            </>
-          ) : (
-            ""
-          )}
+              {pixCopyAndPasteKey.length > 0 ? (
+                <>
+                  <AmountInput
+                    overTitle="Digite o valor"
+                    setValue={setPixCopyAndPasteValue}
+                  />
+                </>
+              ) : (
+                ""
+              )}
 
-          {pixCopyAndPasteValue.length > 0 ? (
-            <>
-              <Separator />
+              {pixCopyAndPasteValue.length > 0 ? (
+                <>
+                  <Separator />
 
-              <TransferInfoContainer>
-                <ImageContainer>
-                  <Image source={UserIMG} resizeMode="contain" />
-                </ImageContainer>
+                  <TransferInfoContainer>
+                    <ImageContainer>
+                      <Image source={UserIMG} resizeMode="contain" />
+                    </ImageContainer>
 
-                <BoxUserInfo>
-                  <TransferInfoText>
-                    Nome da pessoa: Fulano Fulano Fulano
-                  </TransferInfoText>
-                  <TransferInfoText>CPF: 000-XXX</TransferInfoText>
-                  <AmountContainer>
-                    <AmountTitle>Valor:</AmountTitle>
-                    <AmountValue>R$ 5,00</AmountValue>
-                  </AmountContainer>
-                </BoxUserInfo>
-              </TransferInfoContainer>
-            </>
-          ) : (
-            ""
-          )}
-          {pixCopyAndPasteValue.length > 0 && pixCopyAndPasteKey.length > 0 ? (
-            <>
+                    <BoxUserInfo>
+                      <TransferInfoText>
+                        Nome da pessoa: Fulano Fulano Fulano
+                      </TransferInfoText>
+                      <TransferInfoText>CPF: 000-XXX</TransferInfoText>
+                      <AmountContainer>
+                        <AmountTitle>Valor:</AmountTitle>
+                        <AmountValue>R$ 5,00</AmountValue>
+                      </AmountContainer>
+                    </BoxUserInfo>
+                  </TransferInfoContainer>
+                </>
+              ) : (
+                ""
+              )}
+              {pixCopyAndPasteValue.length > 0 &&
+              pixCopyAndPasteKey.length > 0 ? (
+                <>
+                  <Button
+                    title="Confirmar"
+                    color="#6EA965"
+                    onPress={() => setShowPassword(true)}
+                  />
+                </>
+              ) : (
+                ""
+              )}
+            </Box>
+          </>
+        ) : (
+          <>
+            <Input
+              overTitle="Digite sua senha transacional"
+              isPassword={true}
+            />
+            <BoxButton>
               <Button
-                title="Confirmar"
+                title="Cancelar"
+                color="#E74343"
+                onPress={() => navigation.navigate("Pix")}
+              />
+              <Button
+                title="Transferir"
                 color="#6EA965"
                 onPress={() => setModalVisible(true)}
               />
-            </>
-          ) : (
-            ""
-          )}
-        </Box>
+            </BoxButton>
+          </>
+        )}
       </Main>
 
       <ModalSuccess
@@ -114,7 +140,7 @@ function CopyAndPastePix() {
                 color="#5266CE"
                 onPress={() => {
                   setModalVisible(false);
-                  navigation.navigate("Pix")
+                  navigation.navigate("Pix");
                 }}
               />
             </BoxButton>
