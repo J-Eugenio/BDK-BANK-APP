@@ -7,10 +7,8 @@ import {
   Title,
   Main,
   PD,
-  Image,
   TransferInfoContainer,
   TransferInfoText,
-  ImageContainer,
   AmountTitle,
   AmountValue,
   AmountContainer,
@@ -22,12 +20,10 @@ import {
   AmountView,
 } from "./styles";
 import { Separator } from "../../components/Separator";
-import { Col } from "../../components/Flex/Col";
 import { Row } from "../../components/Flex/Row";
 import { Button } from "../../components/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import UserIMG from "../../assets/user-img.png";
 import { DateInput } from "../../components/DateInput";
 
 function Billet() {
@@ -64,7 +60,7 @@ function Billet() {
                 </AmountContainer>
                 <AmountContainer>
                   <AmountTitle>Data de Pagamento:</AmountTitle>
-                  <AmountValue>{datePayment.toLocaleDateString()}</AmountValue>
+                  <AmountValue>{datePayment.toLocaleDateString('pt-BR')}</AmountValue>
                 </AmountContainer>
                 <AmountContainer>
                   <AmountButton onPress={() => setShowDateInput(true)}>Altere a data de pagamento</AmountButton>

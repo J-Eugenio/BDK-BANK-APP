@@ -16,6 +16,7 @@ import { Payments } from "./src/screens/Payments";
 import { Pix } from "./src/screens/Pix";
 import { Billet } from "./src/screens/Billet";
 import { Extract } from "./src/screens/Extract";
+import { ExtractPerId } from "./src/screens/ExtractPerId";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,7 @@ function MyStackSecondary() {
       <Stack.Screen name="Pix" component={Pix} />
       <Stack.Screen name="Billet" component={Billet} />
       <Stack.Screen name="Extract" component={Extract} />
+      <Stack.Screen name="ExtractPerId" component={ExtractPerId} />
     </Stack.Navigator>
   );
 }

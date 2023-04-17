@@ -6,15 +6,16 @@ interface ClientTextProps {
 }
 
 export const Container = styled.View`
-  padding: ${RFValue(15)}px ${RFValue(15)}px;
+  padding: ${RFValue(8)}px ${RFValue(8)}px;
   border-bottom-width: 1px;
   border-bottom-color: #E2E2E2;
 `;
 
 export const IconContainer = styled.View`
-  width: ${RFValue(55)}px;
+  width: ${RFValue(56)}px;
   border: 2px solid #E2E2E299;
   border-radius: 5px;
+  margin-right: ${RFValue(-30)}px;
 `;
 
 export const Client = styled.Text<ClientTextProps>`
@@ -27,4 +28,6 @@ export const PaymentDate = styled.Text`
   color: #7F8192;
 `;
 
-export const PaymentValue = styled.Text``;
+export const PaymentValue = styled.Text`
+  font-size: ${RFValue(18)}px;
+`;

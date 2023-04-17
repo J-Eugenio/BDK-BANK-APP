@@ -29,8 +29,7 @@ function DateInput({ value, setValue, overTitle, closeModal }: InputProps) {
   return (
     <Container>
       <Main>
-        
-        <DatePicker value={value} onChange={onChangeValue} />
+        <DatePicker value={value} onChange={onChangeValue} locale="pt-BR" />
       </Main>
     </Container>
   );

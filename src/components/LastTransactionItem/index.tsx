@@ -36,7 +36,6 @@ function LastTransactionItem({ client, paymentType, paymentValue, paymentDate }:
 
   return (
     <Container>
-
       <Row>
         <IconContainer>
           <Icon 
