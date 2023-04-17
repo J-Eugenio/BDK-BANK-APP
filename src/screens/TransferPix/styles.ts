@@ -6,7 +6,7 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(24)}px;
   margin-bottom: ${RFValue(20)}px;
   font-weight: 500;
   color: #585858;

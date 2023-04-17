@@ -25,7 +25,7 @@ export const Title = styled.Text`
 export const DownloadButton = styled.TouchableOpacity``;
 
 export const Main = styled.ScrollView`
-  padding: ${RFValue(40)}px ${RFValue(20)}px;
+  padding: ${RFValue(20)}px;
   padding-bottom: 190px;
 `;
 

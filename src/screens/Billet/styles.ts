@@ -13,7 +13,7 @@ font-size: ${RFValue(24)}px;
 `;
 
 export const Main = styled.ScrollView`
-  padding: ${RFValue(40)}px ${RFValue(20)}px;
+  padding: ${RFValue(20)}px;
   padding-bottom: 190px;
 `;
 
@@ -98,6 +98,6 @@ export const MainModal = styled.View`
 `;
 
 export const Success = styled.Text`
-  font-size: ${RFValue(25)}px;
-  margin-bottom: 10px;
+  font-size: ${RFValue(20)}px;
+  margin-bottom: 20px;
 `;

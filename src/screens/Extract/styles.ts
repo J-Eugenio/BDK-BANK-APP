@@ -6,14 +6,14 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(24)}px;
   margin-bottom: ${RFValue(20)}px;
   font-weight: 500;
   color: #585858;
 `;
 
 export const Main = styled.ScrollView`
-  padding: ${RFValue(40)}px ${RFValue(20)}px;
+  padding: ${RFValue(20)}px;
   padding-bottom: 190px;
 `;
 
@@ -78,8 +78,8 @@ export const MainModal = styled.View`
 `;
 
 export const Success = styled.Text`
-  font-size: ${RFValue(25)}px;
-  margin-bottom: 10px;
+  font-size: ${RFValue(20)}px;
+  margin-bottom: 20px;
 `;
 
 export const TitleBox = styled.View`

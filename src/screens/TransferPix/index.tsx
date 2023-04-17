@@ -7,7 +7,7 @@ function TransferPix() {
       <Header />
 
       <Main>
-        <Title>Pix Copia e Cola</Title>
+        <Title>Transferência Pix</Title>
 
       </Main>
     </Container>

@@ -25,7 +25,6 @@ import { Separator } from "../../components/Separator";
 import UserIMG from "../../assets/user-img.png";
 import { Button } from "../../components/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Row } from "../../components/Flex/Row";
 
 function CopyAndPastePix() {
   const [pixCopyAndPasteKey, setPixCopyAndPasteKey] = useState("");
