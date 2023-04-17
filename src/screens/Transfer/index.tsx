@@ -18,6 +18,7 @@ import {
   ModalContainer,
   MainModal,
   Success,
+  BoxButton,
 } from "./styles";
 import { Separator } from "../../components/Separator";
 import { Col } from "../../components/Flex/Col";
@@ -81,7 +82,7 @@ function Transfer() {
         ) : (
           <>
             <Input overTitle="Digite sua senha transacional" isPassword={true} />
-            <Row>
+            <BoxButton>
               <Button
                 title="Cancelar"
                 color="#E74343"
@@ -92,7 +93,7 @@ function Transfer() {
                 color="#6EA965"
                 onPress={() => setModalVisible(true)}
               />
-            </Row>
+            </BoxButton>
           </>
         )}
       </Main>

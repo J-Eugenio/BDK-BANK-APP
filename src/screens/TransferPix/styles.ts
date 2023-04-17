@@ -16,11 +16,3 @@ export const Main = styled.ScrollView`
   padding: ${RFValue(40)}px ${RFValue(20)}px;
   padding-bottom: 190px;
 `;
-
-export const MainActionContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 ${RFValue(15)}px;
-  margin-bottom: ${RFValue(20)}px;
-`;

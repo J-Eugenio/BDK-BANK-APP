@@ -6,7 +6,7 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: ${RFValue(30)}px;
+font-size: ${RFValue(24)}px;
   margin-bottom: ${RFValue(20)}px;
   font-weight: 500;
   color: #585858;
@@ -32,7 +32,7 @@ export const Box = styled.View`
 `;
 
 export const Label = styled.Text`
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(16)}px;
   font-weight: 500;
   color: #585858;
 `;
@@ -61,3 +61,44 @@ export const SecondaryText = styled.Text`
 `;
 
 export const BoxToItemPerList = styled.TouchableOpacity``;
+
+export const ModalSuccess = styled.Modal``;
+
+export const ModalContainer = styled.View`
+  flex: 1;
+  background-color: #FFFFFF;
+  padding: ${RFValue(30)}px ${RFValue(30)}px;
+`;
+
+export const MainModal = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding-top: ${RFValue(20)}px;
+`;
+
+export const Success = styled.Text`
+  font-size: ${RFValue(25)}px;
+  margin-bottom: 10px;
+`;
+
+export const TitleBox = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: ${RFValue(8)}px;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between
+`;
+
+export const DownloadButton = styled.TouchableOpacity`
+  margin-top: ${RFValue(6)}px;
+`;
+
+export const ModalBox = styled.View`
+  display: flex;
+  flex-direction: column;
+  gap: ${RFValue(6)}px;
+  align-items: flex-start;
+  width: 300px;
+`;
