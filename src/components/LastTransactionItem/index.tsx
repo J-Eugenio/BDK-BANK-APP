@@ -1,13 +1,13 @@
 import Icon from 'react-native-vector-icons/Feather';
-import { Col } from '../Flex/Col';
-import { Row } from '../Flex/Row';
 
 import {
   Container,
   IconContainer,
   Client,
   PaymentDate,
-  PaymentValue
+  PaymentValue,
+  Box,
+  BoxRow
 } from './styles';
 import { useEffect, useState } from 'react';
 
@@ -36,21 +36,20 @@ function LastTransactionItem({ client, paymentType, paymentValue, paymentDate }:
 
   return (
     <Container>
-
-      <Row>
-        <IconContainer>
-          <Icon 
-            name="trello"
-            color="#5266CE"
-            size={50}
-          />
-        </IconContainer>
-        <Col>
-          <Client>{client?.slice(0, 9)} <Client color={payment.color}>{payment.msg}</Client></Client>
-          <PaymentDate>Pix - {paymentDate}</PaymentDate>
-        </Col>
+        <BoxRow>
+          <IconContainer>
+            <Icon 
+              name="file"
+              color="#5266CE"
+              size={40}
+            />
+          </IconContainer>
+          <Box>
+            <Client>{client?.slice(0, 9)} <Client color={payment.color}>{payment.msg}</Client></Client>
+            <PaymentDate>Pix - {paymentDate}</PaymentDate>
+          </Box>
+        </BoxRow>
         <PaymentValue>{`${payment.ammountText} ${paymentValue}`}</PaymentValue>
-      </Row>
     </Container>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,  } from "@react-navigation/native";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
 import {
@@ -7,10 +7,8 @@ import {
   Title,
   Main,
   PD,
-  Image,
   TransferInfoContainer,
   TransferInfoText,
-  ImageContainer,
   AmountTitle,
   AmountValue,
   AmountContainer,
@@ -18,19 +16,21 @@ import {
   ModalContainer,
   MainModal,
   Success,
-  BoxButton,
+  AmountButton,
+  AmountView,
 } from "./styles";
 import { Separator } from "../../components/Separator";
-import { Col } from "../../components/Flex/Col";
 import { Row } from "../../components/Flex/Row";
 import { Button } from "../../components/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import UserIMG from "../../assets/user-img.png";
+import { DateInput } from "../../components/DateInput";
 
-function Transfer() {
+function Billet() {
   const [modalVisible, setModalVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showDateInput, setShowDateInput] = useState(false);
+  const [datePayment, setDatePayment] = useState(new Date());
   const navigation = useNavigation<any>();
 
   return (
@@ -38,31 +38,37 @@ function Transfer() {
       <Header />
 
       <Main>
-        <Title>Transferência</Title>
-
+       
+        <Title>Boleto</Title>
         {showPassword === false ? (
           <>
-            <Input overTitle="Agência" />
-
-            <Input overTitle="Conta" />
-
-            <Input overTitle="Valor" />
+            <Input overTitle="Digite o código do boleto" />
 
             <Separator />
 
             <TransferInfoContainer>
-              <ImageContainer>
-                <Image source={UserIMG} resizeMode="contain" />
-              </ImageContainer>
-
-              <Col>
-                <TransferInfoText>Agência: 0000-X</TransferInfoText>
-                <TransferInfoText>Conta: 0000-X</TransferInfoText>
+              <AmountView>
+                <TransferInfoText>Nome da empresa</TransferInfoText>
+                <TransferInfoText>CNPJ</TransferInfoText>
                 <AmountContainer>
                   <AmountTitle>Valor:</AmountTitle>
                   <AmountValue>R$ 5,00</AmountValue>
                 </AmountContainer>
-              </Col>
+                <AmountContainer>
+                  <AmountTitle>Data de Vencimento:</AmountTitle>
+                  <AmountTitle>00/00/0000</AmountTitle>
+                </AmountContainer>
+                <AmountContainer>
+                  <AmountTitle>Data de Pagamento:</AmountTitle>
+                  <AmountValue>{datePayment.toLocaleDateString('pt-BR')}</AmountValue>
+                </AmountContainer>
+                <AmountContainer>
+                  <AmountButton onPress={() => setShowDateInput(true)}>Altere a data de pagamento</AmountButton>
+                </AmountContainer>
+                {
+                  showDateInput ? <DateInput value={datePayment} setValue={setDatePayment} closeModal={setShowDateInput} /> : <></>
+                }
+              </AmountView>
             </TransferInfoContainer>
 
             <Row>
@@ -81,8 +87,11 @@ function Transfer() {
           </>
         ) : (
           <>
-            <Input overTitle="Digite sua senha transacional" isPassword={true} />
-            <BoxButton>
+            <Input
+              overTitle="Digite sua senha transacional"
+              isPassword={true}
+            />
+            <Row>
               <Button
                 title="Cancelar"
                 color="#E74343"
@@ -93,7 +102,7 @@ function Transfer() {
                 color="#6EA965"
                 onPress={() => setModalVisible(true)}
               />
-            </BoxButton>
+            </Row>
           </>
         )}
       </Main>
@@ -120,7 +129,9 @@ function Transfer() {
               <Button
                 title="Voltar"
                 color="#5266CE"
-                onPress={() => {setModalVisible(false), setShowPassword(false)}}
+                onPress={() => {
+                  setModalVisible(false), setShowPassword(false);
+                }}
               />
             </Row>
           </MainModal>
@@ -130,4 +141,4 @@ function Transfer() {
   );
 }
 
-export { Transfer };
+export { Billet };

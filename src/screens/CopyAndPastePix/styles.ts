@@ -17,13 +17,31 @@ export const Main = styled.ScrollView`
   padding-bottom: 190px;
 `;
 
-export const PD = styled.View`
-  height: ${RFValue(50)}px;
+export const Box = styled.View`
+  display: flex;
+  flex-direction: column;
+  padding: ${RFValue(12)}px;
+  width: 100%;
+`;
+
+export const ValueBox = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%
+`;
+
+export const Label = styled.Text`
+  font-size: ${RFValue(18)}px;
+  font-weight: 500;
+  color: #585858;
+  text-align: center;
+  margin-bottom: ${RFValue(18)}px;
 `;
 
 export const Image = styled.Image`
-  width: ${RFValue(80)}px;
-  height: ${RFValue(80)}px;
+  width: ${RFValue(50)}px;
+  height: ${RFValue(50)}px;
 `;
 
 export const TransferInfoContainer = styled.View`
@@ -36,15 +54,15 @@ export const TransferInfoContainer = styled.View`
 
 export const TransferInfoText = styled.Text`
   text-align: left;
-  color: #7f8192;
-  font-size: ${RFValue(18)}px;
+  color: #7F8192;
+  font-size: ${RFValue(14)}px;
   font-weight: 500;
   width: 100%;
   padding: 0 10px;
 `;
 
 export const ImageContainer = styled.View`
-  border: 2px solid #283b9f;
+  border: 2px solid #283B9F;
   border-radius: 50px;
 `;
 
@@ -56,22 +74,26 @@ export const AmountContainer = styled.View`
 `;
 
 export const AmountTitle = styled.Text`
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(14)}px;
   margin-right: ${RFValue(10)}px;
   font-weight: 500;
 `;
 
 export const AmountValue = styled.Text`
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(14)}px;
   font-weight: 500;
-  color: #f08e34;
+  color: #F08E34;
+`;
+
+export const BoxUserInfo = styled.View`
+  width: 85%
 `;
 
 export const ModalSuccess = styled.Modal``;
 
 export const ModalContainer = styled.View`
   flex: 1;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   padding: ${RFValue(20)}px;
 `;
 

@@ -6,7 +6,7 @@ import {
   Logo
 } from './styles';
 
-import Test from '../../assets/test.png';
+import Bdk from '../../assets/bdk.png';
 
 function Header(){
   return(
@@ -23,7 +23,7 @@ function Header(){
       }}
     >
       <Logo 
-        source={Test}
+        source={Bdk}
         resizeMode="contain"
       />
 

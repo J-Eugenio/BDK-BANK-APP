@@ -1,8 +1,12 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled.View`
-  
+export const Container = styled.View``;
+
+export const Flex = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const Main = styled.View`
@@ -17,6 +21,16 @@ export const Main = styled.View`
   margin-bottom: ${RFValue(15)}px;
   border: 1px solid #E9E9E9;
   overflow: hidden;
+  width: 85%
+`;
+
+export const LabelValueIcon = styled.Text`
+  font-size: ${RFValue(24)}px;
+  font-weight: 500;
+  color: #585858;
+  text-align: center;
+  margin-top: ${RFValue(-10)}px;
+  margin-right: ${RFValue(10)}px;
 `;
 
 export const TextInput = styled.TextInput`

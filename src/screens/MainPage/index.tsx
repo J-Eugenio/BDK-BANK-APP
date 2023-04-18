@@ -64,18 +64,22 @@ function MainPage(){
           <MainActionBtn 
             title='Tranferência'
             iconName='repeat'
+            page='Transfer'
           />
           <MainActionBtn 
             title='Pix'
             iconName='dollar-sign'
+            page='Pix'
           />
           <MainActionBtn 
             title='Boleto'
             iconName='grid'
+            page='Billet'
           />
           <MainActionBtn 
             title='Extrato'
             iconName='list'
+            page='Extract'
           />
         </MainActionContainer>
 

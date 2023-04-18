@@ -1,12 +1,12 @@
-import { RFValue } from "react-native-responsive-fontsize";
-import styled from "styled-components/native";
+import { RFValue } from 'react-native-responsive-fontsize';
+import styled from 'styled-components/native';
 
 export const Container = styled.View`
   height: 85%;
 `;
 
 export const Title = styled.Text`
-  font-size: ${RFValue(24)}px;
+font-size: ${RFValue(24)}px;
   margin-bottom: ${RFValue(20)}px;
   font-weight: 500;
   color: #585858;
@@ -16,6 +16,7 @@ export const Main = styled.ScrollView`
   padding: ${RFValue(20)}px;
   padding-bottom: 190px;
 `;
+
 
 export const PD = styled.View`
   height: ${RFValue(50)}px;
@@ -36,7 +37,7 @@ export const TransferInfoContainer = styled.View`
 
 export const TransferInfoText = styled.Text`
   text-align: left;
-  color: #7f8192;
+  color: #7F8192;
   font-size: ${RFValue(18)}px;
   font-weight: 500;
   width: 100%;
@@ -44,8 +45,15 @@ export const TransferInfoText = styled.Text`
 `;
 
 export const ImageContainer = styled.View`
-  border: 2px solid #283b9f;
+  border: 2px solid #283B9F;
   border-radius: 50px;
+`;
+
+export const AmountView = styled.View`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px
 `;
 
 export const AmountContainer = styled.View`
@@ -64,34 +72,32 @@ export const AmountTitle = styled.Text`
 export const AmountValue = styled.Text`
   font-size: ${RFValue(18)}px;
   font-weight: 500;
-  color: #f08e34;
+  color: #F08E34;
+`;
+
+export const AmountButton = styled.Text`
+  font-size: ${RFValue(18)}px;
+  margin-right: ${RFValue(10)}px;
+  color: #5266CE;
+  font-weight: 500;
 `;
 
 export const ModalSuccess = styled.Modal``;
 
 export const ModalContainer = styled.View`
   flex: 1;
-  background-color: #ffffff;
-  padding: ${RFValue(20)}px;
+  background-color: #FFFFFF;
+  padding: ${RFValue(40)}px ${RFValue(50)}px;
 `;
 
 export const MainModal = styled.View`
-  display: flex;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
   justify-content: center;
-  height: 90%;
+  padding-top: ${RFValue(20)}px;
 `;
 
 export const Success = styled.Text`
   font-size: ${RFValue(20)}px;
   margin-bottom: 20px;
-`;
-
-export const BoxButton = styled.View`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap:  ${RFValue(20)}px;
 `;
