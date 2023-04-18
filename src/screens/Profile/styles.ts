@@ -9,7 +9,6 @@ export const Main = styled.View`
   display: flex;
   align-items: center;
   padding: ${RFValue(30)}px ${RFValue(20)}px;
-  border: 1px solid red;
 `;
 
 export const ImageContainer = styled.View`

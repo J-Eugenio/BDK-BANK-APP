@@ -20,8 +20,8 @@ export const Title = styled.Text`
 export const AmountContainer = styled.View`
   border: 2px solid #ddd;
   width: ${RFValue(215)}px;
-  height: ${RFValue(67)}px;
-  padding: ${RFValue(5)}px;
+  height: ${RFValue(80)}px;
+  padding: ${RFValue(10)}px;
   border-radius: 6px;
   align-items: center;
   margin-bottom: ${RFValue(20)}px;

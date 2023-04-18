@@ -25,7 +25,7 @@ function MainActionBtn({ iconName = "alert-circle", title = "default", page = "/
         <Icon 
           name={iconName}
           color="#5266CE"
-          size={30}
+          size={24}
         />
         <Title>{title}</Title>
       </Col>

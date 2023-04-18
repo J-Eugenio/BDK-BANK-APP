@@ -16,6 +16,10 @@ import { Payments } from "./src/screens/Payments";
 import { Pix } from "./src/screens/Pix";
 import { Billet } from "./src/screens/Billet";
 import { Extract } from "./src/screens/Extract";
+import { CopyAndPastePix } from "./src/screens/CopyAndPastePix";
+import { DemandPix } from "./src/screens/DemandPix";
+import { KeysPix } from "./src/screens/KeysPix";
+import { TransferPix } from "./src/screens/TransferPix";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +56,10 @@ function MyStackSecondary() {
       <Stack.Screen name="Pix" component={Pix} />
       <Stack.Screen name="Billet" component={Billet} />
       <Stack.Screen name="Extract" component={Extract} />
+      <Stack.Screen name="CopyAndPastePix" component={CopyAndPastePix} />
+      <Stack.Screen name="DemandPix" component={DemandPix} />
+      <Stack.Screen name="KeysPix" component={KeysPix} />
+      <Stack.Screen name="TransferPix" component={TransferPix} />
     </Stack.Navigator>
   );
 }

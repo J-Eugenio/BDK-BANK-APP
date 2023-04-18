@@ -11,7 +11,7 @@ import {
 
 interface InputProps {
   value?: string;
-  setValue?: () => void;
+  setValue?: (value: any) => void;
   placeholder?: string;
   isPassword?: boolean;
   overTitle?: string

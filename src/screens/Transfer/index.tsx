@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Header } from '../../components/Header';
-import { Input } from '../../components/Input';
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { Header } from "../../components/Header";
+import { Input } from "../../components/Input";
 import {
   Container,
   Title,
@@ -16,110 +17,117 @@ import {
   ModalSuccess,
   ModalContainer,
   MainModal,
-  Success
-} from './styles';
-import { Separator } from '../../components/Separator';
-import { Col } from '../../components/Flex/Col';
-import { Row } from '../../components/Flex/Row';
-import { Button } from '../../components/Button';
-import Icon from 'react-native-vector-icons/FontAwesome';
+  Success,
+  BoxButton,
+} from "./styles";
+import { Separator } from "../../components/Separator";
+import { Col } from "../../components/Flex/Col";
+import { Row } from "../../components/Flex/Row";
+import { Button } from "../../components/Button";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import UserIMG from '../../assets/user-img.png';
+import UserIMG from "../../assets/user-img.png";
 
-function Transfer(){
+function Transfer() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation<any>();
 
-  return(
+  return (
     <Container>
       <Header />
-    
+
       <Main>
         <Title>Transferência</Title>
 
-        <Input 
-          overTitle='Agência'
-        />
+        {showPassword === false ? (
+          <>
+            <Input overTitle="Agência" />
 
-        <Input 
-          overTitle='Conta'
-        />
+            <Input overTitle="Conta" />
 
-        <Input 
-          overTitle='Valor'
-        />
+            <Input overTitle="Valor" />
 
-        <Separator />
+            <Separator />
 
-        <TransferInfoContainer>
-          <ImageContainer>
-            <Image 
-              source={UserIMG}
-              resizeMode="contain"
-            />
-          </ImageContainer>
-          
-          <Col>
-            <TransferInfoText>Agência: 0000-X</TransferInfoText>
-            <TransferInfoText>Conta: 0000-X</TransferInfoText>
-            <AmountContainer>
-              <AmountTitle>Valor:</AmountTitle>
-              <AmountValue>R$ 5,00</AmountValue>
-            </AmountContainer>
-          </Col>
-        </TransferInfoContainer>
+            <TransferInfoContainer>
+              <ImageContainer>
+                <Image source={UserIMG} resizeMode="contain" />
+              </ImageContainer>
 
-        <Row>
-          <Button 
-            title='Cancelar'
-            color='#E74343'
-            onPress={() => console.log("A")}
-          />
-          <Button 
-            title='Confirmar'
-            color='#6EA965'
-            onPress={() => setModalVisible(true)}
-          />
-        </Row>
-        <PD />
+              <Col>
+                <TransferInfoText>Agência: 0000-X</TransferInfoText>
+                <TransferInfoText>Conta: 0000-X</TransferInfoText>
+                <AmountContainer>
+                  <AmountTitle>Valor:</AmountTitle>
+                  <AmountValue>R$ 5,00</AmountValue>
+                </AmountContainer>
+              </Col>
+            </TransferInfoContainer>
+
+            <Row>
+              <Button
+                title="Cancelar"
+                color="#E74343"
+                onPress={() => navigation.navigate("Payments")}
+              />
+              <Button
+                title="Confirmar"
+                color="#6EA965"
+                onPress={() => setShowPassword(true)}
+              />
+            </Row>
+            <PD />
+          </>
+        ) : (
+          <>
+            <Input overTitle="Digite sua senha transacional" isPassword={true} />
+            <BoxButton>
+              <Button
+                title="Cancelar"
+                color="#E74343"
+                onPress={() => navigation.navigate("Payments")}
+              />
+              <Button
+                title="Transferir"
+                color="#6EA965"
+                onPress={() => setModalVisible(true)}
+              />
+            </BoxButton>
+          </>
+        )}
       </Main>
 
       <ModalSuccess
-         animationType="slide"
-         transparent={true}
-         visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
       >
         <ModalContainer>
           <Title>Transferência</Title>
 
           <MainModal>
-            <Icon 
-              name="check-square-o"
-              size={120}
-              color="#6EA965"
-            />
+            <Icon name="check-square-o" size={120} color="#6EA965" />
 
             <Success>Transação realizada!</Success>
 
             <Row>
-              <Button 
-                title='Ver Extrato'
-                color='#F08E34'
-                onPress={() => console.log("A")}
+              <Button
+                title="Ver Extrato"
+                color="#F08E34"
+                onPress={() => navigation.navigate("Extract")}
               />
-              <Button 
-                title='Voltar'
-                color='#5266CE'
-                onPress={() => setModalVisible(false)}
+              <Button
+                title="Voltar"
+                color="#5266CE"
+                onPress={() => {setModalVisible(false), setShowPassword(false)}}
               />
             </Row>
           </MainModal>
         </ModalContainer>
       </ModalSuccess>
-
     </Container>
-  )
+  );
 }
 
-export {
-  Transfer
-}
+export { Transfer };
