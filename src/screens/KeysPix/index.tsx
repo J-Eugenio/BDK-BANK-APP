@@ -63,7 +63,7 @@ function KeysPix() {
                 <OverTitle>Tipo de chave pix</OverTitle>
                 <BoxSelect>
                   <RNPickerSelect
-                    onValueChange={(value) => setKeyType(value)}
+                    onValueChange={(value: any) => setKeyType(value)}
                     placeholder={{ label: "Selecione um item..." }}
                     items={[
                       { label: "E-mail", value: "email" },
