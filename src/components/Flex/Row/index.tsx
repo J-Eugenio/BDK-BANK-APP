@@ -5,10 +5,12 @@ import {
 
 interface RowProps {
   children: ReactNode;
+  align?: 'center' | 'flex-end' | 'flex-start' |
+  'space-between' | 'space-around'
 }
-function Row({ children }: RowProps){
+function Row({ children, align }: RowProps){
   return(
-    <Container>
+    <Container align={align}>
       {children}
     </Container>
   )
