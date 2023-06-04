@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 
 interface ButtonProps {
   color?: string;
+  width?: number
 }
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6
@@ -10,7 +11,7 @@ export const Container = styled.TouchableOpacity.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${RFValue(154)}px;
+  width: ${({ width }) => width ? `${RFValue(width)}px` : `${RFValue(154)}px`};
   height: ${RFValue(35)}px;
   background-color: ${({ color }) => color};
   border-radius: 10px;
