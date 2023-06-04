@@ -7,19 +7,23 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ThemeProvider } from "styled-components/native";
 import theme from "./src/global/styles/theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Login } from "./src/screens/Login";
-import { VerifyAccount } from "./src/screens/VerifyAccount";
-import { MainPage } from "./src/screens/MainPage";
-import { Transfer } from "./src/screens/Transfer";
-import { Profile } from "./src/screens/Profile";
-import { Payments } from "./src/screens/Payments";
-import { Pix } from "./src/screens/Pix";
-import { Billet } from "./src/screens/Billet";
-import { Extract } from "./src/screens/Extract";
-import { CopyAndPastePix } from "./src/screens/CopyAndPastePix";
-import { DemandPix } from "./src/screens/DemandPix";
-import { KeysPix } from "./src/screens/KeysPix";
-import { TransferPix } from "./src/screens/TransferPix";
+import { 
+  Login,
+  Billet,
+  CopyAndPastePix,
+  DemandPix,
+  Extract,
+  ExtractPerId,
+  KeysPix,
+  MainPage,
+  Payments,
+  Pix,
+  Profile,
+  Transfer,
+  TransferPix,
+  VerifyAccount ,
+  Signup,
+} from "./src/screens";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,7 +31,7 @@ const Tab = createBottomTabNavigator();
 function MyStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="MyTabs"
       screenOptions={{
         headerShown: false,
         headerTransparent: false,
@@ -44,7 +48,7 @@ function MyStack() {
 function MyStackSecondary() {
   return (
     <Stack.Navigator
-      initialRouteName="Payments"
+      initialRouteName="Signup"
       screenOptions={{
         headerShown: false,
         headerTransparent: false,
@@ -60,6 +64,7 @@ function MyStackSecondary() {
       <Stack.Screen name="DemandPix" component={DemandPix} />
       <Stack.Screen name="KeysPix" component={KeysPix} />
       <Stack.Screen name="TransferPix" component={TransferPix} />
+      <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
   );
 }
@@ -126,7 +131,7 @@ export default function App() {
     <>
       <StatusBar barStyle={"default"} showHideTransition="fade" animated />
       <ThemeProvider theme={theme}>
-        <NavigationContainer>{MyTabs()}</NavigationContainer>
+        <NavigationContainer>{MyStackSecondary()}</NavigationContainer>
       </ThemeProvider>
     </>
   );
