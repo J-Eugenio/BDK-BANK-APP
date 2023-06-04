@@ -30,6 +30,9 @@ export const TextInput = styled.TextInput`
 export const ShowPassword = styled.TouchableOpacity`
 `;
 
+export const ShowDateInput = styled.TouchableOpacity`
+`;
+
 export const OverTitle = styled.Text`
   font-size: ${RFValue(16)}px;
   margin-bottom: 5px;
