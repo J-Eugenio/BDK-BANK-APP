@@ -10,8 +10,16 @@ import {
   CodeGroup,
   Code
 } from './styles';
+interface VerifyProps {
+  route?: {
+    params: {
+      ChaveLogin: string
+    }
+  }
+}
 
-function VerifyAccount(){
+function VerifyAccount({ route }: VerifyProps){
+  console.log(route)
   return (
     <Container>
       <ImageBackground

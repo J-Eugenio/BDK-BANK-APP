@@ -2,6 +2,7 @@ import { ImageBackground } from 'react-native';
 import { Input } from '../../components/Input';
 import loginAsset from '../../assets/login-page-asset.png';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useAuth } from '../../hooks/auth';
 import {
   Container,
   PrimaryTitle,
@@ -15,8 +16,19 @@ import {
   SignUp,
   SignUpText
 } from './styles';
+import { useCallback } from 'react';
 
 function Login(){
+
+  const { signIn } = useAuth();
+
+  const handleSignIn = useCallback(async () => {
+    await signIn({
+      document: "60561612340",
+      password: "123456"
+    })
+  }, [signIn])
+
   return (
     <Container>
       <ImageBackground
@@ -46,7 +58,9 @@ function Login(){
           </ForgetPassword>
         </ButtonGroup>
 
-        <Enter>
+        <Enter
+          onPress={handleSignIn}
+        >
           <EnterText>Entrar</EnterText>
         </Enter>
         

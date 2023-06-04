@@ -23,6 +23,8 @@ interface InputProps {
   iconName?: string;
   keyboardType?: KeyboardTypeOptions
   isDateInput?: boolean
+  onBlur?: any,
+  onChange?: any
 }
 function Input({ 
   value, 
@@ -34,7 +36,9 @@ function Input({
   iconName,
   keyboardType,
   isDateInput,
-  overTitleColor
+  overTitleColor,
+  onBlur,
+  onChange
 }: InputProps){
   const [showPassword, setShowPassword] = useState(true);
   const [showDateInput, setShowDateInput] = useState(false);
@@ -67,6 +71,8 @@ function Input({
           secureTextEntry={isPassword && showPassword}
           keyboardType={keyboardType}
           editable={!isDateInput}
+          onBlur={onBlur}
+          onChange={onChange}
         />
         {
           isPassword && (

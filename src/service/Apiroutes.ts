@@ -30,6 +30,12 @@ interface ClientProps {
   base64DoBack: string;
   base64Proofddress: string;
 }
+
+interface ProofByIDDto {
+  ComprovanteId: string;
+  TipoMovimentacao: string
+}
+
 let token: string | null = "";
 if (typeof window !== "undefined") {
   token = localStorage.getItem("@bdkbank:token");
@@ -127,6 +133,33 @@ const loginConfirm = async (chaveLogin: string, codigo: string) => {
   return response;
 };
 
+const ProofById = async (data: ProofByIDDto) => {
+  const response = await api.post(
+    `/transfer/proof`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+  );
+  return response;
+};
+
+const ExcludePix = async (data: string) => {
+  const response = await api.post(
+    `/transfer/ExcludePix`,
+    JSON.stringify(data),
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response;
+};
+
 export {
   verifyPhohe,
   verifyEmail,
@@ -138,4 +171,6 @@ export {
   resendPhone,
   resendEmail,
   loginConfirm,
+  ProofById,
+  ExcludePix
 };
