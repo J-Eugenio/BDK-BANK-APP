@@ -355,6 +355,31 @@ function Signup(){
             </>
           ) : (<></>)
         }
+
+        {
+          currentPage === 4 && (
+            <>
+              <Input 
+                overTitle='Senha de login'
+                overTitleColor='#FFF'
+                placeholder='Senha de login'
+              />
+              <Input 
+                placeholder='Confirmar Senha de login'
+              />
+              <Input 
+                overTitle='Senha transacional'
+                overTitleColor='#FFF'
+                placeholder='Senha transacional (Apenas Numeros *)'
+                keyboardType='decimal-pad'
+              />
+              <Input 
+                placeholder='Confirmar Senha transacional'
+                keyboardType='decimal-pad'
+              />
+            </>
+          )
+        }
       </Main>
       
 
@@ -370,14 +395,30 @@ function Signup(){
             />
           )
         }
-        <Button 
-          title='Próximo'
-          color='#6EA965'
-          onPress={() => {
-            nextPage()
-          }}
-          
-        />
+        {
+          currentPage === 4 ? (
+          <>
+            <Button 
+              title='Registrar'
+              color='#6EA965'
+              onPress={() => {
+                // Register method
+              }}
+            />
+          </>
+          ) : (
+          <>
+            <Button 
+              title='Próximo'
+              color='#6EA965'
+              onPress={() => {
+                nextPage()
+              }}
+            />
+          </>
+          )
+        }
+        
       </Row>
 
     </Container>

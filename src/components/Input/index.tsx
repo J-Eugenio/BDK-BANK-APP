@@ -18,6 +18,7 @@ interface InputProps {
   placeholder?: string;
   isPassword?: boolean;
   overTitle?: string
+  overTitleColor?: string
   icon?: boolean;
   iconName?: string;
   keyboardType?: KeyboardTypeOptions
@@ -32,7 +33,8 @@ function Input({
   icon, 
   iconName,
   keyboardType,
-  isDateInput
+  isDateInput,
+  overTitleColor
 }: InputProps){
   const [showPassword, setShowPassword] = useState(true);
   const [showDateInput, setShowDateInput] = useState(false);
@@ -42,7 +44,7 @@ function Input({
     <Container>
       {
         overTitle && (
-          <OverTitle>{overTitle}</OverTitle>
+          <OverTitle color={overTitleColor}>{overTitle}</OverTitle>
         )
       }
       

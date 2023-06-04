@@ -1,8 +1,11 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled.View`
-  
+interface OverTitleProps {
+  color?: string;
+}
+
+export const Container = styled.View` 
 `;
 
 export const Main = styled.View`
@@ -33,8 +36,8 @@ export const ShowPassword = styled.TouchableOpacity`
 export const ShowDateInput = styled.TouchableOpacity`
 `;
 
-export const OverTitle = styled.Text`
+export const OverTitle = styled.Text<OverTitleProps>`
   font-size: ${RFValue(16)}px;
   margin-bottom: 5px;
-  color: #616161;
+  color: ${({ color }) => color || '#616161'};
 `;
