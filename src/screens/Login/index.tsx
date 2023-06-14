@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { ImageBackground } from 'react-native';
 import { Input } from '../../components/Input';
 import loginAsset from '../../assets/login-page-asset.png';
@@ -16,17 +17,21 @@ import {
   SignUp,
   SignUpText
 } from './styles';
-import { useCallback } from 'react';
 
 function Login(){
+  const [cpf, setCPF] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const { signIn } = useAuth();
 
   const handleSignIn = useCallback(async () => {
+    setLoading(true)
     await signIn({
-      document: "60561612340",
-      password: "123456"
+      document: cpf,
+      password: password
     })
+    setLoading(false)
   }, [signIn])
 
   return (
@@ -43,11 +48,17 @@ function Login(){
         </TextContainer>
         
         <Input 
-          placeholder='Email'
+          value={cpf}
+          placeholder='CPF'
+          setValue={setCPF}
+          onChange={setCPF}
         />
         <Input 
+          value={password}
           placeholder='Senha'
           isPassword
+          setValue={setPassword}
+          onChange={setCPF}
         />
 
         <ButtonGroup
@@ -59,7 +70,8 @@ function Login(){
         </ButtonGroup>
 
         <Enter
-          onPress={handleSignIn}
+          onPress={() => handleSignIn()}
+          disabled={loading}
         >
           <EnterText>Entrar</EnterText>
         </Enter>

@@ -14,7 +14,7 @@ export const Container = styled.View`
 
 export const PrimaryTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
-  font-size: ${RFValue(50)}px;
+  font-size: ${RFValue(30)}px;
 `;
 
 export const SecondTitle = styled.Text`
@@ -45,12 +45,14 @@ export const CodeGroup = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  gap: ${RFValue(12)}px;
 `;
 export const Code = styled.TextInput`
   height: ${RFValue(50)}px;
   width: ${RFValue(50)}px;
   background-color: ${({ theme }) => theme.colors.input_background};
   border-radius: 10px;
+  border: 1px solid grey
   text-align: center;
   font-size: ${RFValue(20)}px
 `;

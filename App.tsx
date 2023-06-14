@@ -23,6 +23,7 @@ import {
   TransferPix,
   VerifyAccount ,
   Signup,
+  Process,
 } from "./src/screens";
 import AppProvider from "./src/hooks";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -48,6 +49,7 @@ function MyStack() {
       }}
     >
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Process" component={Process} />
       <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
       <Stack.Screen name="MyTabs" component={MyTabs} />
       <Stack.Screen name="Signup" component={Signup} />

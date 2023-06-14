@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ApiBase as api } from "./Apibase";
 
 interface ClientProps {
@@ -36,11 +37,9 @@ interface ProofByIDDto {
   TipoMovimentacao: string
 }
 
-let token: string | null = "";
-if (typeof window !== "undefined") {
-  token = localStorage.getItem("@bdkbank:token");
+async function getToken() {
+  return await AsyncStorage.getItem("@bdkbank:token");
 }
-
 const verifyEmail = async (emailText: string) => {
   const response = await api.post(`/client/VerifyEmail`, emailText, {
     headers: { "Content-Type": "application/json" },
@@ -67,7 +66,7 @@ const confirmPhone = async (phoneNumber: number) => {
   const response = await api.post(`/client/ConfirmPhone`, Number(phoneNumber), {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
@@ -77,7 +76,7 @@ const confirmEmail = async (email: number) => {
   const response = await api.post(`/client/ConfirmEmail`, Number(email), {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
@@ -87,7 +86,7 @@ const updatePhone = async (phone: string) => {
   const response = await api.put(`/client/UpdatePhone`, phone, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
@@ -97,29 +96,27 @@ const updateEmail = async (email: string) => {
   const response = await api.put(`/client/UpdateEmail`, email, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
 };
 
 const resendPhone = async () => {
-  console.log(token, "token");
   const response = await api.get(`/client/ResendPhone`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
 };
 
 const resendEmail = async () => {
-  console.log(token, "token");
   const response = await api.get(`/client/ResendEmail`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response;
@@ -139,7 +136,7 @@ const ProofById = async (data: ProofByIDDto) => {
     data,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       },
     }
   );
@@ -152,7 +149,7 @@ const ExcludePix = async (data: string) => {
     JSON.stringify(data),
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         "Content-Type": "application/json",
       },
     }

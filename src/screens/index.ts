@@ -13,3 +13,4 @@ export * from './Signup';
 export * from './Transfer';
 export * from './TransferPix';
 export * from './VerifyAccount';
+export * from './Process';

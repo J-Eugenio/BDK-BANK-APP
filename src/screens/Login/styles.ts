@@ -14,12 +14,12 @@ export const Container = styled.View`
 
 export const PrimaryTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
-  font-size: ${RFValue(50)}px;
+  font-size: ${RFValue(30)}px;
 `;
 
 export const SecondTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
 `;
 
 export const TextContainer = styled.View`
@@ -67,7 +67,7 @@ export const SignUp = styled.TouchableOpacity`
 `;
 export const SignUpText = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
-  font-size: ${RFValue(30)}px;
+  font-size: ${RFValue(20)}px;
   margin-right: ${RFValue(10)}px;
 `;
 
