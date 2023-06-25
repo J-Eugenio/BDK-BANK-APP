@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import loginAsset from "../../assets/login-page-asset.png";
-import { ImageBackground } from "react-native";
+import { ActivityIndicator, ImageBackground } from "react-native";
 import {
   Container,
   PrimaryTitle,
@@ -26,30 +26,35 @@ interface VerifyProps {
 }
 
 function VerifyAccount({ route }: VerifyProps) {
-  console.log(route?.params.ChaveLogin);
   const [loading, setLoading] = useState(false);
-  const [codeForLogin, setcodeForLogin] = useState("");
+  const [codeForLogin01, setcodeForLogin01] = useState("");
+  const [codeForLogin02, setcodeForLogin02] = useState("");
+  const [codeForLogin03, setcodeForLogin03] = useState("");
+  const [codeForLogin04, setcodeForLogin04] = useState("");
+  const [codeForLogin05, setcodeForLogin05] = useState("");
+  const [codeForLogin06, setcodeForLogin06] = useState("");
+  const [codeToSendForLogin, setCodeToSendForLogin] = useState("")
+
   const { auth, setData, signOut, token } = useAuth();
   const navigation = useNavigation<ScreenProp>();
-
-  function handleEmailInput(e: any) {
-    e.persist();
-    const { value } = e.target;
-    console.log(value, "value");
-
-    setcodeForLogin((prevState: any) => ({
-      ...prevState,
-      codeForLogin: value,
-    }));
-  }
 
   const redirect = () => {
     navigation.navigate('Process');
   }
 
+  useEffect(() => {
+    setCodeToSendForLogin([codeForLogin01,codeForLogin02,codeForLogin03,codeForLogin04,codeForLogin05,codeForLogin06].join().replaceAll(",",""))
+  },[
+    codeForLogin01, 
+    codeForLogin02, 
+    codeForLogin03, 
+    codeForLogin04, 
+    codeForLogin05, 
+    codeForLogin06
+  ])
   const confirmLoginData = async () => {
     setLoading(true);
-    const response = await loginConfirm(auth.ChaveLogin, codeForLogin);
+    const response = await loginConfirm(auth.ChaveLogin, codeToSendForLogin);
     if (response.data.Sucess === true) {
       const obj = {
         token: response.data.Object.Token,
@@ -84,40 +89,52 @@ function VerifyAccount({ route }: VerifyProps) {
 
         <CodeGroup>
           <Code
-            value={codeForLogin}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin01(e)}
           />
           <Code
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin02(e)}
           />
           <Code
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin03(e)}
           />
           <Code
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin04(e)}
           />
           <Code
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin05(e)}
           />
           <Code
             keyboardType="decimal-pad"
             maxLength={1}
-            onChange={(e) => handleEmailInput(e)}
+            onChangeText={(e) => setcodeForLogin06(e)}
           />
         </CodeGroup>
 
-        <Confirm>
-          <ConfirmText>Confirmar</ConfirmText>
+        <Confirm onPress={() => confirmLoginData()}>
+          {
+            loading ? (
+            <>
+              <ActivityIndicator 
+                color={"#FFF"}
+                size="large"
+              />
+            </>
+            ) : (
+            <>
+              <ConfirmText>Confirmar</ConfirmText>
+            </>
+            )
+          }
         </Confirm>
       </ImageBackground>
     </Container>

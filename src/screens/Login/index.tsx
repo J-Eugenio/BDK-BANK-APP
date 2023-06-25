@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, ActivityIndicator } from 'react-native';
 import { Input } from '../../components/Input';
 import loginAsset from '../../assets/login-page-asset.png';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -32,7 +32,7 @@ function Login(){
       password: password
     })
     setLoading(false)
-  }, [signIn])
+  }, [signIn, cpf, password])
 
   return (
     <Container>
@@ -58,7 +58,7 @@ function Login(){
           placeholder='Senha'
           isPassword
           setValue={setPassword}
-          onChange={setCPF}
+          onChange={setPassword}
         />
 
         <ButtonGroup
@@ -73,7 +73,22 @@ function Login(){
           onPress={() => handleSignIn()}
           disabled={loading}
         >
-          <EnterText>Entrar</EnterText>
+          {
+            loading ? (
+            <>
+              <ActivityIndicator 
+                color={"#FFF"}
+                size="large"
+              />
+            </>
+            ) : (
+            <>
+              <EnterText>Entrar</EnterText>
+            </>
+            )
+          }
+          
+          
         </Enter>
         
         <SecondTitle>Não tem uma conta?</SecondTitle>

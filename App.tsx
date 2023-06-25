@@ -34,6 +34,7 @@ const Tab = createBottomTabNavigator();
 //List pages
 export type RootStackParamList = {
   VerifyAccount: any
+  Process: any
 };
 
 //Screen props with pages

@@ -72,7 +72,6 @@ export const AuthProvider: React.FC = ({ children }: any) => {
 
   const signIn = useCallback(
     async ({ document, password }: signInCredentials) => {
-      console.log(document, password)
       try {
         const response = await api.post(
           "/client/Login",
@@ -86,7 +85,7 @@ export const AuthProvider: React.FC = ({ children }: any) => {
             },
           }
         );
-
+        
         if (response.data.Message === "Senha incorreta") {
           showToast(
             `${response.data.Message} tentativas restantes: ${response.data.Object.Tentativas}`
