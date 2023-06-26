@@ -108,13 +108,9 @@ export const AuthProvider: React.FC = ({ children }: any) => {
             return;
           } else {
             showToast("Token de acesso enviado");
-            
-            // navigation.navigate("VerifyAccount", {
-            //   ChaveLogin: response.data.Object.ChaveLogin,
-            // });
 
-            navigation.navigate("VerifyStatus", {
-              id: "email",
+            navigation.navigate("VerifyAccount", {
+              ChaveLogin: response.data.Object.ChaveLogin,
             });
 
             if (response.data.Object) {

@@ -61,6 +61,16 @@ function VerifyStatus({ route }: VerifyProps) {
 
   const navigation = useNavigation<ScreenProp>();
 
+  useEffect(() => {
+    if (route) {
+      if (route.params.id === "email") {
+        setRouteInfoParam(1);
+      } else {
+        setRouteInfoParam(2);
+      }
+    }
+  }, []);
+
   const redirect = () => {
     navigation.navigate("Process");
   };
@@ -152,16 +162,6 @@ function VerifyStatus({ route }: VerifyProps) {
         .replaceAll(",", "")
     );
   }, [codeForEmail01, codeForEmail02, codeForEmail03, codeForEmail04]);
-
-  useEffect(() => {
-    if (route) {
-      if (route.params.id === "email") {
-        setRouteInfoParam(1);
-      } else {
-        setRouteInfoParam(2);
-      }
-    }
-  }, []);
 
   return (
     <Container>
