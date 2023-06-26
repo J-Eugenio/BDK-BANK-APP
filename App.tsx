@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ThemeProvider } from "styled-components/native";
 import theme from "./src/global/styles/theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { 
+import {
   Login,
   Billet,
   CopyAndPastePix,
@@ -21,9 +21,11 @@ import {
   Profile,
   Transfer,
   TransferPix,
-  VerifyAccount ,
+  VerifyAccount,
   Signup,
   Process,
+  VerifyStatus,
+  Forgot,
 } from "./src/screens";
 import AppProvider from "./src/hooks";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -33,8 +35,12 @@ const Tab = createBottomTabNavigator();
 
 //List pages
 export type RootStackParamList = {
-  VerifyAccount: any
-  Process: any
+  VerifyAccount: any;
+  Process: any;
+  VerifyStatus: any;
+  MainPage: any;
+  Login: any;
+  Forgot: any;
 };
 
 //Screen props with pages
@@ -52,6 +58,8 @@ function MyStack() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Process" component={Process} />
       <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
+      <Stack.Screen name="Forgot" component={Forgot} />
+      <Stack.Screen name="VerifyStatus" component={VerifyStatus} />
       <Stack.Screen name="MyTabs" component={MyTabs} />
       <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
@@ -140,7 +148,6 @@ function MyStackSecondary() {
   );
 }
 
-
 export default function App() {
   return (
     <>
@@ -148,9 +155,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <NavigationContainer>
           {/* @ts-ignore */}
-          <AppProvider>
-              {MyStack()}
-          </AppProvider>
+          <AppProvider>{MyStack()}</AppProvider>
         </NavigationContainer>
       </ThemeProvider>
     </>

@@ -2,44 +2,43 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ApiBase as api } from "./Apibase";
 
 interface ClientProps {
-  fullName: string;
-  accountType: string;
-  email: string;
-  ddd: string;
-  phone: string;
-  device: string;
-  gender: string;
-  placeOfBirth: string;
-  monthlyIncome: number;
-  maritalStatus: string;
-  add_Address: string;
-  add_Neighborhood: string;
-  add_StreetNumber: string;
-  add_ZipCode: string;
-  add_Complement: string;
-  add_City: string;
-  add_Province: string;
-  rg: string;
-  documentId: string;
-  birthDate: string;
-  motherName: string;
-  isPoliticallyExposed: string;
-  hashpass: string;
-  passwordInitial: string;
-  base64Self: string;
-  base64DocFront: string;
-  base64DoBack: string;
-  base64Proofddress: string;
+  FullName: string;
+  AccountType: string;
+  Email: string;
+  DDD: string;
+  Phone: string;
+  Device: string;
+  Gender: string;
+  PlaceOfBirth: string;
+  MonthlyIncome: number;
+  MaritalStatus: string;
+  Add_Address: string;
+  Add_Neighborhood: string;
+  Add_StreetNumber: string;
+  Add_ZipCode: string;
+  Add_Complement: string;
+  Add_City: string;
+  Add_Province: string;
+  Rg: string;
+  DocumentId: string;
+  BirthDate: string;
+  MotherName: string;
+  IsPoliticallyExposed: string;
+  Hashpass: string;
+  PasswordInitial: string;
+  Base64Self: string;
+  Base64DocFront: string;
+  Base64DoBack: string;
+  Base64Proofddress: string;
+  occupation: string;
 }
 
-interface ProofByIDDto {
-  ComprovanteId: string;
-  TipoMovimentacao: string
+interface RecoverPasswordConfirmationDTO {
+  Cpf: string;
+  Codigo: number;
+  Senha: string;
 }
 
-async function getToken() {
-  return await AsyncStorage.getItem("@bdkbank:token");
-}
 const verifyEmail = async (emailText: string) => {
   const response = await api.post(`/client/VerifyEmail`, emailText, {
     headers: { "Content-Type": "application/json" },
@@ -62,61 +61,61 @@ const saveClient = async (data: ClientProps) => {
   return response;
 };
 
-const confirmPhone = async (phoneNumber: number) => {
+const confirmPhone = async (phoneNumber: number, token: string) => {
   const response = await api.post(`/client/ConfirmPhone`, Number(phoneNumber), {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
 };
 
-const confirmEmail = async (email: number) => {
+const confirmEmail = async (email: number, token: string) => {
   const response = await api.post(`/client/ConfirmEmail`, Number(email), {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
 };
 
-const updatePhone = async (phone: string) => {
+const updatePhone = async (phone: string, token: string) => {
   const response = await api.put(`/client/UpdatePhone`, phone, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
 };
 
-const updateEmail = async (email: string) => {
+const updateEmail = async (email: string, token: string) => {
   const response = await api.put(`/client/UpdateEmail`, email, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
 };
 
-const resendPhone = async () => {
+const resendPhone = async (token: string) => {
   const response = await api.get(`/client/ResendPhone`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
 };
 
-const resendEmail = async () => {
+const resendEmail = async (token: string) => {
   const response = await api.get(`/client/ResendEmail`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
@@ -130,30 +129,23 @@ const loginConfirm = async (chaveLogin: string, codigo: string) => {
   return response;
 };
 
-const ProofById = async (data: ProofByIDDto) => {
+const RecoverPassword = async (data: string) => {
   const response = await api.post(
-    `/transfer/proof`,
-    data,
+    `/client/RecoverPassword`,
+    JSON.stringify(data),
     {
       headers: {
-        Authorization: `Bearer ${getToken()}`
+        "Content-Type": "application/json",
       },
     }
   );
   return response;
 };
 
-const ExcludePix = async (data: string) => {
-  const response = await api.post(
-    `/transfer/ExcludePix`,
-    JSON.stringify(data),
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+const RecoverPasswordConfirmation = async (
+  data: RecoverPasswordConfirmationDTO
+) => {
+  const response = await api.post(`/client/RecoverPasswordConfirmation`, data);
   return response;
 };
 
@@ -168,6 +160,6 @@ export {
   resendPhone,
   resendEmail,
   loginConfirm,
-  ProofById,
-  ExcludePix
+  RecoverPassword,
+  RecoverPasswordConfirmation,
 };

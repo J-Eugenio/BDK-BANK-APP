@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ApiBase as api } from "../service/Apibase";
 import { ScreenProp } from "../../App";
@@ -85,7 +84,7 @@ export const AuthProvider: React.FC = ({ children }: any) => {
             },
           }
         );
-        
+
         if (response.data.Message === "Senha incorreta") {
           showToast(
             `${response.data.Message} tentativas restantes: ${response.data.Object.Tentativas}`
@@ -94,7 +93,14 @@ export const AuthProvider: React.FC = ({ children }: any) => {
           response.data.Sucess &&
           response.data.Object.Tentativas === 0
         ) {
-          showToast(response.data.Message);
+          const limitTryMessage = response.data.Message.split("em");
+          showToast(
+            `${
+              limitTryMessage[0] +
+              "em " +
+              new Date(limitTryMessage[1].slice(0, 17)).toLocaleString()
+            }`
+          );
         } else {
           if (response.data.Sucess === false) {
             showToast(response.data.Message);
@@ -102,9 +108,13 @@ export const AuthProvider: React.FC = ({ children }: any) => {
             return;
           } else {
             showToast("Token de acesso enviado");
+            
+            // navigation.navigate("VerifyAccount", {
+            //   ChaveLogin: response.data.Object.ChaveLogin,
+            // });
 
-            navigation.navigate("VerifyAccount", {
-              ChaveLogin: response.data.Object.ChaveLogin,
+            navigation.navigate("VerifyStatus", {
+              id: "email",
             });
 
             if (response.data.Object) {
@@ -133,7 +143,7 @@ export const AuthProvider: React.FC = ({ children }: any) => {
         token: data.token,
         auth,
         setAuth,
-        setData
+        setData,
       }}
     >
       {children}

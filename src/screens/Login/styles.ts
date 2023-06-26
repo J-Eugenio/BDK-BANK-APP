@@ -65,6 +65,7 @@ export const SignUp = styled.TouchableOpacity`
   align-items: center;
   margin-top: ${RFValue(10)}px;
 `;
+
 export const SignUpText = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
   font-size: ${RFValue(20)}px;

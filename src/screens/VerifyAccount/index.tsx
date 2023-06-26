@@ -17,6 +17,7 @@ import { loginConfirm } from "../../service/Apiroutes";
 import { useAuth } from "../../hooks/auth";
 import { ScreenProp } from "../../../App";
 import { showToast } from "../../utils/toast";
+
 interface VerifyProps {
   route?: {
     params: {
@@ -33,25 +34,36 @@ function VerifyAccount({ route }: VerifyProps) {
   const [codeForLogin04, setcodeForLogin04] = useState("");
   const [codeForLogin05, setcodeForLogin05] = useState("");
   const [codeForLogin06, setcodeForLogin06] = useState("");
-  const [codeToSendForLogin, setCodeToSendForLogin] = useState("")
+  const [codeToSendForLogin, setCodeToSendForLogin] = useState("");
 
   const { auth, setData, signOut, token } = useAuth();
   const navigation = useNavigation<ScreenProp>();
 
   const redirect = () => {
-    navigation.navigate('Process');
-  }
+    navigation.navigate("Process");
+  };
 
   useEffect(() => {
-    setCodeToSendForLogin([codeForLogin01,codeForLogin02,codeForLogin03,codeForLogin04,codeForLogin05,codeForLogin06].join().replaceAll(",",""))
-  },[
-    codeForLogin01, 
-    codeForLogin02, 
-    codeForLogin03, 
-    codeForLogin04, 
-    codeForLogin05, 
-    codeForLogin06
-  ])
+    setCodeToSendForLogin(
+      [
+        codeForLogin01,
+        codeForLogin02,
+        codeForLogin03,
+        codeForLogin04,
+        codeForLogin05,
+        codeForLogin06,
+      ]
+        .join()
+        .replaceAll(",", "")
+    );
+  }, [
+    codeForLogin01,
+    codeForLogin02,
+    codeForLogin03,
+    codeForLogin04,
+    codeForLogin05,
+    codeForLogin06,
+  ]);
   const confirmLoginData = async () => {
     setLoading(true);
     const response = await loginConfirm(auth.ChaveLogin, codeToSendForLogin);
@@ -67,7 +79,7 @@ function VerifyAccount({ route }: VerifyProps) {
       ]);
       setData(obj);
       showToast(response.data.Message);
-      redirect()
+      redirect();
     } else {
       showToast(response.data.Message);
     }
@@ -83,9 +95,10 @@ function VerifyAccount({ route }: VerifyProps) {
         }}
       >
         <TextContainer>
-          <PrimaryTitle>Confirmação</PrimaryTitle>
-          <SecondTitle>de Login</SecondTitle>
+          <PrimaryTitle>Confirmação de Login</PrimaryTitle>
         </TextContainer>
+
+        <SecondTitle>Digite o código que recebeu por SMS</SecondTitle>
 
         <CodeGroup>
           <Code
@@ -121,20 +134,15 @@ function VerifyAccount({ route }: VerifyProps) {
         </CodeGroup>
 
         <Confirm onPress={() => confirmLoginData()}>
-          {
-            loading ? (
+          {loading ? (
             <>
-              <ActivityIndicator 
-                color={"#FFF"}
-                size="large"
-              />
+              <ActivityIndicator color={"#FFF"} size="large" />
             </>
-            ) : (
+          ) : (
             <>
               <ConfirmText>Confirmar</ConfirmText>
             </>
-            )
-          }
+          )}
         </Confirm>
       </ImageBackground>
     </Container>

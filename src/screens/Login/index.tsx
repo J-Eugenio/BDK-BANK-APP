@@ -17,11 +17,15 @@ import {
   SignUp,
   SignUpText
 } from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenProp } from '../../../App';
 
 function Login(){
   const [cpf, setCPF] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const navigation = useNavigation<ScreenProp>();
 
   const { signIn } = useAuth();
 
@@ -64,7 +68,7 @@ function Login(){
         <ButtonGroup
           align='right'
         >
-          <ForgetPassword>
+          <ForgetPassword onPress={() => navigation.navigate("Forgot")}>
             <ForgetPasswordText>Esqueceu a senha?</ForgetPasswordText>
           </ForgetPassword>
         </ButtonGroup>

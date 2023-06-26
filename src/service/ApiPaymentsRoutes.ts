@@ -38,9 +38,10 @@ interface createQRcodeDTO {
 }
 
 interface payBoletoDTO {
-  KeyPixSelected: string;
-  descricao: string;
-  valor: number;
+  Valor: number;
+  dateVencimento: string;
+  CodigoDeBarras: string;
+  Password: string;
 }
 
 interface ISendTed {
@@ -131,6 +132,17 @@ const PayBoleto = async (data: payBoletoDTO) => {
   });
   return response;
 };
+
+const ReadCodigoDeBarra = async (data: string) => {
+  const response = await api.post(`/transfer/ReadCodigoDeBarra`, data, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+};
+
 
 // Delete request
 
