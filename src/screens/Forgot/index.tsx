@@ -15,7 +15,7 @@ import {
   RecoverPassword,
   RecoverPasswordConfirmation,
 } from "../../service/Apiroutes";
-import { cpfMaskRemove, validCPF } from "../../utils/cfp-mask";
+import { cpfMask, cpfMaskRemove, validCPF } from "../../utils/cfp-mask";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
 import { ImageBackground, ActivityIndicator } from "react-native";
@@ -42,65 +42,81 @@ function Forgot() {
 
   const handleForgotPassword = async () => {
     setLoading(true);
-    await RecoverPassword(cpfMaskRemove(cpfCnpj))
-      .then((res) => {
-        if (res.data.Sucess === true) {
-          setEmail(res.data.Object.Email);
-          showToast(res.data.Message);
-          setStepForgot(1);
-        } else {
-          showToast(res.data.Message);
-        }
-      })
-      .catch(() => {
-        showToast("Ocorreu uma falha!");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
-  const handleConfirmForgotPassword = async () => {
-    setLoading1(true);
-    const payload = {
-      Cpf: cpfCnpj,
-      Codigo: validateCode,
-      Senha: newPassword,
-    };
-    await RecoverPasswordConfirmation(payload)
-      .then((res) => {
-        if (res.data.Sucess === true) {
-          showToast(res.data.Message);
-          redirect();
-        } else {
-          showToast(res.data.Message);
-        }
-      })
-      .catch(() => {
-        showToast("Ocorreu uma falha!");
-      })
-      .finally(() => {
-        setLoading1(false);
-      });
-  };
-
-  const validCPFForTrueOrFalse = (cpf: string) => {
-    const isValid = validCPF(cpf);
-    if (isValid) {
+    const validCPF = validCPFForTrueOrFalse();
+    if (validCPF) {
       setIsCPFValid(1);
+      await RecoverPassword(cpfMaskRemove(cpfCnpj))
+        .then((res) => {
+          if (res.data.Sucess === true) {
+            setEmail(res.data.Object.Email);
+            showToast(res.data.Message);
+            setStepForgot(1);
+          } else {
+            showToast(res.data.Message);
+          }
+        })
+        .catch(() => {
+          showToast("Ocorreu uma falha!");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+      setLoading(false);
     } else {
       setIsCPFValid(2);
+      setLoading(false);
     }
   };
 
-  const validPasswordCaractersAndNumbers = (pass: string) => {
+  const handleConfirmForgotPassword = React.useCallback(async () => {
+    setLoading1(true);
+    const validPassword = validPasswordCaractersAndNumbers();
+    if (validPassword) {
+      const payload = {
+        Cpf: cpfCnpj,
+        Codigo: Number(validateCode),
+        Senha: newPassword,
+      };
+      await RecoverPasswordConfirmation(payload)
+        .then((res) => {
+          if (res.data.Sucess === true) {
+            showToast(res.data.Message);
+            redirect();
+          } else {
+            showToast(res.data.Message);
+          }
+        })
+        .catch(() => {
+          showToast("Ocorreu uma falha!");
+        })
+        .finally(() => {
+          setLoading1(false);
+        });
+    } else {
+      setLoading1(false);
+    }
+  }, [cpfCnpj, validateCode, newPassword]);
+
+  const validCPFForTrueOrFalse = () => {
+    const isValid = validCPF(cpfCnpj);
+    if (isValid) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const validPasswordCaractersAndNumbers = () => {
     // contain numbers and letters
-    const validOne = /^[A-Za-z0-9]*$/.test(pass);
+    const validOne = /^[A-Za-z0-9]*$/.test(newPassword);
     if (validOne === true) {
-      setNewPassword(pass);
+      setNewPassword(newPassword);
     } else {
       showToast("Senha não válida!");
+      setNewPassword("");
     }
+    return validOne;
   };
 
   return (
@@ -122,20 +138,13 @@ function Forgot() {
               <Text>CPF</Text>
               <Box>
                 <Input
-                  value={cpfCnpj}
+                  value={cpfMask(cpfCnpj)}
                   placeholder="CPF"
                   setValue={setCpfCnpj}
-                  onChange={(event: any, type: any) => {
-                    validCPFForTrueOrFalse(event.target.value);
-                    setCpfCnpj(event.target.value);
-                  }}
+                  onChange={setCpfCnpj}
                 />
               </Box>
-              {isCPFValid === 2 ? (
-                <p style={{ color: "#C53030" }}>CPF não é válido</p>
-              ) : (
-                ""
-              )}
+              {isCPFValid === 2 ? <Text>CPF não é válido</Text> : ""}
 
               <Box>
                 <Button
@@ -176,10 +185,7 @@ function Forgot() {
                   value={String(validateCode)}
                   placeholder="Código"
                   setValue={setValidateCode}
-                  onChange={(event: any, type: any) => {
-                    setShowPasswordInput(true);
-                    setValidateCode(Number(event.target.value));
-                  }}
+                  onChange={setValidateCode}
                 />
               </Box>
 
@@ -193,7 +199,7 @@ function Forgot() {
                         placeholder="Senha"
                         isPassword
                         setValue={setNewPassword}
-                        onChange={validPasswordCaractersAndNumbers}
+                        onChange={setNewPassword}
                       />
                     </Box>
                     <MiniText>(Com 6 letras / números) *</MiniText>
@@ -213,7 +219,18 @@ function Forgot() {
                   </Box>
                 </>
               ) : (
-                ""
+                <Box>
+                  <Button
+                    onPress={() => setShowPasswordInput(true)}
+                    disabled={loading}
+                  >
+                    {loading === true ? (
+                      <ActivityIndicator color={"#FFF"} size="large" />
+                    ) : (
+                      <Text>CONFIRMAR CÓDIGO</Text>
+                    )}
+                  </Button>
+                </Box>
               )}
             </FlexStart>
           </MainFlex>
