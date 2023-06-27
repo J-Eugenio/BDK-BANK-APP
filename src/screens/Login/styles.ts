@@ -54,6 +54,7 @@ export const Enter = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.btn_primary_color};
   border-radius: 10px;
 `;
+
 export const EnterText = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
   font-size: ${RFValue(20)}px;
