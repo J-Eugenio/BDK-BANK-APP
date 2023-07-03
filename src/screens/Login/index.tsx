@@ -85,7 +85,7 @@ function Login() {
         </Enter>
 
         <SecondTitle>Não tem uma conta?</SecondTitle>
-        <SignUp>
+        <SignUp onPress={() => navigation.navigate("Signup")}>
           <SignUpText>REGISTRE-SE</SignUpText>
           <Icon name="chevron-right" size={30} color="#FFF" />
         </SignUp>

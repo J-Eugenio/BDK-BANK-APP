@@ -30,8 +30,9 @@ export const Confirm = styled.TouchableOpacity`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: ${RFValue(50)}px 0;
+  margin-top: ${RFValue(24)}px;
   height: ${RFValue(50)}px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.btn_primary_color};
   border-radius: 10px;
 `;
@@ -40,7 +41,8 @@ export const Back = styled.TouchableOpacity`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: ${RFValue(50)}px 0;
+  margin-top: ${RFValue(24)}px;
+  width: 100%;
   height: ${RFValue(50)}px;
   background-color: #667AE7;
   border-radius: 10px;
@@ -62,7 +64,7 @@ export const FlexEnd = styled.View`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 80%
+  width: 80%;
   margin-top: ${RFValue(5)}px;
 `
 
@@ -71,6 +73,7 @@ export const CodeGroup = styled.View`
   flex-direction: row;
   justify-content: space-around;
   gap: ${RFValue(12)}px;
+  margin-top: ${RFValue(18)}px;
 `;
 export const Code = styled.TextInput`
   height: ${RFValue(50)}px;

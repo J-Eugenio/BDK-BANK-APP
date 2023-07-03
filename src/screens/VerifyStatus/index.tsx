@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import loginAsset from "../../assets/login-page-asset.png";
 import { ActivityIndicator, ImageBackground } from "react-native";
@@ -56,6 +56,7 @@ function VerifyStatus({ route }: VerifyProps) {
   const [phoneUpdate, setphoneUpdate] = useState("");
   const [emailUpdate, setemailUpdate] = useState("");
   const [counterOut, setCounterOut] = useState(false);
+  let secondTextInput = useRef(null);
 
   const { token, signOut } = useAuth();
 
@@ -287,22 +288,26 @@ function VerifyStatus({ route }: VerifyProps) {
                   ) : (
                     <CodeGroup>
                       <Code
+                        blurOnSubmit={false}
                         keyboardType="decimal-pad"
                         maxLength={1}
-                        onChangeText={(e) => setcodeForEmail01(e)}
+                        onChangeText={(e) => {setcodeForEmail01(e)}}
                       />
                       <Code
                         keyboardType="decimal-pad"
+                        blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => setcodeForEmail02(e)}
                       />
                       <Code
                         keyboardType="decimal-pad"
+                        blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => setcodeForEmail03(e)}
                       />
                       <Code
                         keyboardType="decimal-pad"
+                        blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => setcodeForEmail04(e)}
                       />

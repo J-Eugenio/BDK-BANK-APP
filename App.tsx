@@ -41,6 +41,7 @@ export type RootStackParamList = {
   MainPage: any;
   Login: any;
   Forgot: any;
+  Signup: any;
 };
 
 //Screen props with pages

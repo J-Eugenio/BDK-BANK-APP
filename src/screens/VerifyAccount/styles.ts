@@ -1,8 +1,8 @@
-import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native'
+import { RFValue } from "react-native-responsive-fontsize";
+import styled from "styled-components/native";
 
 interface ButtonGroupProps {
-  align?: 'left' | 'center' | 'right'
+  align?: "left" | "center" | "right";
 }
 
 export const Container = styled.View`
@@ -20,7 +20,7 @@ export const PrimaryTitle = styled.Text`
 export const SecondTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
   font-size: ${RFValue(18)}px;
-  margin-bottom: ${RFValue(8)}px;
+  margin-bottom: ${RFValue(16)}px;
 `;
 
 export const TextContainer = styled.View`
@@ -47,7 +47,7 @@ export const CodeGroup = styled.View`
   flex-direction: row;
   justify-content: space-around;
   gap: ${RFValue(12)}px;
-  margin-top: 1rem;
+  margin-top: ${RFValue(18)}px;
 `;
 export const Code = styled.TextInput`
   height: ${RFValue(50)}px;
@@ -56,6 +56,5 @@ export const Code = styled.TextInput`
   border-radius: 10px;
   border: 1px solid grey
   text-align: center;
-  font-size: ${RFValue(18)}px
+  font-size: ${RFValue(18)}px;
 `;
-

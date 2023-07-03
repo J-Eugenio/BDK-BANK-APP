@@ -125,7 +125,7 @@ export const AuthProvider: React.FC = ({ children }: any) => {
 
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove(["@bdkbank:user", "@bdkbank:token"]);
-
+    navigation.navigate("Login");
     setData({} as AuthState);
   }, []);
 

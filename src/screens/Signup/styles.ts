@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import styled from "styled-components/native";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 export const Container = styled.View`
   display: flex;
@@ -34,7 +34,7 @@ export const PermissionTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
   font-size: ${RFValue(10)}px;
   margin-bottom: ${RFValue(20)}px;
-`
+`;
 export const DocumentContainer = styled.View`
   border: 1px solid red;
   width: 48%;
@@ -51,7 +51,7 @@ export const MainDocuments = styled.View`
 
 export const ImagePreview = styled.View`
   flex: 1;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 8px;
 `;
 
@@ -68,3 +68,10 @@ export const CameraMain = styled.View`
 `;
 
 export const FlipCamera = styled.TouchableOpacity``;
+
+export const BoxError = styled.View`
+  background: #f47521;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+`;
