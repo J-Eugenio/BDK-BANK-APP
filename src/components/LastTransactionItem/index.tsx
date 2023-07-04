@@ -1,4 +1,4 @@
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "react-native-vector-icons/Feather";
 
 import {
   Container,
@@ -7,51 +7,88 @@ import {
   PaymentDate,
   PaymentValue,
   Box,
-  BoxRow
-} from './styles';
-import { useEffect, useState } from 'react';
+  BoxRow,
+  ActionClick,
+  TypeOfTransaction,
+} from "./styles";
+import { useEffect, useState } from "react";
+import { ScreenProp } from "../../../App";
+import { useNavigation } from "@react-navigation/native";
+import { formatMoney } from "../../utils/format-money";
 
-interface LastTransactionProps {
-  paymentValue?: number;
-  paymentType?: 'received' | 'withdrew';
-  paymentDate?: string;
-  client?: string
+enum typeOfTransactions {
+  CREDITO = "Recebido",
+  DEBITO = "Transação",
 }
-function LastTransactionItem({ client, paymentType, paymentValue, paymentDate }: LastTransactionProps){
-  const [payment, setPayment] = useState({
-    color: '#E74343',
-    msg: '(Transação)',
-    ammountText: '- R$'
-  })
 
-  useEffect(() => {
-    if(paymentType === 'received'){
-      setPayment({
-        color: '#6EA965',
-        msg: '(Recebido)',
-        ammountText: 'R$'
-      })
-    }
-  }, [paymentType])
+interface TransacationCardProps {
+  type: "CREDITO" | "DEBITO";
+  cliente: string;
+  amount: number;
+  id: string;
+  date: string;
+  isProofAvaliable: boolean;
+  indentifyName: string;
+}
+function LastTransactionItem({
+  cliente,
+  type,
+  amount,
+  date,
+  id,
+  isProofAvaliable,
+  indentifyName,
+}: TransacationCardProps) {
+  const navigation = useNavigation<ScreenProp>();
 
+  function redirect(id: string, type: string) {
+    navigation.navigate("Comprovant", {
+      id,
+      type,
+    });
+  }
   return (
     <Container>
+      <ActionClick
+        onPress={() => {
+          isProofAvaliable === true ? redirect(id, indentifyName) : "";
+        }}
+      >
         <BoxRow>
           <IconContainer>
-            <Icon 
-              name="file"
-              color="#5266CE"
-              size={40}
-            />
+            <Icon name="file" color="#5266CE" size={35} />
           </IconContainer>
           <Box>
-            <Client>{client?.slice(0, 9)} <Client color={payment.color}>{payment.msg}</Client></Client>
-            <PaymentDate>Pix - {paymentDate}</PaymentDate>
+            <Client>{cliente}</Client>
+            <Box>
+              {indentifyName ? (
+                <TypeOfTransaction
+                  color={
+                    indentifyName.includes("Crédito") ? "#6EA965" : "#E39E5F"
+                  }
+                >
+                  ({indentifyName})
+                </TypeOfTransaction>
+              ) : (
+                ""
+              )}
+              <PaymentDate>{new Date(date).toLocaleString()}</PaymentDate>
+            </Box>
           </Box>
         </BoxRow>
-        <PaymentValue>{`${payment.ammountText} ${paymentValue}`}</PaymentValue>
+        <PaymentValue
+          color={
+            typeOfTransactions[type] == typeOfTransactions.DEBITO
+              ? "#E74343"
+              : "#6EA965"
+          }
+        >
+          {typeOfTransactions[type] == typeOfTransactions.DEBITO ? "-" : ""}
+          {formatMoney.format(amount)}
+        </PaymentValue>
+      </ActionClick>
     </Container>
-  )
+  );
 }
 
-export { LastTransactionItem }
+export { LastTransactionItem };

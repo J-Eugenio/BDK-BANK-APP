@@ -3,12 +3,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Container,
   BtnNotifycation,
-  Logo
+  Logo,
+  Box
 } from './styles';
 
 import Bdk from '../../assets/bdk.png';
+import { useAuth } from '../../hooks/auth';
 
 function Header(){
+  const { signOut } = useAuth();
+
   return(
     <Container
       style={{
@@ -26,14 +30,22 @@ function Header(){
         source={Bdk}
         resizeMode="contain"
       />
-
-      <BtnNotifycation>
-          <Icon 
-            name="bell"
-            size={30}
-            color="#00214E"
-          />
-      </BtnNotifycation>
+      <Box>
+        {/* <BtnNotifycation>
+            <Icon 
+              name="bell"
+              size={30}
+              color="#00214E"
+            />
+        </BtnNotifycation> */}
+        <BtnNotifycation onPress={() => signOut()}>
+            <Icon 
+              name="sign-out"
+              size={30}
+              color="#00214E"
+            />
+        </BtnNotifycation>
+      </Box>
     </Container>
   )
 }

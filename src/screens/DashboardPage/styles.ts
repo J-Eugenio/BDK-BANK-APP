@@ -2,7 +2,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  height: 85%;
+  height: 100%;
 `;
 
 export const Main = styled.ScrollView`
@@ -51,7 +51,7 @@ export const MainActionContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 ${RFValue(15)}px;
+  padding: 0 ${RFValue(0)}px;
   margin-bottom: ${RFValue(20)}px;
 `;
 

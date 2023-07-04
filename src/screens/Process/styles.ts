@@ -20,7 +20,7 @@ export const Flex = styled.View`
   align-items: center;
   justify-content: center;
   width: 80%;
-  gap: 2;
+  gap: ${RFValue(3)}px;
   margin-bottom: ${RFValue(3)}px;
 `;
 
@@ -34,8 +34,9 @@ export const Button = styled.TouchableOpacity`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: ${RFValue(50)}px 0;
+  margin-top: ${RFValue(24)}px;
   height: ${RFValue(50)}px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.btn_primary_color};
   border-radius: 10px;
 `;

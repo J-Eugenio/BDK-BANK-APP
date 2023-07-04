@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { ImageBackground, ActivityIndicator } from "react-native";
 import { Input } from "../../components/Input";
 import loginAsset from "../../assets/login-page-asset.png";
@@ -19,7 +19,7 @@ import {
 } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
-import { cpfMask } from "../../utils/cfp-mask";
+import { cpfMask, cpfMaskRemove } from "../../utils/cfp-mask";
 
 function Login() {
   const [cpf, setCPF] = useState("");
@@ -33,7 +33,7 @@ function Login() {
   const handleSignIn = useCallback(async () => {
     setLoading(true);
     await signIn({
-      document: cpf,
+      document: cpfMaskRemove(cpf),
       password: password,
     });
     setLoading(false);

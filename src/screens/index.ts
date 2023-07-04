@@ -5,7 +5,7 @@ export * from './Extract';
 export * from './ExtractPerId';
 export * from './KeysPix';
 export * from './Login';
-export * from './MainPage';
+export * from './DashboardPage';
 export * from './Payments';
 export * from './Pix';
 export * from './Profile';
@@ -16,3 +16,4 @@ export * from './TransferPix';
 export * from './VerifyAccount';
 export * from './VerifyStatus';
 export * from './Process';
+export * from './Comprovant'

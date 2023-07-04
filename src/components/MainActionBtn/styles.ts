@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
   display: flex;
-  height: 75px;
-  width: 75px;
+  height: 80px;
+  width: 80px;
   border: 1px solid #ddd;
   border-radius: 6px;
   background-color: #E9E9E9;
@@ -15,7 +15,7 @@ export const Container = styled.TouchableOpacity`
 
 export const Title = styled.Text`
   color: #5266CE;
-  font-size: ${RFValue(10)}px;
+  font-size: ${RFValue(12)}px;
   font-weight: 500;
   margin-top: 5px;
 `;

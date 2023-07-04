@@ -28,23 +28,24 @@ function Process() {
   }, []);
 
   const verifyProcessStep = (data: any) => {
+    const userData = JSON.parse(data)
     setLoading(true);
-    if (data.Processo === 0) {
+    if (userData.Processo === 0) {
       setLoading(false);
       navigation.navigate("VerifyStatus", { id: "phone" });
     }
-    if (data.Processo === 10) {
+    if (userData.Processo === 10) {
       setLoading(false);
       navigation.navigate("VerifyStatus", { id: "email" });
     }
-    if (data.Processo === 20) {
+    if (userData.Processo === 20) {
       setLoading(false);
     }
-    if (data.Processo === 30) {
+    if (userData.Processo === 30) {
       setLoading(false);
     }
-    if (data.Processo === 40) {
-      navigation.navigate("MainPage");
+    if (userData.Processo === 40) {
+      navigation.navigate("DashboardPage");
     }
   };
 
@@ -63,7 +64,7 @@ function Process() {
           </SubTitle>
 
           <Button disabled={loading} onPress={() => backToLogin()}>
-            VOLTAR
+            <Title>VOLTAR</Title>
           </Button>
         </Flex>
       ) : (
@@ -72,7 +73,6 @@ function Process() {
             <SafeAreaView style={{ flex: 1 }}>
               <Spinner
                 visible={loading}
-                textContent={"Carregando dados... aguarde."}
                 textStyle={styles.spinnerTextStyle}
               />
             </SafeAreaView>
