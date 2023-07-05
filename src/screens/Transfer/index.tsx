@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Header } from "../../components/Header";
@@ -81,7 +82,10 @@ function Transfer() {
           </>
         ) : (
           <>
-            <Input overTitle="Digite sua senha transacional" isPassword={true} />
+            <Input
+              overTitle="Digite sua senha transacional"
+              isPassword={true}
+            />
             <BoxButton>
               <Button
                 title="Cancelar"
@@ -120,7 +124,9 @@ function Transfer() {
               <Button
                 title="Voltar"
                 color="#5266CE"
-                onPress={() => {setModalVisible(false), setShowPassword(false)}}
+                onPress={() => {
+                  setModalVisible(false), setShowPassword(false);
+                }}
               />
             </Row>
           </MainModal>

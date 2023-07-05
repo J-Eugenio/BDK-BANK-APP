@@ -1,3 +1,4 @@
+import React from 'react'
 import { StatusBar } from "react-native";
 import theme from "./src/global/styles/theme";
 import { ThemeProvider } from "styled-components/native";
@@ -86,7 +87,7 @@ function HomeScreenTabs() {
             case "Home":
               iconName = focused ? "home" : "home-outline";
               break;
-            case "Pix":
+            case "Pagamentos":
               iconName = focused ? "cash" : "cash-outline";
               break;
             default:
@@ -112,7 +113,7 @@ function HomeScreenTabs() {
       })}
     >
       <Tab.Screen name="Home" component={DashboardPage} />
-      <Tab.Screen name="PIX" component={Pix} />
+      <Tab.Screen name="Pagamentos" component={Payments} />
       <Tab.Screen name="Perfil" component={Profile} />
     </Tab.Navigator>
   );

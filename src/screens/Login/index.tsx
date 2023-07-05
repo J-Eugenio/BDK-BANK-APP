@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback, useState, useEffect } from "react";
 import { ImageBackground, ActivityIndicator } from "react-native";
 import { Input } from "../../components/Input";

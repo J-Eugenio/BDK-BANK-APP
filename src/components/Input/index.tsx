@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { KeyboardTypeOptions } from "react-native/types";

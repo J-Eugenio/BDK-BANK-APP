@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Row } from "../../components/Flex/Row";
@@ -20,7 +21,8 @@ import {
 import { ClienteSaldo, Extract } from "../../service/ApiPaymentsRoutes";
 import { formatMoney } from "../../utils/format-money";
 import { ActivityIndicator } from "react-native";
-import { BottomBarNavigation } from "../../components/BottomBarNavigation";
+import { showToast } from "../../utils/toast";
+import Footer from "../../components/Footer";
 
 function DashboardPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,6 +49,7 @@ function DashboardPage() {
         if (res.data.Sucess === true) {
           setBalance(res.data.Object.valorDisponivel);
         } else {
+          showToast(`${res.data.Message}`);
           setBalance(0);
         }
       })
@@ -71,6 +74,10 @@ function DashboardPage() {
             const object = element[index];
             debts.push(object);
           }
+        }
+
+        if (!res.data.Sucess) {
+          showToast(`${res.data.Message}`);
         }
 
         setExtractList(
@@ -153,6 +160,7 @@ function DashboardPage() {
           </>
         )}
         <Separete />
+        <Footer />
       </Main>
     </Container>
   );

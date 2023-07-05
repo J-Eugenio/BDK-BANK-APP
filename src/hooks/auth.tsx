@@ -34,7 +34,7 @@ interface UserProps {
   userImage?: UserImageProps;
 }
 interface AuthContextState {
-  user: UserProps;
+  user: any;
   signIn(credentials: signInCredentials): Promise<void>;
   signOut(): void;
   loading: boolean;

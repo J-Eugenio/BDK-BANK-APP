@@ -13,7 +13,7 @@ function Payments() {
 
         <MainActionContainer>
           <MainActionBtn
-            title="Tranferência"
+            title="TED"
             iconName="repeat"
             page="Transfer"
           />

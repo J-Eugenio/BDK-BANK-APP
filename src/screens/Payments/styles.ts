@@ -18,9 +18,9 @@ export const Main = styled.ScrollView`
 `;
 
 export const MainActionContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 ${RFValue(15)}px;
-  margin-bottom: ${RFValue(20)}px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+padding: 0 ${RFValue(0)}px;
+margin-bottom: ${RFValue(20)}px;
 `;

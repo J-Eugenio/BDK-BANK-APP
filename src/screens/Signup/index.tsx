@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";

@@ -1,3 +1,4 @@
+import React from 'react'
 import { BoxNameAndKey, BtnDeleteKey, Container, KeySubtitle, KeyTitle } from "./styles";
 import Icon from "react-native-vector-icons/FontAwesome";
 
