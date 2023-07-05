@@ -2,7 +2,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  height: 100%;
+  height: 80%;
 `;
 
 export const Main = styled.ScrollView`

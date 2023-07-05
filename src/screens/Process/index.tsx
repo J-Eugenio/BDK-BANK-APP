@@ -45,7 +45,7 @@ function Process() {
       setLoading(false);
     }
     if (userData.Processo === 40) {
-      navigation.navigate("DashboardPage");
+      navigation.navigate("HomeScreenTabs");
     }
   };
 
