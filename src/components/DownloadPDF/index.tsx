@@ -94,7 +94,7 @@ export default function DownloadPDF({data}: any) {
 
   return (
     <View>
-      <Button title="Gerar PDF" onPress={generatePDF} />
+      <Button title="Baixar" onPress={generatePDF} />
     </View>
   );
 }
