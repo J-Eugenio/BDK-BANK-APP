@@ -14,7 +14,7 @@ export const Container = styled.View`
   width: 100%;
 `;
 
-export const ActionClick = styled.TouchableOpacity`
+export const ActionClick = styled.View`
   padding: ${RFValue(8)}px ${RFValue(8)}px;
   border-bottom-width: 1px;
   border-bottom-color: #e2e2e2;

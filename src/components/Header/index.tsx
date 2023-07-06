@@ -8,7 +8,7 @@ import {
   Box
 } from './styles';
 
-import Bdk from '../../assets/bdk.png';
+import Bdk from '../../assets/logo.png';
 import { useAuth } from '../../hooks/auth';
 
 function Header(){

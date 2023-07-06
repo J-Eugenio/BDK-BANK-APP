@@ -1,5 +1,5 @@
+import React from 'react'
 import Icon from "react-native-vector-icons/Feather";
-
 import {
   Container,
   IconContainer,
@@ -40,20 +40,9 @@ function LastTransactionItem({
   indentifyName,
 }: TransacationCardProps) {
   const navigation = useNavigation<ScreenProp>();
-
-  function redirect(id: string, type: string) {
-    navigation.navigate("Comprovant", {
-      id,
-      type,
-    });
-  }
   return (
     <Container>
-      <ActionClick
-        onPress={() => {
-          isProofAvaliable === true ? redirect(id, indentifyName) : "";
-        }}
-      >
+      <ActionClick>
         <BoxRow>
           <IconContainer>
             <Icon name="file" color="#5266CE" size={35} />

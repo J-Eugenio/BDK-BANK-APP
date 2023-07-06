@@ -2,7 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Row } from "../../components/Flex/Row";
-
+import { Button } from "../../components/Button";
+import Bdk from "../../assets/logo.png";
 import { Header } from "../../components/Header";
 import { LastTransactionItem } from "../../components/LastTransactionItem";
 import { MainActionBtn } from "../../components/MainActionBtn";
@@ -17,12 +18,31 @@ import {
   SecondaryText,
   MainActionContainer,
   Separete,
+  ModalContainer,
+  ModalSuccess,
+  TitleBox,
+  Logo,
+  ModalBox,
+  FlexModal,
+  TextMessage,
+  DividerModal,
+  SecondaryTitleModal,
+  LabelStrong,
+  BoxToOpenModal,
+  LabelBox,
+  LabelText,
 } from "./styles";
-import { ClienteSaldo, Extract } from "../../service/ApiPaymentsRoutes";
+import {
+  ClienteSaldo,
+  Extract,
+  ProofById,
+} from "../../service/ApiPaymentsRoutes";
 import { formatMoney } from "../../utils/format-money";
 import { ActivityIndicator } from "react-native";
 import { showToast } from "../../utils/toast";
 import Footer from "../../components/Footer";
+import DownloadPDF from "../../components/DownloadPDF";
+import { Box, Label } from "../CopyAndPastePix/styles";
 
 function DashboardPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,6 +59,12 @@ function DashboardPage() {
   const [lastDate, setLastDate] = useState(
     String(new Date().toISOString().slice(0, 10))
   );
+  const [loadingData, setLoadingData] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [proofData, setProofData] = useState({} as any);
+  const [proofMessage, setProofMessage] = useState("");
+  const [proofExists, setProofExists] = useState(false);
+
   const handleSetVisibleBalance = () => setIsVisible(!isVisible);
   const [extractList, setExtractList] = useState<Array<any>>([]);
 
@@ -101,6 +127,28 @@ function DashboardPage() {
     clientBalance();
   }, []);
 
+  const listProofById = async (id: string, type: string) => {
+    setLoadingData(true);
+    setModalVisible(true);
+    const payload = {
+      ComprovanteId: id,
+      TipoMovimentacao: type,
+    };
+    await ProofById(payload)
+      .then((res) => {
+        if (res.data.Sucess === false) {
+          setProofMessage(res.data.Message);
+          setProofExists(true);
+        } else {
+          setProofData(res.data.Object);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoadingData(false);
+      });
+  };
+
   return (
     <Container>
       <Header />
@@ -145,16 +193,26 @@ function DashboardPage() {
             {extractList &&
               extractList.map((item) => {
                 return (
-                  <LastTransactionItem
+                  <BoxToOpenModal
                     key={item.id}
-                    cliente={item.Pessoa ? item.Pessoa : "Não informado"}
-                    type={item.movimento}
-                    indentifyName={item.nomeidentificacao}
-                    amount={item.valor}
-                    date={item.dateAt}
-                    id={item.id}
-                    isProofAvaliable={item.Comprovant}
-                  />
+                    onPress={() => {
+                      listProofById(
+                        item.Identifier,
+                        item.nomeidentificacao
+                      );
+                    }}
+                  >
+                    <LastTransactionItem
+                      key={item.id}
+                      cliente={item.Pessoa ? item.Pessoa : "Não informado"}
+                      type={item.movimento}
+                      indentifyName={item.nomeidentificacao}
+                      amount={item.valor}
+                      date={item.dateAt}
+                      id={item.id}
+                      isProofAvaliable={item.Comprovant}
+                    />
+                  </BoxToOpenModal>
                 );
               })}
           </>
@@ -162,6 +220,113 @@ function DashboardPage() {
         <Separete />
         <Footer />
       </Main>
+      <ModalSuccess
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <ModalContainer>
+          <TitleBox>
+            <Logo source={Bdk} resizeMode="contain" />
+            {loadingData === true ? (
+              ""
+            ) : (
+              <DownloadPDF data={proofData} />
+              // <DownloadButton onPress={() => callDownloadBillet()}>
+              //   <Icon name="download" size={30} color="#00214E" />
+              // </DownloadButton>
+            )}
+          </TitleBox>
+          <ModalBox>
+            {loadingData === true ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <FlexModal>
+                {proofExists === true ? (
+                  <FlexModal>
+                    <Box>
+                      <TextMessage>{proofMessage}</TextMessage>
+                    </Box>
+                  </FlexModal>
+                ) : (
+                  <FlexModal>
+                    <Title>
+                      {proofData.Title ? proofData.Title : "Comprovante"}
+                    </Title>
+
+                    <LabelBox>
+                      <Label>Valor</Label>
+                      <LabelText>
+                        {formatMoney.format(proofData.Valor)}
+                      </LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <Label>ID da transação</Label>
+                      <LabelText>{proofData.Id ? proofData.Id : ""}</LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <Label>Realizada em:</Label>
+                      <LabelText>
+                        {new Date(proofData.Date).toLocaleString()}
+                      </LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <Label>Canal de solicitação:</Label>
+                      <LabelText>
+                        {proofData.CanalDeSolicitacao
+                          ? proofData.CanalDeSolicitacao
+                          : ""}
+                      </LabelText>
+                    </LabelBox>
+                    <DividerModal></DividerModal>
+                    <SecondaryTitleModal>Dados do Cliente</SecondaryTitleModal>
+                    <LabelBox>
+                      <Label>Nome:</Label>
+                      <LabelText>
+                        {proofData.From ? proofData.From.From : ""}
+                      </LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <Label>Banco:</Label>
+                      <LabelText>
+                        {proofData.From ? proofData.From.FromBank : ""}
+                      </LabelText>
+                    </LabelBox>
+                    <DividerModal></DividerModal>
+                    <SecondaryTitleModal>Beneficiário</SecondaryTitleModal>
+                    <LabelBox>
+                      <Label>Recebido por:</Label>
+                      <LabelText>
+                        {proofData.To ? proofData.To.ToName : ""}
+                      </LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <LabelStrong>Valor de transferência via:</LabelStrong>
+                      <LabelText>
+                        {proofData.FormaDeTranferencia
+                          ? proofData.FormaDeTranferencia
+                          : ""}
+                      </LabelText>
+                    </LabelBox>
+                    <LabelBox>
+                      <Label>Observação:</Label>
+                      <LabelText>{proofData.Observacao}</LabelText>
+                    </LabelBox>
+                  </FlexModal>
+                )}
+              </FlexModal>
+            )}
+
+            <Button
+              title="Fechar"
+              color="#5266CE"
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
+          </ModalBox>
+        </ModalContainer>
+      </ModalSuccess>
     </Container>
   );
 }
