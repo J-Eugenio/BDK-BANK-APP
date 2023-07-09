@@ -93,5 +93,9 @@ export const BoxButton = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap:  ${RFValue(20)}px;
+  gap: ${RFValue(20)}px;
+`;
+
+export const Text = styled.Text`
+  font-size: ${RFValue(16)}px;
 `;

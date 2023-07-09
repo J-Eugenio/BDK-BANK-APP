@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect, useState } from "react";
 import { Container, Title, Flex, SubTitle, Button } from "./styles";
 import { useNavigation } from "@react-navigation/native";
