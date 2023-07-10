@@ -162,7 +162,7 @@ function Billet() {
               disabled={loadingReadCodeBillet || billetCode.length < 47}
             >
               {loadingReadCodeBillet === true ? (
-                <ActivityIndicator color={"#FFF"} size="large" />
+                <ActivityIndicator size="large" />
               ) : (
                 <>
                   <ButtonCheckBilletText>CONTINUAR</ButtonCheckBilletText>

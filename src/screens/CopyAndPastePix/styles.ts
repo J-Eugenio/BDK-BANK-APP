@@ -117,3 +117,18 @@ export const BoxButton = styled.View`
   justify-content: center;
   gap:  ${RFValue(20)}px;
 `;
+export const ButtonCheckPixText = styled.Text`
+  color: ${({ theme }) => theme.colors.font_white};
+  font-size: ${RFValue(18)}px;
+`;
+
+export const ButtonCheckPix = styled.TouchableOpacity`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: ${RFValue(20)}px 0;
+  height: ${RFValue(50)}px;
+  background-color: ${({ theme }) => theme.colors.btn_primary_color};
+  border-radius: 10px;
+`;

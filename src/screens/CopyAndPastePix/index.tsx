@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AmountInput } from "../../components/AmountInput";
 import { Input } from "../../components/Input";
@@ -20,19 +20,139 @@ import {
   ModalContainer,
   ModalSuccess,
   BoxButton,
+  ButtonCheckPix,
+  ButtonCheckPixText,
 } from "./styles";
 import { Separator } from "../../components/Separator";
 import UserIMG from "../../assets/user-img.png";
 import { Button } from "../../components/Button";
+import { ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {
+  ClienteSaldo,
+  ReadQrCode,
+  SendPix,
+} from "../../service/ApiPaymentsRoutes";
+import { formatMoney } from "../../utils/format-money";
+import { showToast } from "../../utils/toast";
+import { useAuth } from "../../hooks/auth";
 
 function CopyAndPastePix() {
   const [pixCopyAndPasteKey, setPixCopyAndPasteKey] = useState("");
   const [pixCopyAndPasteValue, setPixCopyAndPasteValue] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loadingDataTransfer, setloadingDataTransfer] = useState(false);
+  const [isDynamic, setIsDynamic] = useState(false);
+  const [loadingReadCode, setLoadingReadCode] = useState(false);
 
+  const [dataTransfer, setDataTransfer] = useState({} as any);
+  const [payloadToModal, setPayloadToModal] = useState({} as any);
+  const [password, setPassword] = useState("");
   const navigation = useNavigation<any>();
+  const { token } = useAuth();
+
+  function mascaraMoeda(event: any) {
+    const onlyDigits = event.target.value
+      .split("")
+      .filter((s: any) => /\d/.test(s))
+      .join("")
+      .padStart(3, "0");
+    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2);
+    event.target.value = maskCurrency(digitsFloat);
+  }
+
+  function maskCurrency(valor: any, locale = "pt-BR", currency = "BRL") {
+    const newValue = parseFloat(valor);
+    setPixCopyAndPasteValue(String(newValue));
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+    })
+      .format(valor)
+      .slice(2);
+  }
+
+  const clientBalance = async () => {
+    await ClienteSaldo().then((res) => {
+      if (res.data.Sucess === true) {
+        setBalance(res.data.Object.valorDisponivel);
+      } else {
+        setBalance(0);
+      }
+    });
+  };
+
+  const readQrCodeCall = async (code: string) => {
+    setloadingDataTransfer(true);
+    setLoadingReadCode(true);
+    await ReadQrCode(code, token)
+      .then((res) => {
+        if (res.data.Object.type === "statico") {
+          setIsDynamic(false);
+        }
+        if (res.data.Object.type === "dinamico") {
+          setIsDynamic(true);
+        }
+        if (!res.data.Object.valor) {
+          setIsDynamic(true);
+        }
+
+        setDataTransfer(res.data.Object);
+        clientBalance();
+      })
+      .catch(() => {
+        showToast("Chave inválida!");
+      })
+      .finally(() => {
+        setLoadingReadCode(false);
+        setloadingDataTransfer(false);
+      });
+  };
+
+  const handleSendPix = async () => {
+    if (balance > dataTransfer.valor) {
+      const payload = {
+        ToKeyPix: dataTransfer.chave,
+        TypeKeyPix: 4,
+        Name: dataTransfer.nomeRecebedor,
+        Value:
+          dataTransfer.valor !== null
+            ? Number(dataTransfer.valor)
+            : Number(pixCopyAndPasteValue),
+        SaveContact: false,
+        Message: "",
+        Password: password,
+        Bank: "",
+      };
+      await SendPix(payload)
+        .then((res) => {
+          if (res.data.Sucess) {
+            const payloadSuccess = {
+              Identificacao: res.data.Object.Identificacao,
+              Data: new Date().toLocaleString(),
+              Valor: payload.Value,
+              Mensagem:
+                "Seu pix está sendo processado, verifique o extrato para mais detalhes.",
+            };
+            setModalVisible(true);
+            setPayloadToModal(payloadSuccess);
+          } else {
+            showToast(res.data.Message);
+          }
+        })
+        .catch(() => {
+          showToast("Erro ao enviar o Pix");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      showToast("Verifique seu saldo e tente novamente");
+    }
+  };
 
   return (
     <Container>
@@ -45,53 +165,87 @@ function CopyAndPastePix() {
               <Input
                 overTitle="Cole ou digite a chave aleatória"
                 setValue={setPixCopyAndPasteKey}
+                onChange={setPixCopyAndPasteKey}
               />
-              {pixCopyAndPasteKey.length > 0 ? (
+              {isDynamic === true ? (
                 <>
                   <AmountInput
+                    value={String(mascaraMoeda(pixCopyAndPasteValue))}
                     overTitle="Digite o valor"
                     setValue={setPixCopyAndPasteValue}
+                    onChange={setPixCopyAndPasteValue}
                   />
                 </>
               ) : (
                 ""
               )}
+              <ButtonCheckPix
+                onPress={() => readQrCodeCall(pixCopyAndPasteKey)}
+                disabled={loadingReadCode}
+              >
+                {loadingReadCode === true ? (
+                  <ActivityIndicator size="large" />
+                ) : (
+                  <>
+                    <ButtonCheckPixText>CONTINUAR</ButtonCheckPixText>
+                  </>
+                )}
+              </ButtonCheckPix>
 
-              {pixCopyAndPasteValue.length > 0 ? (
+              {loadingDataTransfer === true ? (
                 <>
-                  <Separator />
-
-                  <TransferInfoContainer>
-                    <ImageContainer>
-                      <Image source={UserIMG} resizeMode="contain" />
-                    </ImageContainer>
-
-                    <BoxUserInfo>
-                      <TransferInfoText>
-                        Nome da pessoa: Fulano Fulano Fulano
-                      </TransferInfoText>
-                      <TransferInfoText>CPF: 000-XXX</TransferInfoText>
-                      <AmountContainer>
-                        <AmountTitle>Valor:</AmountTitle>
-                        <AmountValue>R$ 5,00</AmountValue>
-                      </AmountContainer>
-                    </BoxUserInfo>
-                  </TransferInfoContainer>
+                  <ActivityIndicator size="large" />
                 </>
               ) : (
-                ""
-              )}
-              {pixCopyAndPasteValue.length > 0 &&
-              pixCopyAndPasteKey.length > 0 ? (
                 <>
-                  <Button
-                    title="Confirmar"
-                    color="#6EA965"
-                    onPress={() => setShowPassword(true)}
-                  />
+                  {dataTransfer.chave ? (
+                    <>
+                      <Separator />
+
+                      <TransferInfoContainer>
+                        <ImageContainer>
+                          <Image source={UserIMG} resizeMode="contain" />
+                        </ImageContainer>
+
+                        <BoxUserInfo>
+                          <TransferInfoText>
+                            {dataTransfer.nomeRecebedor}
+                          </TransferInfoText>
+                          <TransferInfoText>
+                            {dataTransfer.cpfCnpjRecebedor}
+                          </TransferInfoText>
+                          <AmountContainer>
+                            <AmountTitle>Valor:</AmountTitle>
+                            <AmountValue>
+                              {formatMoney.format(dataTransfer.valor)}
+                            </AmountValue>
+                          </AmountContainer>
+                        </BoxUserInfo>
+                      </TransferInfoContainer>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {dataTransfer.chave ? (
+                    <>
+                      <Button
+                        title="Limpar"
+                        color="#6EA965"
+                        onPress={() => {
+                          setPixCopyAndPasteValue("");
+                          setPixCopyAndPasteKey("");
+                        }}
+                      />
+                      <Button
+                        title="Confirmar"
+                        color="#6EA965"
+                        onPress={() => setShowPassword(true)}
+                      />
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </>
-              ) : (
-                ""
               )}
             </Box>
           </>
@@ -100,6 +254,8 @@ function CopyAndPastePix() {
             <Input
               overTitle="Digite sua senha transacional"
               isPassword={true}
+              setValue={setPassword}
+              onChange={setPassword}
             />
             <BoxButton>
               <Button
@@ -110,7 +266,8 @@ function CopyAndPastePix() {
               <Button
                 title="Transferir"
                 color="#6EA965"
-                onPress={() => setModalVisible(true)}
+                loading={loading}
+                onPress={() => handleSendPix()}
               />
             </BoxButton>
           </>
@@ -129,11 +286,6 @@ function CopyAndPastePix() {
             <Success>Pix realizado!</Success>
 
             <BoxButton>
-              <Button
-                title="Ver Extrato"
-                color="#F08E34"
-                onPress={() => navigation.navigate("Extract")}
-              />
               <Button
                 title="Voltar"
                 color="#5266CE"
