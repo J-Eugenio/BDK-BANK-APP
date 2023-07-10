@@ -22,6 +22,8 @@ import {
   Success,
   BoxButton,
   Text,
+  InputView,
+  Label,
 } from "./styles";
 import { Separator } from "../../components/Separator";
 import { Col } from "../../components/Flex/Col";
@@ -131,7 +133,7 @@ function Transfer() {
           Nome: name,
           Password: isPassword,
           TipoPessoa: personType,
-          Valor: value,
+          Valor: Number(value),
         });
 
         if (ted.data.Sucess) {
@@ -183,17 +185,18 @@ function Transfer() {
   const inputStyle = {
     backgroundColor: "#ffffff",
     width: "100%",
-    marginBottom: "10px",
+    borderRadius: 12,
+    border: "3px solid #DDDDDD",
   };
 
   function mascaraMoeda(event: any) {
-    const onlyDigits = event.target.value
+    const onlyDigits = event
       .split("")
       .filter((s: any) => /\d/.test(s))
       .join("")
       .padStart(3, "0");
     const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2);
-    event.target.value = maskCurrency(digitsFloat);
+    event = maskCurrency(digitsFloat);
   }
 
   function maskCurrency(valor: any, locale = "pt-BR", currency = "BRL") {
@@ -216,17 +219,19 @@ function Transfer() {
 
         {showPassword === false ? (
           <>
-            <View>
+            <InputView>
+              <Label>Banco</Label>
+
               <SelectDropdown
                 data={bankCode.map((item) => item.name)}
-                defaultButtonText="Selecione o banco"
+                defaultButtonText="Selecione..."
                 onSelect={(selectedItem) => {
                   findBankCode(selectedItem);
                 }}
                 buttonStyle={inputStyle}
                 dropdownStyle={dropdownStyle} // Passa o estilo personalizado para o dropdown
               />
-            </View>
+            </InputView>
 
             <Input
               overTitle="Agência"
@@ -256,20 +261,21 @@ function Transfer() {
               onChange={validCPFTotal}
             />
 
-            <View>
+            <InputView>
+              <Label>Tipo da pessoa</Label>
               <SelectDropdown
                 data={["PF", "PJ"]}
-                defaultButtonText="Tipo da pessoa"
+                defaultButtonText="Selecione..."
                 onSelect={(selectedItem) => {
                   setPersonType(selectedItem);
                 }}
                 buttonStyle={inputStyle}
                 dropdownStyle={dropdownStyle} // Passa o estilo personalizado para o dropdown
               />
-            </View>
+            </InputView>
             <Input
               overTitle="Valor"
-              value={String(mascaraMoeda(value))}
+              value={String(value)}
               setValue={setValue}
               onChange={mascaraMoeda}
             />
@@ -295,7 +301,7 @@ function Transfer() {
               <Button
                 title="Cancelar"
                 color="#E74343"
-                onPress={() => handleClearFields()}
+                onPress={() => {handleClearFields(); navigation.navigate('Payments')}}
               />
               <Button
                 title="Confirmar"

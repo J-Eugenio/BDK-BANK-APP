@@ -1,6 +1,10 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
+interface OverTitleProps {
+  color?: string;
+}
+
 export const Container = styled.View`
   height: 100%;
 `;
@@ -31,7 +35,7 @@ export const TransferInfoContainer = styled.View`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: ${RFValue(20)}px;
 `;
 
 export const TransferInfoText = styled.Text`
@@ -85,7 +89,7 @@ export const MainModal = styled.View`
 
 export const Success = styled.Text`
   font-size: ${RFValue(20)}px;
-  margin-bottom: 20px;
+  margin-bottom: ${RFValue(20)}px;
 `;
 
 export const BoxButton = styled.View`
@@ -98,4 +102,18 @@ export const BoxButton = styled.View`
 
 export const Text = styled.Text`
   font-size: ${RFValue(16)}px;
+`;
+
+export const InputView = styled.View`
+  border-radius: 12px;
+  margin-bottom: 20px;
+`;
+
+export const InputViewTwo = styled.View`
+  margin-top: 12px;
+`;
+export const Label = styled.Text<OverTitleProps>`
+  font-size: ${RFValue(16)}px;
+  margin-bottom: 5px;
+  color: ${({ color }) => color || "#616161"};
 `;
