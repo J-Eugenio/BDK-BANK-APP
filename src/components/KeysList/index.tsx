@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  BoxButtons,
   BoxNameAndKey,
   BtnCopyKey,
   BtnDeleteKey,
@@ -74,15 +75,17 @@ function KeysList({ id, keyTitle, keySubtitle }: keyInfo) {
         <KeyTitle>{keyTitle}</KeyTitle>
         <KeySubtitle>{keySubtitle}</KeySubtitle>
       </BoxNameAndKey>
-      <BtnCopyKey
-        onPress={() => handleCopyClick(keySubtitle)}
-        disabled={loading}
-      >
-        <Icon name="copy" size={40} color="#FF6666" />
-      </BtnCopyKey>
-      <BtnDeleteKey onPress={() => handleDeletePix(id)} disabled={loading}>
-        <Icon name="times-circle" size={40} color="#FF6666" />
-      </BtnDeleteKey>
+      <BoxButtons>
+        <BtnCopyKey
+          onPress={() => handleCopyClick(keySubtitle)}
+          disabled={loading}
+        >
+          <Icon name="copy" size={40} color="#F08E34" />
+        </BtnCopyKey>
+        <BtnDeleteKey onPress={() => handleDeletePix(id)} disabled={loading}>
+          <Icon name="times-circle" size={40} color="#FF6666" />
+        </BtnDeleteKey>
+      </BoxButtons>
     </Container>
   );
 }

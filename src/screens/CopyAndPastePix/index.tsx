@@ -41,7 +41,7 @@ import { useAuth } from "../../hooks/auth";
 function CopyAndPastePix() {
   const [pixCopyAndPasteKey, setPixCopyAndPasteKey] = useState("");
   const [pixCopyAndPasteValue, setPixCopyAndPasteValue] = useState("");
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);

@@ -2,7 +2,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
-  width: 94%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -11,7 +11,7 @@ export const Container = styled.View`
 `;
 
 export const BoxNameAndKey = styled.View`
-  width: 94%;
+  width: 70%;
   display: flex;
   flex-direction: column;
 `;
@@ -26,6 +26,15 @@ export const KeySubtitle = styled.Text`
   font-weight: 400;
   color: #585858;
 `;
+
+export const BoxButtons = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-left: ${RFValue(14)}px;
+`
 
 export const BtnCopyKey = styled.TouchableOpacity``;
 export const BtnDeleteKey = styled.TouchableOpacity``;

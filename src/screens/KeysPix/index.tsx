@@ -147,7 +147,7 @@ function KeysPix() {
               })}
           </>
         ) : (
-          "Sem dados"
+          ""
         )}
       </Main>
       <ModalSuccess
