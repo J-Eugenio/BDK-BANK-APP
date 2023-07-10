@@ -132,3 +132,7 @@ export const ButtonCheckPix = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.btn_primary_color};
   border-radius: 10px;
 `;
+
+export const Text = styled.Text`
+  font-size: ${RFValue(16)}px;
+`

@@ -22,6 +22,7 @@ import {
   BoxButton,
   ButtonCheckPix,
   ButtonCheckPixText,
+  Text,
 } from "./styles";
 import { Separator } from "../../components/Separator";
 import UserIMG from "../../assets/user-img.png";
@@ -40,7 +41,7 @@ import { useAuth } from "../../hooks/auth";
 function CopyAndPastePix() {
   const [pixCopyAndPasteKey, setPixCopyAndPasteKey] = useState("");
   const [pixCopyAndPasteValue, setPixCopyAndPasteValue] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -284,7 +285,14 @@ function CopyAndPastePix() {
             <Icon name="check-square-o" size={120} color="#6EA965" />
 
             <Success>Pix realizado!</Success>
-
+            <Box>
+              <Text>Identificação: {payloadToModal.Identificacao}</Text>
+              <Text>Data de transição: {payloadToModal.Data}</Text>
+              <Text>Valor: {formatMoney.format(payloadToModal.Valor)}</Text>
+              <Box>
+                <Text>{payloadToModal.Mensagem}</Text>
+              </Box>
+            </Box>
             <BoxButton>
               <Button
                 title="Voltar"
