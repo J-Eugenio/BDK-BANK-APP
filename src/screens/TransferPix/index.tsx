@@ -28,10 +28,30 @@ import { BoxUserInfo } from "../CopyAndPastePix/styles";
 import UserIMG from "../../assets/user-img.png";
 import { SuccessStatus } from "../../components/SuccessStatus";
 import { Button } from "../../components/Button";
+import { showToast } from "../../utils/toast";
+import {
+  ClienteSaldo,
+  ConsultKeyPix,
+  ListContact,
+} from "../../service/ApiPaymentsRoutes";
+import { ActivityIndicator } from "react-native";
 
 interface keyType {
   id: number;
   name: string;
+}
+
+interface ListContactDTO {
+  Bank: string;
+  Nome: string;
+  Pix: string;
+}
+
+interface KeyPixProfileData {
+  KeyPix: string;
+  Name: string;
+  NameBank: string;
+  TypeKey: string;
 }
 
 function TransferPix() {
@@ -40,6 +60,159 @@ function TransferPix() {
   const [keyValue, setKeyValue] = useState("");
   const [pixAmountValue, setPixAmountValue] = useState("");
   const navigation = useNavigation<any>();
+  const [showPixData, setShowPixData] = useState(false);
+  const [valueMoney, setValueMoney] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingKeyPix, setLoadingKeyPix] = useState(false);
+  const [listContactsData, setListContactsData] = useState<
+    Array<ListContactDTO>
+  >([]);
+  const [pixDataToSend, setPixDataToSend] = useState({});
+
+  const [keyPixProfileData, setKeyPixProfileData] = useState(
+    {} as KeyPixProfileData | any
+  );
+  const [balance, setBalance] = useState(0);
+  const clientBalance = async () => {
+    await ClienteSaldo().then((res) => {
+      if (res.data.Sucess === true) {
+        setBalance(res.data.Object.valorDisponivel);
+      } else {
+        setBalance(0);
+      }
+    });
+  };
+
+  const formatPhone = (phone: string) => {
+    const phoneFormatted = phone.split("+55");
+    if (phoneFormatted[0].length === 0) {
+      return phoneFormatted[1];
+    } else {
+      return phoneFormatted[0];
+    }
+  };
+
+  const validateTypePix = (type: string, key: string) => {
+    switch (type) {
+      case " CPF":
+        setCPFPix(key);
+        setValue("0");
+        break;
+      case " CNPJ":
+        setCNPJPix(key);
+        setValue("1");
+        break;
+      case " EMAIL":
+        setEmailPix(key);
+        setValue("2");
+        break;
+      case " CELULAR":
+        setPhonePix(key);
+        setValue("3");
+        break;
+      default:
+        setKeyPix(key);
+        setValue("4");
+        break;
+    }
+  };
+
+  const handleConsultKeyPix = async (
+    pixValue: string,
+    isCalled?: boolean,
+    isPhone?: boolean
+  ) => {
+    setLoadingKeyPix(true);
+    setKeyPixProfileData({});
+    const payload = {
+      KeyPix: isPhone === true ? formatPhone(pixValue) : pixValue,
+      TypeKey: Number(keyType.id),
+    };
+    await ConsultKeyPix(payload)
+      .then((res: any) => {
+        if (res.data.Sucess) {
+          setKeyPixProfileData(res.data.Object);
+          setShowPixData(true);
+          if (isCalled) {
+            validateTypePix(res.data.Object.TypeKey, res.data.Object.KeyPix);
+          }
+        } else {
+          showToast(res.data.Message);
+          setShowPixData(false);
+        }
+      })
+      .catch(() => {
+        setShowPixData(false);
+        showToast("Pix Inválido!");
+      })
+      .finally(() => {
+        setLoadingKeyPix(false);
+      });
+  };
+
+  const listContacts = async () => {
+    setLoading(true);
+    await ListContact()
+      .then((res) => {
+        setListContactsData(res.data.Object);
+      })
+      .catch(() => {
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const validateTypePixNumber = (type: string) => {
+    let keyNumberType = 0;
+    switch (type) {
+      case " CPF":
+        keyNumberType = 0;
+        break;
+      case " CNPJ":
+        keyNumberType = 1;
+        break;
+      case " EMAIL":
+        keyNumberType = 2;
+        break;
+      case " CELULAR":
+        keyNumberType = 3;
+        break;
+      default:
+        keyNumberType = 4;
+        break;
+    }
+
+    return keyNumberType;
+  };
+
+  const handleSetPixDataPerSelect = (item: ListContactDTO) => {
+    handleConsultKeyPix(item.Pix, true);
+  };
+
+  const handleSendPix = async () => {
+    if (balance > Number(valueMoney)) {
+      const payload = {
+        ToKeyPix: keyPixProfileData.KeyPix,
+        TypeKeyPix: validateTypePixNumber(keyPixProfileData.TypeKey),
+        Name: keyPixProfileData.Name,
+        Value: Number(valueMoney),
+        SaveContact: addContact,
+        Message: messagePix,
+        Password: "",
+        Bank: keyPixProfileData.NameBank,
+      };
+      setPixDataToSend(payload);
+    } else {
+      showToast("Verifique seu saldo e tente novamente");
+    }
+  };
+
+  React.useEffect(() => {
+    listContacts();
+    clientBalance();
+  }, []);
 
   const handleSelectKeyType = (keyId: number) => {
     switch (keyId) {
@@ -133,33 +306,49 @@ function TransferPix() {
 
       {changeToTransfer === 4 ? (
         <>
-          <Title>É este usuário?</Title>
-          <Box>
-            <TransferInfoContainer>
-              <ImageContainer>
-                <Image source={UserIMG} resizeMode="contain" />
-              </ImageContainer>
+          {showPixData === true ? (
+            <>
+              {loadingKeyPix === true ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <>
+                  <Title>É este usuário?</Title>
+                  <Box>
+                    <TransferInfoContainer>
+                      <ImageContainer>
+                        <Image source={UserIMG} resizeMode="contain" />
+                      </ImageContainer>
 
-              <BoxUserInfo>
-                <TransferInfoText>
-                  Nome da pessoa: Fulano Fulano Fulano
-                </TransferInfoText>
-                <TransferInfoText>CPF: 000-XXX</TransferInfoText>
-                <AmountContainer>
-                  <AmountTitle>Valor:</AmountTitle>
-                  <AmountValue>R$ 5,00</AmountValue>
-                </AmountContainer>
-              </BoxUserInfo>
-            </TransferInfoContainer>
-          </Box>
-          <Box>
-            <BtnNewTransactionPix onPress={() => setChangeToTransfer(3)}>
-              <LabelBtn>Não</LabelBtn>
-            </BtnNewTransactionPix>
-            <BtnNewTransactionPix onPress={() => setChangeToTransfer(5)}>
-              <LabelBtn>Sim</LabelBtn>
-            </BtnNewTransactionPix>
-          </Box>
+                      <BoxUserInfo>
+                        <TransferInfoText>
+                          Nome da pessoa: Fulano Fulano Fulano
+                        </TransferInfoText>
+                        <TransferInfoText>CPF: 000-XXX</TransferInfoText>
+                        <AmountContainer>
+                          <AmountTitle>Valor:</AmountTitle>
+                          <AmountValue>R$ 5,00</AmountValue>
+                        </AmountContainer>
+                      </BoxUserInfo>
+                    </TransferInfoContainer>
+                  </Box>
+                  <Box>
+                    <BtnNewTransactionPix
+                      onPress={() => setChangeToTransfer(3)}
+                    >
+                      <LabelBtn>Não</LabelBtn>
+                    </BtnNewTransactionPix>
+                    <BtnNewTransactionPix
+                      onPress={() => setChangeToTransfer(5)}
+                    >
+                      <LabelBtn>Sim</LabelBtn>
+                    </BtnNewTransactionPix>
+                  </Box>
+                </>
+              )}
+            </>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         ""
