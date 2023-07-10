@@ -1,3 +1,4 @@
+import React from "react";
 import { Header } from "../../components/Header";
 import {
   Container,
@@ -39,7 +40,8 @@ function DemandPix() {
 
           <QRCode
             source={{
-              uri: "https://qrcg-free-editor.qr-code-generator.com/main/assets/images/websiteQRCode_noFrame.png",
+              uri:
+                "https://qrcg-free-editor.qr-code-generator.com/main/assets/images/websiteQRCode_noFrame.png",
             }}
           />
           <Label>Ou mande a chave Pix copia e cola</Label>

@@ -176,7 +176,7 @@ function TransferPix() {
           </Box>
           <Box>
             <BtnNewTransactionPix onPress={() => setChangeToTransfer(6)}>
-              <LabelBtn>Trasnferir</LabelBtn>
+              <LabelBtn>Transferir</LabelBtn>
             </BtnNewTransactionPix>
           </Box>
         </>
