@@ -1,5 +1,5 @@
-import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
+import { RFValue } from "react-native-responsive-fontsize";
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   width: 94%;
@@ -20,11 +20,12 @@ export const KeyTitle = styled.Text`
   font-size: ${RFValue(18)}px;
   font-weight: 500;
   color: #585858;
-`
+`;
 export const KeySubtitle = styled.Text`
   font-size: ${RFValue(14)}px;
   font-weight: 400;
   color: #585858;
-`
+`;
 
+export const BtnCopyKey = styled.TouchableOpacity``;
 export const BtnDeleteKey = styled.TouchableOpacity``;
