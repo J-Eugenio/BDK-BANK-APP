@@ -28,6 +28,8 @@ export const BtnNewTransactionPix = styled.TouchableOpacity`
   padding: ${RFValue(20)}px;
 `;
 
+export const ContactBox = styled.TouchableOpacity``
+
 export const LabelBtn = styled.Text`
   font-size: ${RFValue(16)}px;
   font-weight: 500;

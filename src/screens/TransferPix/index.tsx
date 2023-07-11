@@ -21,6 +21,7 @@ import {
   AmountValue,
   Image,
   BoxButton,
+  ContactBox,
 } from "./styles";
 import { Input } from "../../components/Input";
 import { AmountInput } from "../../components/AmountInput";
@@ -33,8 +34,11 @@ import {
   ClienteSaldo,
   ConsultKeyPix,
   ListContact,
+  SendPix,
 } from "../../service/ApiPaymentsRoutes";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
+import Checkbox from "expo-checkbox";
+import { formatMoney } from "../../utils/format-money";
 
 interface keyType {
   id: number;
@@ -63,11 +67,14 @@ function TransferPix() {
   const [showPixData, setShowPixData] = useState(false);
   const [valueMoney, setValueMoney] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messagePix, setMessagePix] = useState("");
   const [loadingKeyPix, setLoadingKeyPix] = useState(false);
   const [listContactsData, setListContactsData] = useState<
     Array<ListContactDTO>
   >([]);
-  const [pixDataToSend, setPixDataToSend] = useState({});
+  const [pixDataToSend, setPixDataToSend] = useState({} as any);
+  const [addContact, setAddContact] = useState(false);
+  const [passwordToValidate, setPasswordToValidate] = useState("");
 
   const [keyPixProfileData, setKeyPixProfileData] = useState(
     {} as KeyPixProfileData | any
@@ -92,12 +99,19 @@ function TransferPix() {
     }
   };
 
+  function handleClearFields() {
+    setKeyValue("");
+    setMessagePix("");
+    setAddContact(false);
+    setKeyPixProfileData({} as KeyPixProfileData);
+    setShowPixData(false);
+  }
+
   const validateTypePix = (type: string, key: string) => {
     switch (type) {
       case " CPF":
         setKeyValue(key);
         setKeyType({ id: 0, name: "CPF" });
-
         break;
       case " CNPJ":
         setKeyValue(key);
@@ -115,8 +129,6 @@ function TransferPix() {
         setKeyValue(key);
         setKeyType({ id: 4, name: "Chave Aleatória" });
         break;
-
-      
     }
   };
 
@@ -136,6 +148,7 @@ function TransferPix() {
         if (res.data.Sucess) {
           setKeyPixProfileData(res.data.Object);
           setShowPixData(true);
+          setChangeToTransfer(4);
           if (isCalled) {
             validateTypePix(res.data.Object.TypeKey, res.data.Object.KeyPix);
           }
@@ -203,10 +216,32 @@ function TransferPix() {
         Value: Number(valueMoney),
         SaveContact: addContact,
         Message: messagePix,
-        Password: "",
+        Password: passwordToValidate,
         Bank: keyPixProfileData.NameBank,
       };
-      setPixDataToSend(payload);
+
+      await SendPix(payload)
+        .then((res) => {
+          if (res.data.Sucess) {
+            const payloadSuccess = {
+              Identificacao: res.data.Object.Identificacao,
+              Data: new Date().toLocaleString(),
+              Valor: valueMoney,
+              Mensagem:
+                "Seu pix está sendo processado, verifique o extrato para mais detalhes.",
+            };
+            setPixDataToSend(payloadSuccess);
+          } else {
+            showToast(res.data.Message);
+          }
+        })
+        .catch(() => {
+          showToast("Erro ao enviar o Pix");
+        })
+        .finally(() => {
+          setLoading(false);
+          setChangeToTransfer(7);
+        });
     } else {
       showToast("Verifique seu saldo e tente novamente");
     }
@@ -259,11 +294,21 @@ function TransferPix() {
             </Box>
             <Separator />
             <Title>Contatos</Title>
-            <ContactsList
-              contactid="1"
-              contactTitle="Fuano de Tal"
-              contactSubtitle="000000000-00"
-            />
+            {listContactsData &&
+              listContactsData.map((item) => {
+                return (
+                  <ContactBox
+                    key={item.Nome}
+                    onPress={() => handleSetPixDataPerSelect(item)}
+                  >
+                    {" "}
+                    <ContactsList
+                      contactTitle={item.Nome}
+                      contactSubtitle={item.Bank ? item.Bank : "Não informado"}
+                    />
+                  </ContactBox>
+                );
+              })}
           </Main>
         </>
       ) : (
@@ -302,7 +347,7 @@ function TransferPix() {
             <Input overTitle={keyType.name} setValue={setKeyValue} />
           </Box>
           <Box>
-            <BtnNewTransactionPix onPress={() => setChangeToTransfer(4)}>
+            <BtnNewTransactionPix onPress={() => handleConsultKeyPix(keyValue)}>
               <LabelBtn>Confirmar</LabelBtn>
             </BtnNewTransactionPix>
           </Box>
@@ -328,13 +373,13 @@ function TransferPix() {
 
                       <BoxUserInfo>
                         <TransferInfoText>
-                          Nome da pessoa: Fulano Fulano Fulano
+                          {keyPixProfileData.Name}
                         </TransferInfoText>
-                        <TransferInfoText>CPF: 000-XXX</TransferInfoText>
-                        <AmountContainer>
-                          <AmountTitle>Valor:</AmountTitle>
-                          <AmountValue>R$ 5,00</AmountValue>
-                        </AmountContainer>
+                        <TransferInfoText>
+                          {keyPixProfileData.NameBank
+                            ? keyPixProfileData.NameBank
+                            : "Não informado"}
+                        </TransferInfoText>
                       </BoxUserInfo>
                     </TransferInfoContainer>
                   </Box>
@@ -370,6 +415,30 @@ function TransferPix() {
               setValue={setPixAmountValue}
             />
           </Box>
+          <Title>Adicionar contato?</Title>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 3,
+            }}
+          >
+            <Checkbox
+              value={addContact}
+              onValueChange={setAddContact}
+              color={addContact ? "#4630EB" : undefined}
+            />
+            <Text>{addContact ? "Sim" : "Não"}</Text>
+          </View>
+          <Box>
+            <Input
+              value={messagePix}
+              overTitle="Mensagem (Opcional)"
+              setValue={setMessagePix}
+              onChange={setMessagePix}
+            />
+          </Box>
           <Box>
             <BtnNewTransactionPix onPress={() => setChangeToTransfer(6)}>
               <LabelBtn>Transferir</LabelBtn>
@@ -387,10 +456,12 @@ function TransferPix() {
             <Input
               overTitle="Digite sua senha transacional"
               isPassword={true}
+              setValue={setPasswordToValidate}
+              onChange={setPasswordToValidate}
             />
           </Box>
           <Box>
-            <BtnNewTransactionPix onPress={() => setChangeToTransfer(7)}>
+            <BtnNewTransactionPix onPress={() => handleSendPix()}>
               <LabelBtn>Confirmar</LabelBtn>
             </BtnNewTransactionPix>
           </Box>
@@ -403,15 +474,16 @@ function TransferPix() {
         <>
           <SuccessStatus />
           <Box>
+            <Text>Identificação: {pixDataToSend.Identificacao}</Text>
+            <Text>Data de transição: {pixDataToSend.Data}</Text>
+            <Text>Valor: {formatMoney.format(pixDataToSend.Valor)}</Text>
+            <Box>
+              <Text>{pixDataToSend.Mensagem}</Text>
+            </Box>
+          </Box>
+
+          <Box>
             <BoxButton>
-              <Button
-                title="Ver Extrato"
-                color="#F08E34"
-                onPress={() => {
-                  navigation.navigate("Extract");
-                  setChangeToTransfer(1);
-                }}
-              />
               <Button
                 title="Voltar"
                 color="#5266CE"
