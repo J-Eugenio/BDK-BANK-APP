@@ -294,14 +294,12 @@ function TransferPix() {
             </Box>
             <Separator />
             <Title>Contatos</Title>
-            {listContactsData &&
-              listContactsData.map((item) => {
+            {listContactsData && listContactsData.map((item) => {
                 return (
                   <ContactBox
                     key={item.Nome}
                     onPress={() => handleSetPixDataPerSelect(item)}
                   >
-                    {" "}
                     <ContactsList
                       contactTitle={item.Nome}
                       contactSubtitle={item.Bank ? item.Bank : "Não informado"}
@@ -429,7 +427,7 @@ function TransferPix() {
               onValueChange={setAddContact}
               color={addContact ? "#4630EB" : undefined}
             />
-            {/* <Text>{addContact ? "Sim" : "Não"}</Text> */}
+            <Text>{addContact ? "Sim" : "Não"}</Text>
           </View>
           <Box>
             <Input
