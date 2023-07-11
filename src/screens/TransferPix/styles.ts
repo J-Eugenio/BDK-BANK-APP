@@ -18,19 +18,21 @@ export const Main = styled.ScrollView`
 `;
 
 export const Box = styled.ScrollView`
-  padding: ${RFValue(10)}px 0;
+  padding: ${RFValue(20)}px;
 `;
 
 export const BtnNewTransactionPix = styled.TouchableOpacity`
   border: 1px solid #D5D5D5;
   border-radius: ${RFValue(12)}px;;
-  width: 53%;
+  width: 100%;
+  text-align: center;
   padding: ${RFValue(20)}px;
 `;
 
 export const ContactBox = styled.TouchableOpacity``
 
 export const LabelBtn = styled.Text`
+  text-align: center;
   font-size: ${RFValue(16)}px;
   font-weight: 500;
   color: #5266CE;
@@ -53,9 +55,7 @@ export const OverTitle = styled.Text`
 export const TransferInfoContainer = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 20px;
 `;
 
 export const TransferInfoText = styled.Text`

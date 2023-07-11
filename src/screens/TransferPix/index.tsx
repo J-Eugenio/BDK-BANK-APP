@@ -208,6 +208,8 @@ function TransferPix() {
   };
 
   const handleSendPix = async () => {
+    setLoading(true);
+
     if (balance > Number(valueMoney)) {
       const payload = {
         ToKeyPix: keyPixProfileData.KeyPix,
@@ -294,7 +296,8 @@ function TransferPix() {
             </Box>
             <Separator />
             <Title>Contatos</Title>
-            {listContactsData && listContactsData.map((item) => {
+            {listContactsData &&
+              listContactsData.map((item) => {
                 return (
                   <ContactBox
                     key={item.Nome}
@@ -319,14 +322,17 @@ function TransferPix() {
 
             <Box>
               <OverTitle>Tipo de chave pix</OverTitle>
+              <BtnNewTransactionPix onPress={() => handleSelectKeyType(0)}>
+                <LabelBtn>CPF</LabelBtn>
+              </BtnNewTransactionPix>
               <BtnNewTransactionPix onPress={() => handleSelectKeyType(1)}>
-                <LabelBtn>Email</LabelBtn>
+                <LabelBtn>CNPJ</LabelBtn>
               </BtnNewTransactionPix>
               <BtnNewTransactionPix onPress={() => handleSelectKeyType(2)}>
-                <LabelBtn>Telefone</LabelBtn>
+                <LabelBtn>E-mail</LabelBtn>
               </BtnNewTransactionPix>
               <BtnNewTransactionPix onPress={() => handleSelectKeyType(3)}>
-                <LabelBtn>CPF / CNPJ</LabelBtn>
+                <LabelBtn>Celular</LabelBtn>
               </BtnNewTransactionPix>
               <BtnNewTransactionPix onPress={() => handleSelectKeyType(4)}>
                 <LabelBtn>Chave Aleatória</LabelBtn>
@@ -339,17 +345,21 @@ function TransferPix() {
       )}
 
       {changeToTransfer === 3 ? (
-        <>
+        <Box>
           <Title>Qual a chave pix?</Title>
           <Box>
             <Input overTitle={keyType.name} setValue={setKeyValue} />
           </Box>
           <Box>
             <BtnNewTransactionPix onPress={() => handleConsultKeyPix(keyValue)}>
-              <LabelBtn>Confirmar</LabelBtn>
+              {loadingKeyPix ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <LabelBtn>Confirmar</LabelBtn>
+              )}
             </BtnNewTransactionPix>
           </Box>
-        </>
+        </Box>
       ) : (
         <></>
       )}
@@ -361,7 +371,7 @@ function TransferPix() {
               {loadingKeyPix === true ? (
                 <ActivityIndicator size="large" />
               ) : (
-                <>
+                <Box>
                   <Title>É este usuário?</Title>
                   <Box>
                     <TransferInfoContainer>
@@ -393,7 +403,7 @@ function TransferPix() {
                       <LabelBtn>Sim</LabelBtn>
                     </BtnNewTransactionPix>
                   </Box>
-                </>
+                </Box>
               )}
             </>
           ) : (
@@ -405,12 +415,14 @@ function TransferPix() {
       )}
 
       {changeToTransfer === 5 ? (
-        <>
+        <Box>
           <Title>Informe o valor abaixo</Title>
           <Box>
-            <AmountInput
+            <Input
               overTitle="Digite o valor"
+              value={pixAmountValue}
               setValue={setPixAmountValue}
+              onChange={setPixAmountValue}
             />
           </Box>
           <Title>Adicionar contato?</Title>
@@ -427,7 +439,7 @@ function TransferPix() {
               onValueChange={setAddContact}
               color={addContact ? "#4630EB" : undefined}
             />
-            <Text>{addContact ? "Sim" : "Não"}</Text>
+            <Text>Sim</Text>
           </View>
           <Box>
             <Input
@@ -442,13 +454,13 @@ function TransferPix() {
               <LabelBtn>Transferir</LabelBtn>
             </BtnNewTransactionPix>
           </Box>
-        </>
+        </Box>
       ) : (
         <></>
       )}
 
       {changeToTransfer === 6 ? (
-        <>
+        <Box>
           <Title>Digite sua senha</Title>
           <Box>
             <Input
@@ -460,16 +472,20 @@ function TransferPix() {
           </Box>
           <Box>
             <BtnNewTransactionPix onPress={() => handleSendPix()}>
-              <LabelBtn>Confirmar</LabelBtn>
+              {loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <LabelBtn>Confirmar</LabelBtn>
+              )}
             </BtnNewTransactionPix>
           </Box>
-        </>
+        </Box>
       ) : (
         <></>
       )}
 
       {changeToTransfer === 7 ? (
-        <>
+        <Box>
           <SuccessStatus />
           <Box>
             <Text>Identificação: {pixDataToSend.Identificacao}</Text>
@@ -492,7 +508,7 @@ function TransferPix() {
               />
             </BoxButton>
           </Box>
-        </>
+        </Box>
       ) : (
         <></>
       )}
