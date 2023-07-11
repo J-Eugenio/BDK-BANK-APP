@@ -95,25 +95,28 @@ function TransferPix() {
   const validateTypePix = (type: string, key: string) => {
     switch (type) {
       case " CPF":
-        setCPFPix(key);
-        setValue("0");
+        setKeyValue(key);
+        setKeyType({ id: 0, name: "CPF" });
+
         break;
       case " CNPJ":
-        setCNPJPix(key);
-        setValue("1");
+        setKeyValue(key);
+        setKeyType({ id: 2, name: "CNPJ" });
         break;
       case " EMAIL":
-        setEmailPix(key);
-        setValue("2");
+        setKeyValue(key);
+        setKeyType({ id: 2, name: "Email" });
         break;
       case " CELULAR":
-        setPhonePix(key);
-        setValue("3");
+        setKeyValue(key);
+        setKeyType({ id: 3, name: "Telefone" });
         break;
       default:
-        setKeyPix(key);
-        setValue("4");
+        setKeyValue(key);
+        setKeyType({ id: 4, name: "Chave Aleatória" });
         break;
+
+      
     }
   };
 
@@ -216,16 +219,20 @@ function TransferPix() {
 
   const handleSelectKeyType = (keyId: number) => {
     switch (keyId) {
+      case 0:
+        setKeyType({ id: 0, name: "CPF" });
+        setChangeToTransfer(3);
+        break;
       case 1:
-        setKeyType({ id: 1, name: "Email" });
+        setKeyType({ id: 2, name: "CNPJ" });
         setChangeToTransfer(3);
         break;
       case 2:
-        setKeyType({ id: 2, name: "Telefone" });
+        setKeyType({ id: 2, name: "Email" });
         setChangeToTransfer(3);
         break;
       case 3:
-        setKeyType({ id: 3, name: "CPF / CNPJ" });
+        setKeyType({ id: 3, name: "Telefone" });
         setChangeToTransfer(3);
         break;
       case 4:
