@@ -183,30 +183,33 @@ function Pix() {
         ) : (
           <></>
         )}
-
-        {extractPixList &&
-          extractPixList.map((item) => {
-            return (
-              <>
-                <BoxToOpenModal
-                  key={item.id}
-                  onPress={() => {
-                    listProofById(item.Identifier, item.nomeidentificacao);
-                  }}
-                >
-                  <LastTransactionItem
-                    cliente={item.Pessoa ? item.Pessoa : "Não informado"}
-                    type={item.movimento}
-                    indentifyName={item.nomeidentificacao}
-                    amount={item.valor}
-                    date={item.dateAt}
-                    id={item.Identifier}
-                    isProofAvaliable={item.Comprovant}
-                  />
-                </BoxToOpenModal>
-              </>
-            );
-          })}
+        {loading === true ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <>
+            {extractPixList &&
+              extractPixList.map((item) => {
+                return (
+                  <BoxToOpenModal
+                    key={item.id}
+                    onPress={() => {
+                      listProofById(item.Identifier, item.nomeidentificacao);
+                    }}
+                  >
+                    <LastTransactionItem
+                      cliente={item.Pessoa ? item.Pessoa : "Não informado"}
+                      type={item.movimento}
+                      indentifyName={item.nomeidentificacao}
+                      amount={item.valor}
+                      date={item.dateAt}
+                      id={item.Identifier}
+                      isProofAvaliable={item.Comprovant}
+                    />
+                  </BoxToOpenModal>
+                );
+              })}
+          </>
+        )}
       </Main>
       <ModalSuccess
         animationType="slide"

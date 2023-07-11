@@ -56,13 +56,13 @@ function CopyAndPastePix() {
   const { token } = useAuth();
 
   function mascaraMoeda(event: any) {
-    const onlyDigits = event.target.value
+    const onlyDigits = event
       .split("")
       .filter((s: any) => /\d/.test(s))
       .join("")
       .padStart(3, "0");
     const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2);
-    event.target.value = maskCurrency(digitsFloat);
+    event = maskCurrency(digitsFloat);
   }
 
   function maskCurrency(valor: any, locale = "pt-BR", currency = "BRL") {

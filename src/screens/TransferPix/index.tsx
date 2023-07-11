@@ -312,7 +312,7 @@ function TransferPix() {
           </Main>
         </>
       ) : (
-        ""
+        <></>
       )}
       {changeToTransfer === 2 ? (
         <>
@@ -337,7 +337,7 @@ function TransferPix() {
           </Main>
         </>
       ) : (
-        ""
+        <></>
       )}
 
       {changeToTransfer === 3 ? (
@@ -353,7 +353,7 @@ function TransferPix() {
           </Box>
         </>
       ) : (
-        ""
+        <></>
       )}
 
       {changeToTransfer === 4 ? (
@@ -378,7 +378,7 @@ function TransferPix() {
                         <TransferInfoText>
                           {keyPixProfileData.NameBank
                             ? keyPixProfileData.NameBank
-                            : "Não informado"}
+                            : ""}
                         </TransferInfoText>
                       </BoxUserInfo>
                     </TransferInfoContainer>
@@ -399,11 +399,11 @@ function TransferPix() {
               )}
             </>
           ) : (
-            ""
+            <></>
           )}
         </>
       ) : (
-        ""
+        <></>
       )}
 
       {changeToTransfer === 5 ? (
@@ -429,7 +429,7 @@ function TransferPix() {
               onValueChange={setAddContact}
               color={addContact ? "#4630EB" : undefined}
             />
-            <Text>{addContact ? "Sim" : "Não"}</Text>
+            {/* <Text>{addContact ? "Sim" : "Não"}</Text> */}
           </View>
           <Box>
             <Input
@@ -446,7 +446,7 @@ function TransferPix() {
           </Box>
         </>
       ) : (
-        ""
+        <></>
       )}
 
       {changeToTransfer === 6 ? (
@@ -467,7 +467,7 @@ function TransferPix() {
           </Box>
         </>
       ) : (
-        ""
+        <></>
       )}
 
       {changeToTransfer === 7 ? (
@@ -496,7 +496,7 @@ function TransferPix() {
           </Box>
         </>
       ) : (
-        ""
+        <></>
       )}
     </Container>
   );
