@@ -99,6 +99,28 @@ function TransferPix() {
     }
   };
 
+  const mascaraMoeda = (event: any) => {
+    console.log(event, "fpoijdaspofsapojfspoaf po");
+    const onlyDigits = event
+      .split("")
+      .filter((s: any) => /\d/.test(s))
+      .join("")
+      .padStart(3, "0");
+    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2);
+    event = maskCurrency(digitsFloat);
+  };
+
+  const maskCurrency = (valor: any, locale = "pt-BR", currency = "BRL") => {
+    const newValue = parseFloat(valor);
+    setPixAmountValue(String(newValue));
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+    })
+      .format(valor)
+      .slice(2);
+  };
+
   function handleClearFields() {
     setKeyValue("");
     setMessagePix("");
@@ -215,12 +237,14 @@ function TransferPix() {
         ToKeyPix: keyPixProfileData.KeyPix,
         TypeKeyPix: validateTypePixNumber(keyPixProfileData.TypeKey),
         Name: keyPixProfileData.Name,
-        Value: Number(valueMoney),
+        Value: parseFloat(pixAmountValue),
         SaveContact: addContact,
         Message: messagePix,
         Password: passwordToValidate,
         Bank: keyPixProfileData.NameBank,
       };
+
+      console.log(payload, "payload");
 
       await SendPix(payload)
         .then((res) => {
@@ -228,7 +252,7 @@ function TransferPix() {
             const payloadSuccess = {
               Identificacao: res.data.Object.Identificacao,
               Data: new Date().toLocaleString(),
-              Valor: valueMoney,
+              Valor: parseFloat(pixAmountValue),
               Mensagem:
                 "Seu pix está sendo processado, verifique o extrato para mais detalhes.",
             };

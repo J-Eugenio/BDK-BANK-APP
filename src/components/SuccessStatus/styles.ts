@@ -3,7 +3,6 @@ import styled from "styled-components/native";
 
 export const ModalContainer = styled.View`
   flex: 1;
-  background-color: #FFFFFF;
   padding: ${RFValue(20)}px;
 `;
 

@@ -115,7 +115,7 @@ function DemandPix() {
   }, []);
 
   function mascaraMoeda(event: any) {
-    console.log(event, 'teste')
+    console.log(event, "teste");
     const onlyDigits = event
       .split("")
       .filter((s: any) => /\d/.test(s))
@@ -157,14 +157,17 @@ function DemandPix() {
           <>
             <Flex>
               <Text>Mande o QR Code abaixo</Text>
-              <img src={imageURL} width={200} />
+              {imageURL ? <img src={imageURL} width={200} /> : ""}
             </Flex>
             <Flex>
               <Text>
-                Ou mande a chave Pix copia e cola{" "}
-                <button onClick={() => handleCopyClick()}>
-                  <Icon name="check-square-o" color="#5266CE" size={24} />
-                </button>
+                Ou mande a chave Pix copia e cola
+                <Button onPress={() => handleCopyClick()}>
+                  <ButtonText>
+                    Copiar chave
+                    <Icon name="check-square-o" color="#5266CE" size={24} />
+                  </ButtonText>
+                </Button>
               </Text>
 
               <TextInput
@@ -191,15 +194,19 @@ function DemandPix() {
                 dropdownStyle={dropdownStyle} // Passa o estilo personalizado para o dropdown
               />
             </InputView>
-
+            {/* 
             {!isErrorQrCodeKey ? (
               <TextError>Chave Pix obrigatorio.</TextError>
             ) : (
               ""
-            )}
+            )} */}
             <BoxInputs>
               <Text>Valor R$</Text>
-              <Input value={String(qrCodeValue)} setValue={setQrCodeValue} onChange={mascaraMoeda} />
+              <Input
+                value={String(qrCodeValue)}
+                setValue={setQrCodeValue}
+                onChange={setQrCodeValue}
+              />
 
               <Text>Descricao</Text>
               <Input
