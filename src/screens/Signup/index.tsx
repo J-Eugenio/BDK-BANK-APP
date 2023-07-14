@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Modal } from "react-native";
+import { Modal, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Camera, CameraType } from "expo-camera";
@@ -31,6 +31,8 @@ import { saveClient, verifyEmail, verifyPhohe } from "../../service/Apiroutes";
 import { showToast } from "../../utils/toast";
 import { useAuth } from "../../hooks/auth";
 import { AmountInput } from "../../components/AmountInput";
+import { formatarDDD, phoneMask } from "../../utils/phone-mask";
+import { formatCEP } from "../../utils/formatCep";
 
 interface TakePhotoProps {
   takeSelfie: () => Promise<void>;
@@ -85,6 +87,7 @@ function Signup() {
     { label: "Outros", value: "O" },
   ]);
   const [phone, setphone] = useState("");
+  const [balance, setBalance] = useState("");
   const [device, setdevice] = useState("");
   const [placeOfBirth, setplaceOfBirth] = useState("");
   const [monthlyIncome, setmonthlyIncome] = useState(0);
@@ -902,7 +905,9 @@ function Signup() {
   };
 
   return (
-    <Container>
+    <Container
+      onPress={() => Keyboard.dismiss()}
+    >
       <Title>Registre-se</Title>
 
       <SubTitle>{currentTitle}</SubTitle>
@@ -934,25 +939,27 @@ function Signup() {
             <Input
               keyboardType="decimal-pad"
               placeholder="DDD"
-              value={ddd}
+              value={formatarDDD(ddd)}
               aria-autocomplete="none"
               setValue={setddd}
               onChange={setddd}
+              maxLenght={4}
             />
             <Input
               keyboardType="decimal-pad"
               placeholder="Telefone"
-              value={phone}
+              value={phoneMask(phone)}
               aria-autocomplete="none"
               setValue={setphone}
               onChange={setphone}
+              maxLenght={14}
             />
             <AmountInput
               placeholder="Renda mensal"
-              value={phone}
-              aria-autocomplete="none"
-              setValue={setphone}
-              onChange={setphone}
+              value={balance}
+              setValue={setBalance}
+              onChange={setBalance}
+              keyboardType="number-pad"
             />
 
             <DropDownPicker
@@ -1001,6 +1008,7 @@ function Signup() {
               setValue={setdocumentId}
               aria-autocomplete="none"
               onChange={setdocumentId}
+              keyboardType="decimal-pad"
             />
             <Input
               value={motherName}
@@ -1062,11 +1070,13 @@ function Signup() {
               onChange={setadd_StreetNumber}
             />
             <Input
-              value={add_ZipCode}
+              value={formatCEP(add_ZipCode)}
               placeholder="CEP"
               setValue={setadd_ZipCode}
               aria-autocomplete="none"
               onChange={setadd_ZipCode}
+              keyboardType="decimal-pad"
+              maxLenght={9}
             />
             <Input
               value={add_Complement}
@@ -1088,6 +1098,7 @@ function Signup() {
               aria-autocomplete="none"
               setValue={setadd_Province}
               onChange={setadd_Province}
+              maxLenght={2}
             />
           </>
         )}

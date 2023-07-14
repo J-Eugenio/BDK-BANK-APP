@@ -1,4 +1,6 @@
+import React, { useState } from "react";
 import { KeyboardTypeOptions } from "react-native/types";
+import { TextInputMask } from 'react-native-masked-text';
 
 import {
   Container,
@@ -34,29 +36,29 @@ function AmountInput({
   onBlur,
   onChange,
 }: InputProps) {
+
   return (
     <Container>
       {overTitle && <OverTitle>{overTitle}</OverTitle>}
       <Flex>
-        <LabelValueIcon>R$</LabelValueIcon>
         <Main>
-          <TextInput
-            value={value}
-            onChangeText={(e: any) => {
-              const money = String(e.currentTarget?.value.slice(1))
-                .replace(/[^0-9][,]/g, "")
-                .replace("$", "")
-                .replace(",", "*")
-                .replaceAll(".", "");
-              const new_value = Number(money.replace("*", "."));
-              // @ts-ignore
-              setValue(Number(new_value.toFixed(2)));
+        {/* <LabelValueIcon>R$</LabelValueIcon> */}
+          <TextInputMask
+            style={{ 
+               width: '80%',
+               height: '100%'
             }}
-            placeholder={placeholder}
-            placeholderTextColor="#7F8192"
-            keyboardType={keyboardType}
-            onBlur={onBlur}
-            onChange={onChange}
+            type={'money'}
+            placeholder="Renda mensal"
+            options={{
+              precision: 2,
+              separator: ',',
+              delimiter: '.',
+              unit: 'R$',
+              suffixUnit: '',
+            }}
+            value={value}
+            onChangeText={setValue}
           />
         </Main>
       </Flex>

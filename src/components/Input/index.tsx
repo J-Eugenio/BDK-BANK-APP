@@ -26,6 +26,7 @@ interface InputProps {
   isDateInput?: boolean;
   onBlur?: any;
   onChange?: any;
+  maxLenght?: number
 }
 
 function Input({
@@ -41,6 +42,7 @@ function Input({
   overTitleColor,
   onBlur,
   onChange,
+  maxLenght
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(true);
   const [showDateInput, setShowDateInput] = useState(false);
@@ -64,6 +66,7 @@ function Input({
           editable={!isDateInput}
           onBlur={onBlur}
           onChange={onChange}
+          maxLength={maxLenght}
         />
         {isPassword && (
           <ShowPassword

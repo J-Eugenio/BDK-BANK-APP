@@ -11,6 +11,7 @@ export const Flex = styled.View`
 
 export const Main = styled.View`
   display: flex;
+  flex: 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -21,7 +22,6 @@ export const Main = styled.View`
   margin-bottom: ${RFValue(15)}px;
   border: 1px solid #E9E9E9;
   overflow: hidden;
-  width: 85%
 `;
 
 export const LabelValueIcon = styled.Text`
@@ -31,6 +31,8 @@ export const LabelValueIcon = styled.Text`
   text-align: center;
   margin-top: ${RFValue(-10)}px;
   margin-right: ${RFValue(10)}px;
+  height: 100%;
+  padding-top: 10px;
 `;
 
 export const TextInput = styled.TextInput`
