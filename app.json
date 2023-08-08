@@ -24,7 +24,9 @@
       },
       "permissions": [
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -37,6 +39,11 @@
           "cameraPermission": "Allow BDK APP to access your camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6d079e00-3aea-4dbe-94d3-7e620c0b0e46"
+      }
+    }
   }
 }

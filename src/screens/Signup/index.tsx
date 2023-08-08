@@ -21,6 +21,7 @@ import {
   CameraMain,
   FlipCamera,
   BoxError,
+  Text
 } from "./styles";
 import { convertToBase64 } from "../../utils/convertToBase64 ";
 import { useNavigation } from "@react-navigation/native";
@@ -54,9 +55,9 @@ function Signup() {
   const [openGenderPicker, setOpenGenderPicker] = useState(false);
   const [openStatePicker, setOpenStatePicker] = useState(false);
   const [openPoliticallyExposed, setOpenPoliticallyExposed] = useState(false);
-  const [valueGender, setValueGender] = useState(null);
-  const [valueState, setValueState] = useState(null);
-  const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState(null);
+  const [valueGender, setValueGender] = useState<any>(null);
+  const [valueState, setValueState] = useState<any>(null);
+  const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState<any>(null);
   const [birthday, setBirthday] = useState();
 
   const [type, setType] = useState(CameraType.front);
@@ -106,7 +107,7 @@ function Signup() {
   const [add_Province, setadd_Province] = useState("");
   const [rg, setrg] = useState("");
   const [documentId, setdocumentId] = useState("");
-  const [birthDate, setbirthDate] = useState("");
+  const [birthDate, setbirthDate] = useState();
   const [motherName, setmotherName] = useState("");
   const [isPoliticallyExposed, setisPoliticallyExposed] = useState([
     { label: "Sim", value: "s" },
@@ -217,10 +218,10 @@ function Signup() {
       DDD: ddd,
       Phone: phone,
       Device: "DeviceWeb",
-      Gender: gender,
+      Gender: valueGender,
       PlaceOfBirth: placeOfBirth,
       MonthlyIncome: monthlyIncome,
-      MaritalStatus: maritalStatus,
+      MaritalStatus: valueState,
       Add_Address: add_Address,
       Add_Neighborhood: add_Neighborhood,
       Add_StreetNumber: add_StreetNumber,
@@ -230,9 +231,9 @@ function Signup() {
       Add_Province: add_Province,
       Rg: rg,
       DocumentId: documentId,
-      BirthDate: String(birthDate + new Date().toISOString().slice(10)),
+      BirthDate: birthDate,
       MotherName: motherName,
-      IsPoliticallyExposed: isPoliticallyExposed,
+      IsPoliticallyExposed: valuePoliticallyExposed,
       Hashpass: hashpass,
       PasswordInitial: passwordInitial,
       Base64Self: selfieB64,
@@ -242,8 +243,7 @@ function Signup() {
       occupation: occupation,
     };
 
-    console.log(payload, "payload");
-
+    console.log(birthDate)
     // try {
     //   const response = await saveClient(payload);
     //   if (response.data.Sucess === false) {
@@ -931,10 +931,10 @@ function Signup() {
             <Input
               placeholder="Data de Nascimento"
               isDateInput
-              value={placeOfBirth}
+              value={birthDate}
               aria-autocomplete="none"
-              setValue={setplaceOfBirth}
-              onChange={setplaceOfBirth}
+              setValue={setbirthDate}
+              onChange={setbirthDate}
             />
             <Input
               keyboardType="decimal-pad"
@@ -996,7 +996,7 @@ function Signup() {
           <>
             <Input
               keyboardType="decimal-pad"
-              placeholder="Telefone"
+              placeholder="RG"
               value={formatRG(rg)}
               setValue={setrg}
               aria-autocomplete="none"
@@ -1210,9 +1210,9 @@ function Signup() {
           <>
             {isNotValidOne === true ? (
               <BoxError>
-                <p style={{ color: "#fff", fontWeight: "600" }}>
+                <Text style={{ color: "#fff", fontWeight: "600" }}>
                   Senha não válida
-                </p>
+                </Text> 
               </BoxError>
             ) : (
               ""
@@ -1220,9 +1220,9 @@ function Signup() {
 
             {isNotValidTwo === true ? (
               <BoxError>
-                <p style={{ color: "#fff", fontWeight: "600" }}>
+                <Text style={{ color: "#fff", fontWeight: "600" }}>
                   Senha transacional não válida
-                </p>
+                </Text> 
               </BoxError>
             ) : (
               ""
@@ -1236,7 +1236,7 @@ function Signup() {
               setValue={sethashpass}
               onChange={verifyPasswordTwo}
             />
-            <p style={{ color: "#fff" }}>(Com 6 letras / números) *</p>
+            <Text>(Com 6 letras / números) *</Text>
 
             <Input
               value={hashpassAgain}
@@ -1247,7 +1247,7 @@ function Signup() {
             />
             {passwordInitialMessageError === true ? (
               <>
-                <p style={{ color: "#fff" }}>Senhas não conferem</p>
+                <Text>Senhas não conferem</Text>
               </>
             ) : (
               ""
@@ -1260,7 +1260,7 @@ function Signup() {
               setValue={setpasswordInitialAgain}
               onChange={verifyPasswordOneCompare}
             />
-            <p style={{ color: "#fff" }}>(Com apenas 8 números) *</p>
+            <Text>(Com apenas 8 números) *</Text>
             <Input
               value={passwordInitialAgain}
               placeholder="Digite novamente a senha"
@@ -1270,10 +1270,10 @@ function Signup() {
             />
             {hashpassMessageError === true ? (
               <>
-                <p style={{ color: "#fff" }}>Senhas não conferem</p>
+                <Text>Senhas não conferem</Text>
               </>
             ) : (
-              ""
+              <></>
             )}
           </>
         )}
@@ -1295,7 +1295,7 @@ function Signup() {
               title="Registrar"
               color="#6EA965"
               onPress={() => {
-                // Register method
+                handleRegister()
               }}
             />
           </>

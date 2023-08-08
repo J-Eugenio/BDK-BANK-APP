@@ -77,3 +77,7 @@ export const BoxError = styled.View`
   border-radius: 10px;
   margin-bottom: 10px;
 `;
+
+export const Text = styled.Text`
+  color: #FFF;
+`;
