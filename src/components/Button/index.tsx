@@ -8,11 +8,17 @@ interface ButtonProps {
   onPress: () => void;
   width?: number;
   loading?: boolean;
+  disabled?: boolean;
 }
 
-function Button({ onPress, color, title, width, loading }: ButtonProps) {
+function Button({ onPress, color, title, width, loading, disabled }: ButtonProps) {
   return (
-    <Container color={color} onPress={onPress} width={width}>
+    <Container 
+      color={ disabled ? '#BBB' : color} 
+      onPress={onPress} 
+      width={width}
+      disabled={disabled}
+    >
       {loading === true ? (
         <ActivityIndicator size="large" />
       ) : (

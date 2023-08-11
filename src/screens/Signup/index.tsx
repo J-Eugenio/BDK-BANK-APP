@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React ,{ useEffect, useState, useMemo } from "react";
 import { Modal, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -58,7 +57,7 @@ function Signup() {
   const [valueGender, setValueGender] = useState<any>(null);
   const [valueState, setValueState] = useState<any>(null);
   const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState<any>(null);
-  const [birthday, setBirthday] = useState();
+  const [birthday, setBirthday] = useState("");
 
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -107,7 +106,7 @@ function Signup() {
   const [add_Province, setadd_Province] = useState("");
   const [rg, setrg] = useState("");
   const [documentId, setdocumentId] = useState("");
-  const [birthDate, setbirthDate] = useState();
+  const [birthDate, setbirthDate] = useState("");
   const [motherName, setmotherName] = useState("");
   const [isPoliticallyExposed, setisPoliticallyExposed] = useState([
     { label: "Sim", value: "s" },
@@ -127,6 +126,80 @@ function Signup() {
   ] = useState(false);
   const [isNotValidOne, setIsNotValidOne] = useState(false);
   const [isNotValidTwo, setIsNotValidTwo] = useState(false);
+  const [orgaoEmissor, setOrgaoEmissor] = useState("");
+
+  //Data Validate
+  const [emailIsError, setEmailIsError] = useState(false);
+  const [phoneIsError, setPhoneIsError] = useState(false);
+
+
+  const cpfIsError = useMemo(() => !validCPFForReal(documentId) || documentId === "", [documentId])
+
+  //Validate Steps
+  const step1 = useMemo(() => 
+    emailIsError || 
+    phoneIsError ||
+    fullName === "" ||
+    email === "" ||
+    birthday === "" ||
+    balance === "" ||
+    phone === "" ||
+    !valueGender ||
+    !valueState
+  ,
+  [
+    emailIsError, phoneIsError,
+    fullName, email,
+    birthday,balance,
+    phone, valueGender,
+    valueState,
+  ]);
+
+  const step2 = useMemo(() => 
+    cpfIsError ||
+    motherName === "" ||
+    occupation === "" ||
+    placeOfBirth === "" ||
+    !valuePoliticallyExposed
+  ,
+  [
+    cpfIsError,
+    motherName,
+    occupation,
+    placeOfBirth,
+    valuePoliticallyExposed
+  ]);
+
+  const step3 = useMemo(() => 
+    add_Address === "" ||
+    add_Neighborhood === "" ||
+    add_StreetNumber === "" ||
+    add_ZipCode === "" ||
+    add_Complement === "" ||
+    add_City === "" ||
+    add_Province === "" 
+  ,
+  [
+    add_Address,
+    add_Neighborhood,
+    add_StreetNumber,
+    add_ZipCode,
+    add_Complement,
+    add_City,
+    add_Province
+  ]);
+
+  const step4 = useMemo(() => 
+    !selfieUri ||
+    !rgFrontUri ||
+    !rgBacktoUri ||
+    !proofOAddressUri
+  ,[
+    selfieUri,
+    rgFrontUri,
+    rgBacktoUri,
+    proofOAddressUri
+  ])
 
   const states = [
     "AC",
@@ -186,25 +259,29 @@ function Signup() {
     },
   ];
 
-  const handleVerifyEmail = async (email: string) => {
+  function formatOrgaoEmissor(input: string) {
+    const regex = /(\w{3})(\w{2})/;
+    const formatted = input.replace(regex, "$1/$2");
+    return formatted;
+  }
+
+  const handleVerifyEmail = async () => {
     const email_verify = await verifyEmail(email);
 
-    if (email_verify.data.Sucess === true) {
-      return true;
+    if (!email_verify.Sucess) {
+      setEmailIsError(true)
     } else {
-      showToast(`${email_verify.data.Message}`);
-      setemail("");
+      setEmailIsError(false)
     }
   };
 
-  const handleVerifyPhone = async (phone: string) => {
+  const handleVerifyPhone = async () => {
     const phone_verify = await verifyPhohe(ddd, phone);
 
-    if (phone_verify.data.Sucess === true) {
-      return true;
+    if (!phone_verify.Sucess) {
+      setPhoneIsError(true);
     } else {
-      setphone("");
-      showToast(`${phone_verify.data.Message}`);
+      setPhoneIsError(false);
     }
   };
 
@@ -217,7 +294,7 @@ function Signup() {
       Email: email.replace(/\s/g, ""),
       DDD: ddd,
       Phone: phone,
-      Device: "DeviceWeb",
+      Device: "DeviceMobile",
       Gender: valueGender,
       PlaceOfBirth: placeOfBirth,
       MonthlyIncome: monthlyIncome,
@@ -236,17 +313,18 @@ function Signup() {
       IsPoliticallyExposed: valuePoliticallyExposed,
       Hashpass: hashpass,
       PasswordInitial: passwordInitial,
-      Base64Self: selfieB64,
-      Base64DocFront: rgFrontB64,
-      Base64DoBack: rgBacktoB64,
-      Base64Proofddress: proofOAddressB64,
+      // Base64Self: selfieB64,
+      // Base64DocFront: rgFrontB64,
+      // Base64DoBack: rgBacktoB64,
+      // Base64Proofddress: proofOAddressB64,
       occupation: occupation,
     };
 
-    console.log(birthDate)
+    console.log(payload)
     // try {
     //   const response = await saveClient(payload);
-    //   if (response.data.Sucess === false) {
+    //   console.log(response.data)
+    //   if (response.data.Sucess) {
     //     showToast(`${response.data.Message}`);
     //   } else {
     //     const obj = {
@@ -259,6 +337,7 @@ function Signup() {
     //     navigation.navigate("VerifyStatus", { id: "phone" });
     //   }
     // } catch (error) {
+    //   console.log(error)
     //   showToast(`Falha no cadastro`);
     // }
 
@@ -295,529 +374,6 @@ function Signup() {
     }
   };
 
-  const validPasswordCaractersAndNumbers = async (
-    pass: string,
-    code: number
-  ) => {
-    if (code === 1) {
-      // contain only numbers
-      const validOne = /^\d+$/.test(pass);
-      if (validOne === true) {
-        await setpasswordInitial(pass);
-        await setIsNotValidOne(false);
-      } else {
-        await setIsNotValidOne(true);
-      }
-    }
-    if (code === 2) {
-      // contain numbers and letters
-      const validTwo = /^[A-Za-z0-9]*$/.test(pass);
-      if (validTwo === true) {
-        await sethashpass(pass);
-        await setIsNotValidTwo(false);
-      } else {
-        await setIsNotValidTwo(true);
-      }
-    }
-  };
-
-  const validFieldsOfRegister = async (
-    fieldName: string,
-    field: any,
-    ref: string
-  ) => {
-    let validRef = false;
-    if (ref === "0") {
-      switch (fieldName) {
-        case "fullName":
-          const validName = field.length > 5;
-          if (validName) {
-            validRef = true;
-          } else {
-            showToast("Digite um nome válido");
-          }
-          break;
-
-        case "email":
-          const validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(field);
-          const validEmailTwo = /\s/g.test(field);
-          const validEmailThree = await handleVerifyEmail(field);
-          if (validEmail && !validEmailTwo && validEmailThree) {
-            validRef = true;
-          } else {
-            showToast("Digite um E-mail válido");
-          }
-          break;
-
-        case "ddd":
-          const validDdd = /^\d+$/.test(field);
-          if (validDdd) {
-            validRef = true;
-          } else {
-            showToast("Digite um DDD válido");
-          }
-          break;
-
-        case "phone":
-          const validphone = /^\d+$/.test(field);
-          const verifyPhoneFunction = await handleVerifyPhone(ddd + field);
-          if (validphone && verifyPhoneFunction) {
-            validRef = true;
-          } else {
-            showToast("Digite um número de celular válido");
-          }
-          break;
-
-        case "gender":
-          const validgender = /^[A-Za-z]+$/.test(field);
-          if (validgender) {
-            validRef = true;
-          } else {
-            showToast("Selecione um gênero válido");
-          }
-          break;
-
-        case "placeOfBirth":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Selecione um local válido");
-          }
-          break;
-
-        case "birthDate":
-          const birthDateValid = validadata(field);
-          if (birthDateValid) {
-            validRef = true;
-          } else {
-            showToast("Menores de 18 anos não podem realizar o cadastro!");
-          }
-          break;
-        case "maritalStatus":
-          const validmaritalStatus = /^[A-Za-z]+$/.test(field);
-          if (validmaritalStatus) {
-            validRef = true;
-          } else {
-            showToast("Selecione um estado civil válido");
-          }
-          break;
-        case "monthlyIncome":
-          if (field > 0) {
-            validRef = true;
-          } else {
-            showToast("Digite uma renda válida");
-          }
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    if (ref === "1") {
-      switch (fieldName) {
-        case "occupation":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite uma profissão válida");
-          }
-          break;
-
-        case "isPoliticallyExposed":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Selecione corretamente se é politicamente exposto");
-          }
-          break;
-
-        case "motherName":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite um nome válido para o campo 'Nome da Mãe'");
-          }
-          break;
-
-        case "documentId":
-          const validdocumentId = validCPFForReal(field);
-          if (validdocumentId) {
-            validRef = true;
-          } else {
-            showToast("Digite seu CPF corretamente");
-          }
-          break;
-
-        case "rg":
-          const validrg = /^\d+$/.test(field);
-          if (validrg) {
-            validRef = true;
-          } else {
-            showToast("Digite seu RG corretamente");
-          }
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    if (ref === "2") {
-      switch (fieldName) {
-        case "add_Address":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite seu endereço válido");
-          }
-          break;
-        case "add_Neighborhood":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite seu bairro válido");
-          }
-          break;
-        case "add_StreetNumber":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite seu número válido");
-          }
-          break;
-        case "add_ZipCode":
-          const validadd_ZipCode = /^\d+$/.test(field);
-          const validadd_ZipCodeLength = field.length === 8;
-          if (validadd_ZipCode) {
-            validRef = true;
-          } else {
-            showToast("Digite seu CEP válido");
-          }
-          break;
-        case "add_Complement":
-          const validadd_Complement = field;
-          if (validadd_Complement) {
-            validRef = true;
-          } else {
-            showToast("Digite seu complemento válido");
-          }
-          break;
-        case "add_City":
-          if (field.length > 1) {
-            validRef = true;
-          } else {
-            showToast("Digite seu cidade válido");
-          }
-          break;
-        case "add_Province":
-          const valiadd_Province = states.includes(field);
-          if (valiadd_Province) {
-            validRef = true;
-          } else {
-            showToast("Digite seu estado válido");
-          }
-          break;
-        default:
-          break;
-      }
-    }
-    if (ref === "3") {
-      switch (fieldName) {
-        case "fileSelfie":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Digite uma foto Selfie");
-          }
-          break;
-        case "fileDocFront":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Selecione um arquivo para o RG / CNH (FRENTE)");
-          }
-          break;
-        case "fileDocBack":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Selecione um arquivo para o RG / CNH (VERSO)");
-          }
-          break;
-        case "fileProofddress":
-          if (field) {
-            validRef = true;
-          } else {
-            showToast("Selecione um arquivo para o comprovante de endereço");
-          }
-          break;
-
-        default:
-          break;
-      }
-    }
-    if (ref === "4") {
-      switch (fieldName) {
-        case "hashpass":
-          const valihashpass = field.length === 8;
-          const validHashPass = String(hashpass) === String(hashpassAgain);
-          if (valihashpass && validHashPass) {
-            validRef = true;
-          } else {
-            showToast("Digite um uma senha transacional válida");
-          }
-          break;
-
-        case "passwordInitial":
-          const valipasswordInitial = field.length === 6;
-          const validInitialPass =
-            String(passwordInitial) === String(passwordInitialAgain);
-
-          if (valipasswordInitial && validInitialPass) {
-            validRef = true;
-          } else {
-            showToast("Digite um uma senha válida");
-          }
-          break;
-
-        default:
-          break;
-      }
-    }
-    return validRef;
-  };
-
-  const validZeroStep = async () => {
-    const fullNameValidation = await validFieldsOfRegister(
-      "fullName",
-      fullName,
-      "0"
-    );
-    const emailValidation = await validFieldsOfRegister("email", email, "0");
-    const dddValidation = await validFieldsOfRegister("ddd", ddd, "0");
-    const phoneValidation = await validFieldsOfRegister("phone", phone, "0");
-    const genderValidation = await validFieldsOfRegister("gender", gender, "0");
-    const placeOfBirthValidation = await validFieldsOfRegister(
-      "placeOfBirth",
-      placeOfBirth,
-      "0"
-    );
-    const birthDateValidation = await validFieldsOfRegister(
-      "birthDate",
-      birthDate,
-      "0"
-    );
-    const monthlyIncomeValidation = await validFieldsOfRegister(
-      "monthlyIncome",
-      monthlyIncome,
-      "0"
-    );
-    const maritalStatusValidation = await validFieldsOfRegister(
-      "maritalStatus",
-      maritalStatus,
-      "0"
-    );
-
-    if (
-      fullNameValidation &&
-      emailValidation &&
-      dddValidation &&
-      phoneValidation &&
-      genderValidation &&
-      placeOfBirthValidation &&
-      birthDateValidation &&
-      monthlyIncomeValidation &&
-      maritalStatusValidation
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const validFirstStep = async () => {
-    const rgValidation = await validFieldsOfRegister("rg", rg, "1");
-    const documentIdValidation = await validFieldsOfRegister(
-      "documentId",
-      documentId,
-      "1"
-    );
-    const motherNameValidation = await validFieldsOfRegister(
-      "motherName",
-      motherName,
-      "1"
-    );
-    const isPoliticallyExposedValidation = await validFieldsOfRegister(
-      "isPoliticallyExposed",
-      isPoliticallyExposed,
-      "1"
-    );
-    const occupationValidation = await validFieldsOfRegister(
-      "occupation",
-      occupation,
-      "1"
-    );
-    if (
-      rgValidation &&
-      documentIdValidation &&
-      motherNameValidation &&
-      isPoliticallyExposedValidation &&
-      occupationValidation
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const validSecondStep = async () => {
-    const add_AddressValidation = await validFieldsOfRegister(
-      "add_Address",
-      add_Address,
-      "2"
-    );
-    const add_NeighborhoodValidation = await validFieldsOfRegister(
-      "add_Neighborhood",
-      add_Neighborhood,
-      "2"
-    );
-    const add_StreetNumberValidation = await validFieldsOfRegister(
-      "add_StreetNumber",
-      add_StreetNumber,
-      "2"
-    );
-    const add_ZipCodeValidation = await validFieldsOfRegister(
-      "add_ZipCode",
-      add_ZipCode.replace("-", ""),
-      "2"
-    );
-    const add_ComplementValidation = await validFieldsOfRegister(
-      "add_Complement",
-      add_Complement,
-      "2"
-    );
-    const add_CityValidation = await validFieldsOfRegister(
-      "add_City",
-      add_City,
-      "2"
-    );
-    const add_ProvinceValidation = await validFieldsOfRegister(
-      "add_Province",
-      add_Province,
-      "2"
-    );
-
-    if (
-      add_AddressValidation &&
-      add_NeighborhoodValidation &&
-      add_StreetNumberValidation &&
-      add_ZipCodeValidation &&
-      add_ComplementValidation &&
-      add_CityValidation &&
-      add_ProvinceValidation
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const validThirdStep = async () => {
-    const fileSelfieValidation = await validFieldsOfRegister(
-      "selfieB64",
-      selfieB64,
-      "3"
-    );
-    const fileDocFrontValidation = await validFieldsOfRegister(
-      "rgFrontB64",
-      rgFrontB64,
-      "3"
-    );
-    const fileDocBackValidation = await validFieldsOfRegister(
-      "rgBacktoB64",
-      rgBacktoB64,
-      "3"
-    );
-    const fileProofddressValidation = await validFieldsOfRegister(
-      "proofOAddressB64",
-      proofOAddressB64,
-      "3"
-    );
-
-    if (
-      fileSelfieValidation &&
-      fileDocFrontValidation &&
-      fileDocBackValidation &&
-      fileProofddressValidation
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const validFourthStep = async () => {
-    const hashpassValidation = await validFieldsOfRegister(
-      "hashpass",
-      hashpass,
-      "4"
-    );
-    const passwordInitialValidation = await validFieldsOfRegister(
-      "passwordInitial",
-      passwordInitial,
-      "4"
-    );
-
-    if (hashpassValidation && passwordInitialValidation) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const handleValidCurrentStep = async (step: number) => {
-    if (step === 0) {
-      const zeroStepValidate = await validZeroStep();
-      if (zeroStepValidate) {
-        setCurrentPage(1);
-      } else {
-        setCurrentPage(0);
-      }
-    }
-    if (step === 1) {
-      const firsthStepValidade = await validFirstStep();
-      if (firsthStepValidade) {
-        setCurrentPage(2);
-      } else {
-        setCurrentPage(1);
-      }
-    }
-    if (step === 2) {
-      const secondStepValidade = await validSecondStep();
-      if (secondStepValidade) {
-        setCurrentPage(3);
-      } else {
-        setCurrentPage(2);
-      }
-    }
-    if (step === 3) {
-      const thirthStepValidade = await validThirdStep();
-      if (thirthStepValidade) {
-        setCurrentPage(4);
-      } else {
-        setCurrentPage(3);
-      }
-    }
-    if (step === 4) {
-      const fourthStepValidate = await validFourthStep();
-      if (fourthStepValidate) {
-        handleRegister();
-      } else {
-        setCurrentPage(4);
-      }
-    }
-  };
 
   useEffect(() => {
     setCurrentTitle(() => screenTabs.find((i) => i.id === currentPage)!.name);
@@ -825,7 +381,6 @@ function Signup() {
 
   function nextPage() {
     if (currentPage >= 0 && currentPage < 4) {
-      handleValidCurrentStep(currentPage + 1);
       setCurrentPage((oldValue) => (oldValue += 1));
     }
   }
@@ -887,7 +442,6 @@ function Signup() {
   }
 
   const verifyPasswordOne = () => {
-    validPasswordCaractersAndNumbers(passwordInitial, 1);
     comparePasswordInitial(passwordInitial);
   };
 
@@ -896,13 +450,40 @@ function Signup() {
   };
 
   const verifyPasswordTwo = () => {
-    validPasswordCaractersAndNumbers(hashpass, 2);
   };
 
   const verifyPasswordTwoCompare = () => {
     sethashpassAgain(hashpassAgain);
     compareHashPass(hashpassAgain);
   };
+
+  useEffect(() => {
+    if(hashpass !== ""){
+      if(hashpass === hashpassAgain) {
+        setpasswordInitialMessageError(false);
+      } else {
+        setpasswordInitialMessageError(true);
+      }
+    }
+  }, [
+    hashpass,
+    hashpassAgain,
+    passwordInitialMessageError
+  ])
+
+  useEffect(() => {
+    if(passwordInitialAgain !== ""){
+      if(passwordInitial === passwordInitialAgain) {
+        sethashpassMessageError(false);
+      } else {
+        sethashpassMessageError(true);
+      }
+    }
+  }, [
+    passwordInitial,
+    passwordInitialAgain,
+    hashpassMessageError
+  ])
 
   return (
     <Container
@@ -927,14 +508,15 @@ function Signup() {
               setValue={setemail}
               aria-autocomplete="none"
               onChange={setemail}
+              onBlur={() => handleVerifyEmail()}  
+              onFocus={() => setEmailIsError(false)}
+              isError={emailIsError}
             />
-            <Input
-              placeholder="Data de Nascimento"
+            <Input 
+              placeholder='Data de nascimento' 
               isDateInput
-              value={birthDate}
-              aria-autocomplete="none"
-              setValue={setbirthDate}
-              onChange={setbirthDate}
+              value={birthday}
+              setValue={setBirthday}
             />
             <Input
               keyboardType="decimal-pad"
@@ -942,23 +524,22 @@ function Signup() {
               value={formatarDDD(ddd)}
               aria-autocomplete="none"
               setValue={setddd}
-              onChange={setddd}
-              maxLenght={4}
+              length={4}
             />
             <Input
               keyboardType="decimal-pad"
               placeholder="Telefone"
               value={phoneMask(phone)}
-              aria-autocomplete="none"
+              onBlur={() => handleVerifyPhone()}
+              onFocus={() => setPhoneIsError(false)}
               setValue={setphone}
-              onChange={setphone}
-              maxLenght={14}
+              length={14}
+              isError={phoneIsError}
             />
             <AmountInput
               placeholder="Renda mensal"
               value={balance}
               setValue={setBalance}
-              onChange={setBalance}
               keyboardType="number-pad"
             />
 
@@ -999,8 +580,11 @@ function Signup() {
               placeholder="RG"
               value={formatRG(rg)}
               setValue={setrg}
-              aria-autocomplete="none"
-              onChange={setrg}
+            />
+            <Input
+              placeholder="SSP/SP"
+              value={orgaoEmissor}
+              setValue={setOrgaoEmissor}
             />
             <Input
               value={cpfMask(documentId)}
@@ -1009,6 +593,7 @@ function Signup() {
               aria-autocomplete="none"
               onChange={setdocumentId}
               keyboardType="decimal-pad"
+              isError={cpfIsError}
             />
             <Input
               value={motherName}
@@ -1053,52 +638,45 @@ function Signup() {
               placeholder="Endereço"
               aria-autocomplete="none"
               setValue={setadd_Address}
-              onChange={setadd_Address}
             />
             <Input
               value={add_Neighborhood}
               placeholder="Bairro"
               aria-autocomplete="none"
               setValue={setadd_Neighborhood}
-              onChange={setadd_Neighborhood}
             />
             <Input
               value={add_StreetNumber}
               placeholder="Número"
               aria-autocomplete="none"
               setValue={setadd_StreetNumber}
-              onChange={setadd_StreetNumber}
             />
             <Input
               value={formatCEP(add_ZipCode)}
               placeholder="CEP"
               setValue={setadd_ZipCode}
               aria-autocomplete="none"
-              onChange={setadd_ZipCode}
               keyboardType="decimal-pad"
-              maxLenght={9}
+              length={9}
             />
             <Input
               value={add_Complement}
               placeholder="Complemento"
               aria-autocomplete="none"
               setValue={setadd_Complement}
-              onChange={setadd_Complement}
             />
             <Input
               value={add_City}
               placeholder="Cidade"
               aria-autocomplete="none"
               setValue={setadd_City}
-              onChange={setadd_City}
             />
             <Input
               value={add_Province}
               placeholder="UF"
               aria-autocomplete="none"
               setValue={setadd_Province}
-              onChange={setadd_Province}
-              maxLenght={2}
+              length={2}
             />
           </>
         )}
@@ -1208,69 +786,56 @@ function Signup() {
 
         {currentPage === 4 && (
           <>
-            {isNotValidOne === true ? (
-              <BoxError>
-                <Text style={{ color: "#fff", fontWeight: "600" }}>
-                  Senha não válida
-                </Text> 
-              </BoxError>
-            ) : (
-              ""
-            )}
-
-            {isNotValidTwo === true ? (
-              <BoxError>
-                <Text style={{ color: "#fff", fontWeight: "600" }}>
-                  Senha transacional não válida
-                </Text> 
-              </BoxError>
-            ) : (
-              ""
-            )}
-
             <Input
               value={hashpass}
               placeholder="Senha"
               overTitle="Senha"
+              overTitleColor="#FFF"
               isPassword
+              keyboardType="decimal-pad"
               setValue={sethashpass}
               onChange={verifyPasswordTwo}
+              length={6}
             />
-            <Text>(Com 6 letras / números) *</Text>
+            <Text>(Com 6 números) *</Text>
 
             <Input
               value={hashpassAgain}
               placeholder="Digite novamente a senha"
               isPassword
+              keyboardType="decimal-pad"
               setValue={sethashpassAgain}
-              onChange={verifyPasswordTwoCompare}
+              length={6}
             />
-            {passwordInitialMessageError === true ? (
+            {passwordInitialMessageError? (
               <>
-                <Text>Senhas não conferem</Text>
+                <Text color="#ff0000">Senhas não conferem</Text>
               </>
             ) : (
               ""
             )}
             <Input
-              value={passwordInitialAgain}
+              value={passwordInitial}
               placeholder="Senha transacional (Apenas Numeros *)"
               overTitle="Senha transacional"
               isPassword
-              setValue={setpasswordInitialAgain}
-              onChange={verifyPasswordOneCompare}
+              setValue={setpasswordInitial}
+              keyboardType="decimal-pad"
+              overTitleColor="#FFF"
+              length={8}
             />
             <Text>(Com apenas 8 números) *</Text>
             <Input
               value={passwordInitialAgain}
               placeholder="Digite novamente a senha"
               isPassword
+              keyboardType="decimal-pad"
               setValue={setpasswordInitialAgain}
-              onChange={verifyPasswordOneCompare}
+              length={8}
             />
-            {hashpassMessageError === true ? (
+            {hashpassMessageError ? (
               <>
-                <Text>Senhas não conferem</Text>
+                <Text color="#ff0000">Senhas não conferem</Text>
               </>
             ) : (
               <></>
@@ -1297,6 +862,7 @@ function Signup() {
               onPress={() => {
                 handleRegister()
               }}
+              disabled={hashpassMessageError || passwordInitialMessageError || hashpass === "" || passwordInitial === ""}
             />
           </>
         ) : (
@@ -1307,6 +873,12 @@ function Signup() {
               onPress={() => {
                 nextPage();
               }}
+              disabled={
+                currentPage === 0 ? step1 : 
+                currentPage === 1 ? step2 : 
+                currentPage === 2 ? step3 : 
+                currentPage === 3 ? step4 : false
+              }
             />
           </>
         )}

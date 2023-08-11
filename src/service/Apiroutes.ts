@@ -43,7 +43,7 @@ const verifyEmail = async (emailText: string) => {
   const response = await api.post(`/client/VerifyEmail`, emailText, {
     headers: { "Content-Type": "application/json" },
   });
-  return response;
+  return response.data;
 };
 
 const verifyPhohe = async (ddd: string, phoneNumber: string) => {
@@ -53,7 +53,7 @@ const verifyPhohe = async (ddd: string, phoneNumber: string) => {
     JSON.stringify(phone),
     { headers: { "Content-Type": "application/json" } }
   );
-  return response;
+  return response.data;
 };
 
 const saveClient = async (data: ClientProps) => {

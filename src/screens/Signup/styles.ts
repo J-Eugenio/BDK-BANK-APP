@@ -1,6 +1,10 @@
 import styled from "styled-components/native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
+interface TextProps {
+  color?: string;
+}
+
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 1
 })`
@@ -78,6 +82,6 @@ export const BoxError = styled.View`
   margin-bottom: 10px;
 `;
 
-export const Text = styled.Text`
-  color: #FFF;
+export const Text = styled.Text<TextProps>`
+  color: ${({ color }) => color || '#FFF'};
 `;

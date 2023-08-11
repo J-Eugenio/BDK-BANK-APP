@@ -1,8 +1,8 @@
-import React from "react";
-import { useState } from "react";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { KeyboardTypeOptions } from "react-native/types";
-import { DateInput } from "../DateInput";
+import React, { useState }from 'react';
+
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { KeyboardTypeOptions } from 'react-native/types';
+import { DateInput } from '../DateInput';
 
 import {
   Container,
@@ -10,12 +10,12 @@ import {
   ShowPassword,
   Main,
   OverTitle,
-  ShowDateInput,
-} from "./styles";
+  ShowDateInput
+} from './styles';
 
 interface InputProps {
   value?: string;
-  setValue?: (value: any) => void;
+  setValue?: (value: any | undefined) => void;
   placeholder?: string;
   isPassword?: boolean;
   overTitle?: string;
@@ -25,39 +25,65 @@ interface InputProps {
   keyboardType?: KeyboardTypeOptions;
   isDateInput?: boolean;
   onBlur?: any;
+  onFocus?: any;
   onChange?: any;
-  maxLenght?: number
+  length?: number;
+  isError?: boolean;
+  isArea?: boolean;
 }
 
-function Input({
-  value,
-  setValue,
-  placeholder,
-  isPassword,
-  overTitle,
-  icon,
+function Input({ 
+  value, 
+  setValue, 
+  placeholder, 
+  isPassword, 
+  overTitle, 
+  icon, 
   iconName,
   keyboardType,
   isDateInput,
   overTitleColor,
   onBlur,
+  onFocus,
   onChange,
-  maxLenght
-}: InputProps) {
+  length,
+  isError,
+  isArea
+}: InputProps){
   const [showPassword, setShowPassword] = useState(true);
   const [showDateInput, setShowDateInput] = useState(false);
   const [date, setDate] = useState(new Date());
 
-  return (
-    <Container>
-      {overTitle && <OverTitle color={overTitleColor}>{overTitle}</OverTitle>}
+  function isValidDate(dateString: string) {
+    let date = new Date(dateString);
+    return !isNaN(date.getTime());
+  }
 
-      <Main>
-        {icon && (
-          <Icon name={iconName ? iconName : "bug"} size={20} color="#7F8192" />
-        )}
-        <TextInput
-          value={isDateInput ? date.toLocaleDateString("pt-BR") : value}
+  return(
+    <Container>
+      {
+        overTitle && (
+          <OverTitle color={overTitleColor}>{overTitle}</OverTitle>
+        )
+      }
+      
+      <Main
+        isError={isError}
+        isArea={isArea}
+      >
+        {
+          icon && 
+          (
+            <Icon 
+              name={iconName ? iconName : "bug"}
+              size={20}
+              color="#7F8192"
+            />
+          )
+        }
+        <TextInput 
+          //value={isDateInput ? new Date(value).toLocaleDateString('pt-BR') : value}
+          value={isDateInput && isValidDate(value!) ? new Date(value!).toLocaleDateString('pt-BR') : value}
           onChangeText={setValue}
           placeholder={placeholder}
           placeholderTextColor="#7F8192"
@@ -66,40 +92,58 @@ function Input({
           editable={!isDateInput}
           onBlur={onBlur}
           onChange={onChange}
-          maxLength={maxLenght}
+          maxLength={length}
+          onFocus={onFocus}
+          multiline={isArea}
+          isArea={isArea}
         />
-        {isPassword && (
-          <ShowPassword
-            activeOpacity={0.5}
-            onPress={() => setShowPassword((oldValue) => !oldValue)}
-          >
-            <Icon
-              name={showPassword ? "eye-slash" : "eye"}
-              size={30}
-              color="#7F8192"
+        {
+          isPassword && (
+            <ShowPassword
+              activeOpacity={0.5}
+              onPress={() => setShowPassword(oldValue => !oldValue)}
+            >
+              <Icon 
+                name={showPassword ? "eye-slash" : "eye"}
+                size={22}
+                color="#7F8192"
+              />
+            </ShowPassword>
+          )
+        }
+        {
+          isDateInput && (
+            <ShowDateInput
+              activeOpacity={0.5}
+              onPress={() => setShowDateInput(true)}
+            >
+              <Icon 
+                name="calendar"
+                size={25}
+                color="#7F8192"
+              />
+            </ShowDateInput>
+          )
+        }
+        {
+          isDateInput && showDateInput ? <DateInput value={date} setValue={value => {
+            setDate(value)
+            setValue!(value)
+          }} closeModal={setShowDateInput} /> : <></>
+        }
+        {
+          isError && (
+            <Icon 
+              name="exclamation-circle"
+              size={20}
+              color="#C53030"
             />
-          </ShowPassword>
-        )}
-        {isDateInput && (
-          <ShowDateInput
-            activeOpacity={0.5}
-            onPress={() => setShowDateInput(true)}
-          >
-            <Icon name="calendar" size={25} color="#7F8192" />
-          </ShowDateInput>
-        )}
-        {isDateInput && showDateInput ? (
-          <DateInput
-            value={date}
-            setValue={setDate}
-            closeModal={setShowDateInput}
-          />
-        ) : (
-          <></>
-        )}
+          )
+        }
       </Main>
     </Container>
-  );
+  )
 }
 
-export { Input };
+
+export { Input }
