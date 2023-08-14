@@ -78,6 +78,7 @@ function DashboardPage() {
           showToast(`${res.data.Message}`);
           setBalance(0);
         }
+        setLoading(false);
       })
       .catch(() => {
         setLoading(false);
@@ -113,6 +114,7 @@ function DashboardPage() {
               a.dateAt > b.dateAt ? -1 : b.dateAt > a.dateAt ? 1 : 0
             )
         );
+        setLoadingExtract(false);
       })
       .catch(() => {
         setLoadingExtract(false);
@@ -142,6 +144,7 @@ function DashboardPage() {
         } else {
           setProofData(res.data.Object);
         }
+        setLoadingData(false);
       })
       .catch(() => {})
       .finally(() => {
@@ -196,10 +199,7 @@ function DashboardPage() {
                   <BoxToOpenModal
                     key={item.id}
                     onPress={() => {
-                      listProofById(
-                        item.Identifier,
-                        item.nomeidentificacao
-                      );
+                      listProofById(item.Identifier, item.nomeidentificacao);
                     }}
                   >
                     <LastTransactionItem
