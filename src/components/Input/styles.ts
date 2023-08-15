@@ -9,7 +9,9 @@ interface MainProps {
   isError?: boolean;
   isArea?: boolean;
 }
-export const Container = styled.View``;
+export const Container = styled.View`
+  width: 100%;
+`;
 
 export const Main = styled.View<MainProps>`
   display: flex;

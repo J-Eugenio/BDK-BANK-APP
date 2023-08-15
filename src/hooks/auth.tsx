@@ -13,7 +13,7 @@ import { showToast } from "../utils/toast";
 
 interface AuthState {
   token: string;
-  user: object;
+  user?: object;
 }
 
 interface signInCredentials {

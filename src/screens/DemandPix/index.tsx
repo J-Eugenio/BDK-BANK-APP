@@ -115,7 +115,6 @@ function DemandPix() {
   }, []);
 
   function mascaraMoeda(event: any) {
-    console.log(event, "teste");
     const onlyDigits = event
       .split("")
       .filter((s: any) => /\d/.test(s))
