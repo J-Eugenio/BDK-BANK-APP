@@ -313,33 +313,32 @@ function Signup() {
       IsPoliticallyExposed: valuePoliticallyExposed,
       Hashpass: hashpass,
       PasswordInitial: passwordInitial,
-      // Base64Self: selfieB64,
-      // Base64DocFront: rgFrontB64,
-      // Base64DoBack: rgBacktoB64,
-      // Base64Proofddress: proofOAddressB64,
+      Base64Self: selfieB64,
+      Base64DocFront: rgFrontB64,
+      Base64DoBack: rgBacktoB64,
+      Base64Proofddress: proofOAddressB64,
       occupation: occupation,
     };
 
-    console.log(payload)
-    // try {
-    //   const response = await saveClient(payload);
-    //   console.log(response.data)
-    //   if (response.data.Sucess) {
-    //     showToast(`${response.data.Message}`);
-    //   } else {
-    //     const obj = {
-    //       token: response.data.Object,
-    //       user: response.data,
-    //     };
-    //     localStorage.setItem("@bdkbank:token", response.data.Object);
-    //     localStorage.setItem("@bdkbank:user", JSON.stringify(response.data));
-    //     setData(obj);
-    //     navigation.navigate("VerifyStatus", { id: "phone" });
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    //   showToast(`Falha no cadastro`);
-    // }
+    try {
+      const response = await saveClient(payload);
+      console.log(response.data)
+      if (response.data.Sucess) {
+        showToast(`${response.data.Message}`);
+      } else {
+        const obj = {
+          token: response.data.Object,
+          user: response.data,
+        };
+        localStorage.setItem("@bdkbank:token", response.data.Object);
+        localStorage.setItem("@bdkbank:user", JSON.stringify(response.data));
+        setData(obj);
+        navigation.navigate("VerifyStatus", { id: "phone" });
+      }
+    } catch (error) {
+      console.log(error)
+      showToast(`Falha no cadastro`);
+    }
 
     setLoading(false);
   };
