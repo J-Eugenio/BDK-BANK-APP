@@ -1,4 +1,5 @@
 import React ,{ useEffect, useState, useMemo } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Modal, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -25,7 +26,7 @@ import {
 import { convertToBase64 } from "../../utils/convertToBase64 ";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
-import validCPFForReal, { cpfMask, formatRG } from "../../utils/cfp-mask";
+import validCPFForReal, { cpfMask, cpfMaskRemove, formatRG } from "../../utils/cfp-mask";
 import { validadata } from "../../utils/validBirthdate";
 import { saveClient, verifyEmail, verifyPhohe } from "../../service/Apiroutes";
 import { showToast } from "../../utils/toast";
@@ -57,7 +58,6 @@ function Signup() {
   const [valueGender, setValueGender] = useState<any>(null);
   const [valueState, setValueState] = useState<any>(null);
   const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState<any>(null);
-  const [birthday, setBirthday] = useState("");
 
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -132,7 +132,6 @@ function Signup() {
   const [emailIsError, setEmailIsError] = useState(false);
   const [phoneIsError, setPhoneIsError] = useState(false);
 
-
   const cpfIsError = useMemo(() => !validCPFForReal(documentId) || documentId === "", [documentId])
 
   //Validate Steps
@@ -141,7 +140,7 @@ function Signup() {
     phoneIsError ||
     fullName === "" ||
     email === "" ||
-    birthday === "" ||
+    birthDate === "" ||
     balance === "" ||
     phone === "" ||
     !valueGender ||
@@ -150,7 +149,7 @@ function Signup() {
   [
     emailIsError, phoneIsError,
     fullName, email,
-    birthday,balance,
+    birthDate,balance,
     phone, valueGender,
     valueState,
   ]);
@@ -160,14 +159,18 @@ function Signup() {
     motherName === "" ||
     occupation === "" ||
     placeOfBirth === "" ||
-    !valuePoliticallyExposed
+    !valuePoliticallyExposed ||
+    rg === "" ||
+    orgaoEmissor === ""
   ,
   [
     cpfIsError,
     motherName,
     occupation,
     placeOfBirth,
-    valuePoliticallyExposed
+    valuePoliticallyExposed,
+    rg,
+    orgaoEmissor
   ]);
 
   const step3 = useMemo(() => 
@@ -200,6 +203,12 @@ function Signup() {
     rgBacktoUri,
     proofOAddressUri
   ])
+
+  function formatOrgEmiss(input: string) {
+    const regex = /(\w{3})(\w{2})/;
+    const formatted = input.replace(regex, "$1/$2");
+    return formatted.toUpperCase();
+  }
 
   const states = [
     "AC",
@@ -259,12 +268,6 @@ function Signup() {
     },
   ];
 
-  function formatOrgaoEmissor(input: string) {
-    const regex = /(\w{3})(\w{2})/;
-    const formatted = input.replace(regex, "$1/$2");
-    return formatted;
-  }
-
   const handleVerifyEmail = async () => {
     const email_verify = await verifyEmail(email);
 
@@ -307,8 +310,8 @@ function Signup() {
       Add_City: add_City,
       Add_Province: add_Province,
       Rg: rg,
-      DocumentId: documentId,
-      BirthDate: birthDate,
+      DocumentId: cpfMaskRemove(documentId),
+      BirthDate: new Date(birthDate).toISOString(),
       MotherName: motherName,
       IsPoliticallyExposed: valuePoliticallyExposed,
       Hashpass: hashpass,
@@ -318,29 +321,31 @@ function Signup() {
       Base64DoBack: rgBacktoB64,
       Base64Proofddress: proofOAddressB64,
       occupation: occupation,
+      OrgaoEmissor: orgaoEmissor?.toUpperCase()
     };
 
+    //console.log(payload)
     try {
       const response = await saveClient(payload);
-      console.log(response.data)
-      if (response.data.Sucess) {
+      if (!response.data.Sucess) {
         showToast(`${response.data.Message}`);
       } else {
+        showToast(`${response.data.Message}`);
         const obj = {
           token: response.data.Object,
-          user: response.data,
         };
-        localStorage.setItem("@bdkbank:token", response.data.Object);
-        localStorage.setItem("@bdkbank:user", JSON.stringify(response.data));
+        await AsyncStorage.setItem("@bdkbank:token", response.data.Object);
         setData(obj);
-        navigation.navigate("VerifyStatus", { id: "phone" });
+        if(obj) {
+          navigation.navigate("VerifyStatus", { id: "phone" });
+        }
       }
+      setLoading(false);
     } catch (error) {
       console.log(error)
       showToast(`Falha no cadastro`);
-    }
-
-    setLoading(false);
+      setLoading(false);
+    } 
   };
 
   const comparePasswordInitial = (pass: string) => {
@@ -393,7 +398,7 @@ function Signup() {
   const handlesTakePhoto: TakePhotoProps = {
     takeSelfie: async () => {
       if (cameraRef) {
-        const selfie = await cameraRef.takePictureAsync({ quality: 1 });
+        const selfie = await cameraRef.takePictureAsync({ quality: 0 });
         setSelfieUri(selfie.uri);
         const base64Image = await convertToBase64(selfie.uri);
         setSelfieB64(base64Image);
@@ -402,7 +407,7 @@ function Signup() {
     },
     takeRGFront: async () => {
       if (cameraRef) {
-        const rgFront = await cameraRef.takePictureAsync({ quality: 1 });
+        const rgFront = await cameraRef.takePictureAsync({ quality: 0 });
         setRGFrontUri(rgFront.uri);
         const base64Image = await convertToBase64(rgFront.uri);
         setRGFrontB64(base64Image);
@@ -411,7 +416,7 @@ function Signup() {
     },
     takeRGBack: async () => {
       if (cameraRef) {
-        const rgBack = await cameraRef.takePictureAsync({ quality: 1 });
+        const rgBack = await cameraRef.takePictureAsync({ quality: 0 });
         setRGBackUri(rgBack.uri);
         const base64Image = await convertToBase64(rgBack.uri);
         setRGBackB64(base64Image);
@@ -420,7 +425,7 @@ function Signup() {
     },
     takeProofOfAddress: async () => {
       if (cameraRef) {
-        const proofOfAddress = await cameraRef.takePictureAsync({ quality: 1 });
+        const proofOfAddress = await cameraRef.takePictureAsync({ quality: 0 });
         setProofOAddressUri(proofOfAddress.uri);
         const base64Image = await convertToBase64(proofOfAddress.uri);
         setProofOAddressB64(base64Image);
@@ -440,20 +445,7 @@ function Signup() {
     );
   }
 
-  const verifyPasswordOne = () => {
-    comparePasswordInitial(passwordInitial);
-  };
-
-  const verifyPasswordOneCompare = () => {
-    comparePasswordInitial(passwordInitial);
-  };
-
   const verifyPasswordTwo = () => {
-  };
-
-  const verifyPasswordTwoCompare = () => {
-    sethashpassAgain(hashpassAgain);
-    compareHashPass(hashpassAgain);
   };
 
   useEffect(() => {
@@ -471,7 +463,7 @@ function Signup() {
   ])
 
   useEffect(() => {
-    if(passwordInitialAgain !== ""){
+    if(passwordInitial !== ""){
       if(passwordInitial === passwordInitialAgain) {
         sethashpassMessageError(false);
       } else {
@@ -514,8 +506,8 @@ function Signup() {
             <Input 
               placeholder='Data de nascimento' 
               isDateInput
-              value={birthday}
-              setValue={setBirthday}
+              value={birthDate}
+              setValue={setbirthDate}
             />
             <Input
               keyboardType="decimal-pad"
@@ -582,7 +574,7 @@ function Signup() {
             />
             <Input
               placeholder="SSP/SP"
-              value={orgaoEmissor}
+              value={formatOrgEmiss(orgaoEmissor)}
               setValue={setOrgaoEmissor}
             />
             <Input
@@ -861,7 +853,8 @@ function Signup() {
               onPress={() => {
                 handleRegister()
               }}
-              disabled={hashpassMessageError || passwordInitialMessageError || hashpass === "" || passwordInitial === ""}
+              disabled={hashpassMessageError || passwordInitialMessageError || hashpass === "" || passwordInitial === "" || loading}
+              loading={loading}
             />
           </>
         ) : (

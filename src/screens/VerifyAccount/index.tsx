@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import loginAsset from "../../assets/login-page-asset.png";
@@ -35,6 +35,14 @@ function VerifyAccount({ route }: VerifyProps) {
   const [codeForLogin05, setcodeForLogin05] = useState("");
   const [codeForLogin06, setcodeForLogin06] = useState("");
   const [codeToSendForLogin, setCodeToSendForLogin] = useState("");
+
+  //Refs
+  const codeForLogin01Ref = useRef();
+  const codeForLogin02Ref = useRef();
+  const codeForLogin03Ref = useRef();
+  const codeForLogin04Ref = useRef();
+  const codeForLogin05Ref = useRef();
+  const codeForLogin06Ref = useRef();
 
   const { auth, setData, signOut, token } = useAuth();
   const navigation = useNavigation<ScreenProp>();
@@ -102,34 +110,94 @@ function VerifyAccount({ route }: VerifyProps) {
 
         <CodeGroup>
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin01Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin01(e)}
+            onChangeText={(e) => {
+              setcodeForLogin01(e)
+              if(e?.length == 1) {
+                //@ts-ignore
+                codeForLogin02Ref.current.focus()
+              }
+            }}
           />
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin02Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin02(e)}
+            onChangeText={(e) => {
+              setcodeForLogin02(e)
+              if(e?.length == 1) {
+                //@ts-ignore
+                codeForLogin03Ref.current.focus()
+              } else {
+                //@ts-ignore
+                codeForLogin01Ref.current.focus()
+              }
+            }}
           />
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin03Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin03(e)}
+            onChangeText={(e) => {
+              setcodeForLogin03(e)
+              if(e?.length == 1) {
+                //@ts-ignore
+                codeForLogin04Ref.current.focus()
+              } else {
+                //@ts-ignore
+                codeForLogin02Ref.current.focus()
+              }
+            }}
           />
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin04Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin04(e)}
+            onChangeText={(e) => {
+              setcodeForLogin04(e)
+              if(e?.length == 1) {
+                //@ts-ignore
+                codeForLogin05Ref.current.focus()
+              } else {
+                //@ts-ignore
+                codeForLogin03Ref.current.focus()
+              }
+            }}
           />
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin05Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin05(e)}
+            onChangeText={(e) => {
+              setcodeForLogin05(e)
+              if(e?.length == 1) {
+                //@ts-ignore
+                codeForLogin06Ref.current.focus()
+              } else {
+                //@ts-ignore
+                codeForLogin04Ref.current.focus()
+              }
+            }}
           />
           <Code
+            //@ts-ignore
+            ref={(ref) => (codeForLogin06Ref.current = ref)}
             keyboardType="decimal-pad"
             maxLength={1}
-            onChangeText={(e) => setcodeForLogin06(e)}
+            onChangeText={(e) => {
+              setcodeForLogin06(e)
+              if(e?.length == 0) {
+                //@ts-ignore
+                codeForLogin05Ref.current.focus()
+              }
+            }}
           />
         </CodeGroup>
 

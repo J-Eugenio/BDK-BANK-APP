@@ -55,9 +55,9 @@ export const ConfirmText = styled.Text`
 
 export const Flex = styled.View`
   display: flex;
-  align-items: center;
+  width: 100%;
   justify-content: center;
-  width: 100%
+  align-items: center;
 `
 
 export const FlexEnd = styled.View`

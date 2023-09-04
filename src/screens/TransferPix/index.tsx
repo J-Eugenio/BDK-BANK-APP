@@ -100,7 +100,6 @@ function TransferPix() {
   };
 
   const mascaraMoeda = (event: any) => {
-    console.log(event, "fpoijdaspofsapojfspoaf po");
     const onlyDigits = event
       .split("")
       .filter((s: any) => /\d/.test(s))
@@ -243,8 +242,6 @@ function TransferPix() {
         Password: passwordToValidate,
         Bank: keyPixProfileData.NameBank,
       };
-
-      console.log(payload, "payload");
 
       await SendPix(payload)
         .then((res) => {
