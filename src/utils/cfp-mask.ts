@@ -7,6 +7,13 @@ export const cpfMask = (value: any) => {
     .replace(/(-\d{2})\d+?$/, "$1");
 };
 
+export const formatCPF = (value: any) => {
+  value = value.replace(/\D/g, '');
+
+  // Adicione os pontos e o traço no CPF formatado
+  return value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+};
+
 export const cnpjMask = (value: any) => {
   const format = value.replace(
     /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,

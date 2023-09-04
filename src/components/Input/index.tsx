@@ -30,6 +30,7 @@ interface InputProps {
   length?: number;
   isError?: boolean;
   isArea?: boolean;
+  iscPF?: boolean;
 }
 
 function Input({ 
@@ -48,7 +49,8 @@ function Input({
   onChange,
   length,
   isError,
-  isArea
+  isArea,
+  iscPF
 }: InputProps){
   const [showPassword, setShowPassword] = useState(true);
   const [showDateInput, setShowDateInput] = useState(false);
@@ -82,7 +84,6 @@ function Input({
           )
         }
         <TextInput 
-          //value={isDateInput ? new Date(value).toLocaleDateString('pt-BR') : value}
           value={isDateInput && isValidDate(value!) ? new Date(value!).toLocaleDateString('pt-BR') : value}
           onChangeText={setValue}
           placeholder={placeholder}

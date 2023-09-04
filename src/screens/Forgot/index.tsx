@@ -15,7 +15,7 @@ import {
   RecoverPassword,
   RecoverPasswordConfirmation,
 } from "../../service/Apiroutes";
-import { cpfMask, cpfMaskRemove, validCPF } from "../../utils/cfp-mask";
+import { cnpjMask, cpfMask, cpfMaskRemove, validCPF } from "../../utils/cfp-mask";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
 import { ImageBackground, ActivityIndicator } from "react-native";
@@ -138,10 +138,11 @@ function Forgot() {
               <Text>CPF</Text>
               <Box>
                 <Input
-                  value={cpfMask(cpfCnpj)}
-                  placeholder="CPF"
+                  value={cpfCnpj.length > 12 ? cnpjMask(cpfCnpj) : cpfMask(cpfCnpj)}
+                  placeholder="CPF/CNPJ"
                   setValue={setCpfCnpj}
                   onChange={setCpfCnpj}
+                  keyboardType="numeric"
                 />
               </Box>
               {isCPFValid === 2 ? <Text>CPF não é válido</Text> : ""}

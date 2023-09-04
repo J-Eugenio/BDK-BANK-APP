@@ -20,7 +20,12 @@ import {
 } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
-import { cpfMask, cpfMaskRemove } from "../../utils/cfp-mask";
+import {
+  cnpjMask,
+  cpfMask,
+  cpfMaskRemove,
+  formatCPF,
+} from "../../utils/cfp-mask";
 
 function Login() {
   const [cpf, setCPF] = useState("");
@@ -54,10 +59,11 @@ function Login() {
         </TextContainer>
 
         <Input
-          value={cpfMask(cpf)}
+          value={cpf.length > 12 ? cnpjMask(cpf) : cpfMask(cpf)}
           placeholder="CPF"
           setValue={setCPF}
           onChange={setCPF}
+          keyboardType="numeric"
         />
         <Input
           value={password}
@@ -65,6 +71,7 @@ function Login() {
           isPassword
           setValue={setPassword}
           onChange={setPassword}
+          length={6}
         />
 
         <ButtonGroup align="right">
