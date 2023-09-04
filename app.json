@@ -27,7 +27,8 @@
         "WRITE_EXTERNAL_STORAGE",
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.aljokerbr.bdkbankapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
