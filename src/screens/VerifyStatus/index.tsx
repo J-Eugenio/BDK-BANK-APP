@@ -549,7 +549,7 @@ function VerifyStatus({ route }: VerifyProps) {
           )}
           {
             showInput != 1 && (
-              <Back disabled={loading} onPress={() => setShowInput(1)}>
+              <Back disabled={loading} onPress={() => navigation.navigate('Login')}>
                 <TextBox>VOLTAR</TextBox>
               </Back>
             )

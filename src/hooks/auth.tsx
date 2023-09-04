@@ -71,54 +71,63 @@ export const AuthProvider: React.FC = ({ children }: any) => {
 
   const signIn = useCallback(
     async ({ document, password }: signInCredentials) => {
-      try {
-        const response = await api.post(
-          "/client/Login",
-          {
-            document,
-            password,
-          },
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
+      if(document.length === 0 || password.length === 0) {
+        showToast("Preencha os dados de login");
+      } else {
+
+        try {
+          const response = await api.post(
+            "/client/Login",
+            {
+              document,
+              password,
             },
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              },
+            }
+          );
+  
+          if(document.length === 0 || password.length === 0) {
+            showToast("Preencha os dados de login");
           }
-        );
-
-        if (response.data.Message === "Senha incorreta") {
-          showToast(
-            `${response.data.Message} tentativas restantes: ${response.data.Object.Tentativas}`
-          );
-        } else if (
-          response.data.Sucess &&
-          response.data.Object.Tentativas === 0
-        ) {
-          const limitTryMessage = response.data.Message.split("em");
-          showToast(
-            `${
-              limitTryMessage[0] +
-              "em " +
-              new Date(limitTryMessage[1].slice(0, 17)).toLocaleString()
-            }`
-          );
-        } else {
-          if (response.data.Sucess === false) {
-            showToast(response.data.Message);
-
-            return;
+  
+          if (response.data.Message === "Senha incorreta") {
+            showToast(
+              `${response.data.Message} tentativas restantes: ${response.data.Object.Tentativas}`
+            );
+          } else if (
+            response.data.Sucess &&
+            response.data.Object.Tentativas === 0
+          ) {
+            const limitTryMessage = response.data.Message.split("em");
+            showToast(
+              `${
+                limitTryMessage[0] +
+                "em " +
+                new Date(limitTryMessage[1].slice(0, 17)).toLocaleString()
+              }`
+            );
           } else {
-            showToast("Token de acesso enviado");
-
-            navigation.navigate("VerifyAccount", {
-              ChaveLogin: response.data.Object.ChaveLogin,
-            });
-
-            if (response.data.Object) {
-              setAuth(response.data.Object);
+            if (response.data.Sucess === false) {
+              showToast(response.data.Message);
+  
+              return;
+            } else {
+              showToast("Token de acesso enviado");
+  
+              navigation.navigate("VerifyAccount", {
+                ChaveLogin: response.data.Object.ChaveLogin,
+              });
+  
+              if (response.data.Object) {
+                setAuth(response.data.Object);
+              }
             }
           }
-        }
-      } catch (error) {}
+        } catch (error) {}
+      }
     },
     []
   );
