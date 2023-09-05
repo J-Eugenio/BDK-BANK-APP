@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Text } from "./styles";
+import { ButtonBox, Text } from "./styles";
 import { ActivityIndicator } from "react-native";
 
 interface ButtonProps {
@@ -13,7 +13,7 @@ interface ButtonProps {
 
 function Button({ onPress, color, title, width, loading, disabled }: ButtonProps) {
   return (
-    <Container 
+    <ButtonBox 
       color={ disabled ? '#BBB' : color} 
       onPress={onPress} 
       width={width}
@@ -24,7 +24,7 @@ function Button({ onPress, color, title, width, loading, disabled }: ButtonProps
       ) : (
         <Text>{title || "Default"}</Text>
       )}
-    </Container>
+    </ButtonBox>
   );
 }
 

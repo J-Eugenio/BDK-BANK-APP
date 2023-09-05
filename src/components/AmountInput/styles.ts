@@ -16,7 +16,7 @@ export const Main = styled.View`
   align-items: center;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.input_background};
-  height: ${RFValue(50)}px;
+  height: ${RFValue(40)}px;
   padding: 0 ${RFValue(5)}px;
   border-radius: ${RFValue(10)}px;
   margin-bottom: ${RFValue(15)}px;

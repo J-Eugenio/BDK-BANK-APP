@@ -42,11 +42,9 @@ function AmountInput({
       {overTitle && <OverTitle>{overTitle}</OverTitle>}
       <Flex>
         <Main>
-        {/* <LabelValueIcon>R$</LabelValueIcon> */}
           <TextInputMask
             style={{ 
                width: '80%',
-               height: '100%'
             }}
             type={'money'}
             placeholder="Renda mensal"
@@ -59,6 +57,7 @@ function AmountInput({
             }}
             value={value}
             onChangeText={setValue}
+            placeholderTextColor="#7F8192"
           />
         </Main>
       </Flex>

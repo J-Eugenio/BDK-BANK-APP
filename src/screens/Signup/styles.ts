@@ -27,7 +27,6 @@ export const SubTitle = styled.Text`
 `;
 
 export const Main = styled.View`
-  flex: 1;
 `;
 
 export const PermissionContainer = styled.View`
@@ -42,17 +41,17 @@ export const PermissionTitle = styled.Text`
   margin-bottom: ${RFValue(20)}px;
 `;
 export const DocumentContainer = styled.View`
-  border: 1px solid red;
   width: 48%;
   height: 45%;
   margin-bottom: 10px;
 `;
 
 export const MainDocuments = styled.View`
-  flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
+  margin-bottom: 24px;
 `;
 
 export const ImagePreview = styled.View`

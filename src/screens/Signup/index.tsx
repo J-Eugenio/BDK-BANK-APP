@@ -34,6 +34,7 @@ import { useAuth } from "../../hooks/auth";
 import { AmountInput } from "../../components/AmountInput";
 import { formatarDDD, phoneMask } from "../../utils/phone-mask";
 import { formatCEP } from "../../utils/formatCep";
+import { formatBirthDate } from "../../utils/format-birth-date";
 
 interface TakePhotoProps {
   takeSelfie: () => Promise<void>;
@@ -503,11 +504,12 @@ function Signup() {
               onFocus={() => setEmailIsError(false)}
               isError={emailIsError}
             />
-            <Input 
-              placeholder='Data de nascimento' 
-              isDateInput
-              value={birthDate}
+            <Input
+              value={formatBirthDate(birthDate)}
+              placeholder="Data de nascimento"
               setValue={setbirthDate}
+              aria-autocomplete="none"
+              onChange={setbirthDate}
             />
             <Input
               keyboardType="decimal-pad"
@@ -641,6 +643,7 @@ function Signup() {
               placeholder="Número"
               aria-autocomplete="none"
               setValue={setadd_StreetNumber}
+              keyboardType="numeric"
             />
             <Input
               value={formatCEP(add_ZipCode)}
@@ -779,8 +782,8 @@ function Signup() {
           <>
             <Input
               value={hashpass}
-              placeholder="Senha"
-              overTitle="Senha"
+              placeholder="Digite..."
+              overTitle="Senha (Com 6 números) *"
               overTitleColor="#FFF"
               isPassword
               keyboardType="decimal-pad"
@@ -788,11 +791,12 @@ function Signup() {
               onChange={verifyPasswordTwo}
               length={6}
             />
-            <Text>(Com 6 números) *</Text>
 
             <Input
               value={hashpassAgain}
-              placeholder="Digite novamente a senha"
+              placeholder="Digite..."
+              overTitle="Digite novamente"
+              overTitleColor="#FFF"
               isPassword
               keyboardType="decimal-pad"
               setValue={sethashpassAgain}
@@ -807,18 +811,19 @@ function Signup() {
             )}
             <Input
               value={passwordInitial}
-              placeholder="Senha transacional (Apenas Numeros *)"
-              overTitle="Senha transacional"
+              placeholder="Digite..."
+              overTitle="Senha transacional (Com 8 caracteres)"
               isPassword
               setValue={setpasswordInitial}
               keyboardType="decimal-pad"
               overTitleColor="#FFF"
               length={8}
             />
-            <Text>(Com apenas 8 números) *</Text>
             <Input
               value={passwordInitialAgain}
-              placeholder="Digite novamente a senha"
+              placeholder="Digite..."
+              overTitle="Digite novamente a senha"
+              overTitleColor="#FFF"
               isPassword
               keyboardType="decimal-pad"
               setValue={setpasswordInitialAgain}

@@ -5,7 +5,7 @@ interface ButtonProps {
   color?: string;
   width?: number
 }
-export const Container = styled.TouchableOpacity.attrs({
+export const ButtonBox = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6
 })<ButtonProps>`
   display: flex;

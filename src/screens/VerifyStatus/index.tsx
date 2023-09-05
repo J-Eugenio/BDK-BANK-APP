@@ -29,7 +29,7 @@ import { ScreenProp } from "../../../App";
 import { showToast } from "../../utils/toast";
 import RegressiveCounter from "../../components/RegressiveCounter";
 import { Input } from "../../components/Input";
-import { phoneRemoveMask, phoneWithDDDMask } from '../../utils/phone-mask';
+import { phoneRemoveMask, phoneWithDDDMask } from "../../utils/phone-mask";
 
 interface VerifyProps {
   route?: {
@@ -57,7 +57,7 @@ function VerifyStatus({ route }: VerifyProps) {
   const [phoneUpdate, setphoneUpdate] = useState("");
   const [emailUpdate, setemailUpdate] = useState("");
   const [counterOut, setCounterOut] = useState(false);
- 
+
   //Refs
 
   const codeForPhone01Ref = useRef();
@@ -84,7 +84,6 @@ function VerifyStatus({ route }: VerifyProps) {
     }
   }, []);
 
-  
   const redirect = () => {
     navigation.navigate("Login");
   };
@@ -108,7 +107,7 @@ function VerifyStatus({ route }: VerifyProps) {
     } else {
       navigation.navigate("VerifyStatus", { id: 1 });
       setShowInput(2);
-      setRouteInfoParam(1)
+      setRouteInfoParam(1);
     }
   };
 
@@ -257,10 +256,10 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForPhone01(e)
-                          if(e?.length == 1){
+                          setcodeForPhone01(e);
+                          if (e?.length == 1) {
                             //@ts-ignore
-                            codeForPhone02Ref.current.focus()
+                            codeForPhone02Ref.current.focus();
                           }
                         }}
                       />
@@ -270,13 +269,13 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForPhone02(e)
-                          if(e?.length === 1){
+                          setcodeForPhone02(e);
+                          if (e?.length === 1) {
                             //@ts-ignore
-                            codeForPhone03Ref.current.focus()
+                            codeForPhone03Ref.current.focus();
                           } else {
                             //@ts-ignore
-                            codeForPhone01Ref.current.focus()
+                            codeForPhone01Ref.current.focus();
                           }
                         }}
                       />
@@ -286,13 +285,13 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForPhone03(e)
-                          if(e?.length === 1){
+                          setcodeForPhone03(e);
+                          if (e?.length === 1) {
                             //@ts-ignore
-                            codeForPhone04Ref.current.focus()
+                            codeForPhone04Ref.current.focus();
                           } else {
                             //@ts-ignore
-                            codeForPhone02Ref.current.focus()
+                            codeForPhone02Ref.current.focus();
                           }
                         }}
                       />
@@ -302,13 +301,13 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForPhone04(e)
-                          if(e?.length === 1){
+                          setcodeForPhone04(e);
+                          if (e?.length === 1) {
                             //@ts-ignore
-                            codeForPhone05Ref.current.focus()
+                            codeForPhone05Ref.current.focus();
                           } else {
                             //@ts-ignore
-                            codeForPhone03Ref.current.focus()
+                            codeForPhone03Ref.current.focus();
                           }
                         }}
                       />
@@ -318,10 +317,10 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForPhone05(e)
-                          if(e?.length === 0){
+                          setcodeForPhone05(e);
+                          if (e?.length === 0) {
                             //@ts-ignore
-                            codeForPhone04Ref.current.focus()
+                            codeForPhone04Ref.current.focus();
                           }
                         }}
                       />
@@ -358,8 +357,8 @@ function VerifyStatus({ route }: VerifyProps) {
                         keyboardType="decimal-pad"
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForEmail01(e)
-                          if(e?.length == 1){
+                          setcodeForEmail01(e);
+                          if (e?.length == 1) {
                             //@ts-ignore
                             codeForEmail02Ref.current.focus();
                           }
@@ -372,8 +371,8 @@ function VerifyStatus({ route }: VerifyProps) {
                         blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForEmail02(e)
-                          if(e?.length == 1){
+                          setcodeForEmail02(e);
+                          if (e?.length == 1) {
                             //@ts-ignore
                             codeForEmail03Ref.current.focus();
                           } else {
@@ -389,8 +388,8 @@ function VerifyStatus({ route }: VerifyProps) {
                         blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForEmail03(e)
-                          if(e?.length == 1){
+                          setcodeForEmail03(e);
+                          if (e?.length == 1) {
                             //@ts-ignore
                             codeForEmail04Ref.current.focus();
                           } else {
@@ -406,8 +405,8 @@ function VerifyStatus({ route }: VerifyProps) {
                         blurOnSubmit={false}
                         maxLength={1}
                         onChangeText={(e) => {
-                          setcodeForEmail04(e)
-                          if(e?.length == 0){
+                          setcodeForEmail04(e);
+                          if (e?.length == 0) {
                             //@ts-ignore
                             codeForEmail03Ref.current.focus();
                           }
@@ -477,22 +476,22 @@ function VerifyStatus({ route }: VerifyProps) {
         </Flex>
 
         <Flex>
-          {showInput === 2 ? (
-            ""
-          ) : (
+          {showInput === 0 ? (
             <>
               {routeInfoParam === 2 ? (
                 <Confirm disabled={loading} onPress={() => sendPhoneSms()}>
                   {loading ? (
                     <ActivityIndicator color={"#FFF"} size="large" />
                   ) : (
-                    <ConfirmText>CONFIRMAR</ConfirmText>
+                    <ConfirmText>CONFIRMAR CÓDIGO</ConfirmText>
                   )}
                 </Confirm>
               ) : (
                 ""
               )}
             </>
+          ) : (
+            ""
           )}
 
           {showInput === 1 ? (
@@ -547,13 +546,26 @@ function VerifyStatus({ route }: VerifyProps) {
           ) : (
             ""
           )}
-          {
-            showInput != 1 && (
-              <Back disabled={loading} onPress={() => navigation.navigate('Login')}>
-                <TextBox>VOLTAR</TextBox>
-              </Back>
-            )
-          }
+          {showInput === 1 && (
+            <Back disabled={loading} onPress={() => setShowInput(1)}>
+              <TextBox>VOLTAR</TextBox>
+            </Back>
+          )}
+
+          {showInput === 2 && (
+            <Back disabled={loading} onPress={() => setShowInput(0)}>
+              <TextBox>VOLTAR</TextBox>
+            </Back>
+          )}
+
+          {showInput === 0 && routeInfoParam === 2 && (
+            <Back
+              disabled={loading}
+              onPress={() => navigation.navigate("Login")}
+            >
+              <TextBox>VOLTAR</TextBox>
+            </Back>
+          )}
         </Flex>
       </ImageBackground>
     </Container>
