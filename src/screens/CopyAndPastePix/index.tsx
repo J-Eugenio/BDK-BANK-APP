@@ -23,6 +23,7 @@ import {
   ButtonCheckPix,
   ButtonCheckPixText,
   Text,
+  BoxButtonFinal,
 } from "./styles";
 import { Separator } from "../../components/Separator";
 import UserIMG from "../../assets/user-img.png";
@@ -114,6 +115,8 @@ function CopyAndPastePix() {
   };
 
   const handleSendPix = async () => {
+    setLoading(true);
+
     if (balance > dataTransfer.valor) {
       const payload = {
         ToKeyPix: dataTransfer.chave,
@@ -164,7 +167,7 @@ function CopyAndPastePix() {
           <>
             <Box>
               <Input
-                overTitle="Cole ou digite a chave aleatória"
+                overTitle="Insira o pix copia e cola aqui"
                 setValue={setPixCopyAndPasteKey}
                 onChange={setPixCopyAndPasteKey}
               />
@@ -237,11 +240,13 @@ function CopyAndPastePix() {
                           setPixCopyAndPasteKey("");
                         }}
                       />
-                      <Button
-                        title="Confirmar"
-                        color="#6EA965"
-                        onPress={() => setShowPassword(true)}
-                      />
+                      <BoxButtonFinal>
+                        <Button
+                          title="Confirmar"
+                          color="#6EA965"
+                          onPress={() => setShowPassword(true)}
+                        />
+                      </BoxButtonFinal>
                     </>
                   ) : (
                     ""
@@ -268,6 +273,7 @@ function CopyAndPastePix() {
                 title="Transferir"
                 color="#6EA965"
                 loading={loading}
+                disabled={loading}
                 onPress={() => handleSendPix()}
               />
             </BoxButton>

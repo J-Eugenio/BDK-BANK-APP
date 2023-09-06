@@ -8,6 +8,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
   font-size: ${RFValue(24)}px;
   margin-bottom: ${RFValue(20)}px;
+  margin-top: ${RFValue(20)}px;
   font-weight: 500;
   color: #585858;
 `;
@@ -28,8 +29,16 @@ export const MainActionContainer = styled.View`
 export const Flex = styled.View`
   display: flex;
   flex-direction: row;
-  gap: ${RFValue(50)}px;
+  gap: ${RFValue(30)}px;
   align-items: center;
+`;
+
+export const FlexTitle = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const Box = styled.View`

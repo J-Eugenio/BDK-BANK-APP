@@ -6,7 +6,7 @@ interface TextProps {
 }
 
 export const Container = styled.TouchableOpacity.attrs({
-  activeOpacity: 1
+  activeOpacity: 1,
 })`
   display: flex;
   flex: 1;
@@ -26,7 +26,11 @@ export const SubTitle = styled.Text`
   margin: ${RFValue(20)}px 0;
 `;
 
-export const Main = styled.View`
+
+export const Main = styled.View``;
+
+export const BoxPage1 = styled.View`
+  margin-bottom: 20px;
 `;
 
 export const PermissionContainer = styled.View`
@@ -34,24 +38,24 @@ export const PermissionContainer = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50px;
 `;
 export const PermissionTitle = styled.Text`
   color: ${({ theme }) => theme.colors.font_white};
   font-size: ${RFValue(10)}px;
-  margin-bottom: ${RFValue(20)}px;
+  margin-bottom: ${RFValue(40)}px;
 `;
 export const DocumentContainer = styled.View`
   width: 48%;
   height: 45%;
-  margin-bottom: 10px;
 `;
 
 export const MainDocuments = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
-  margin-bottom: 24px;
+  height: 75%;
 `;
 
 export const ImagePreview = styled.View`
@@ -65,7 +69,6 @@ export const ImagePreviewFile = styled.Image`
 `;
 
 export const CameraMain = styled.View`
-  border: 5px solid red;
   flex: 1;
   align-items: center;
   justify-content: flex-end;
@@ -82,5 +85,5 @@ export const BoxError = styled.View`
 `;
 
 export const Text = styled.Text<TextProps>`
-  color: ${({ color }) => color || '#FFF'};
+  color: ${({ color }) => color || "#FFF"};
 `;

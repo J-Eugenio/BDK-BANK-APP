@@ -14,7 +14,7 @@ import {
 } from './styles';
 
 interface InputProps {
-  value?: string;
+  value?: string | number;
   setValue?: (value: any | undefined) => void;
   placeholder?: string;
   isPassword?: boolean;
@@ -84,6 +84,7 @@ function Input({
           )
         }
         <TextInput 
+        // @ts-ignore
           value={isDateInput && isValidDate(value!) ? new Date(value!).toLocaleDateString('pt-BR') : value}
           onChangeText={setValue}
           placeholder={placeholder}

@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { ExcludePix } from "../../service/ApiPaymentsRoutes";
 import { showToast } from "../../utils/toast";
+import {Clipboard } from 'react-native'
 
 interface keyInfo {
   id: number;
@@ -38,7 +39,6 @@ function KeysList({ id, keyTitle, keySubtitle }: keyInfo) {
   const handleCopyClick = (copyText: any) => {
     copyTextToClipboard(copyText)
       .then(() => {
-        // If successful, update the isCopied state value
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
@@ -49,6 +49,12 @@ function KeysList({ id, keyTitle, keySubtitle }: keyInfo) {
         showToast("Chave não copiada");
       });
   };
+
+  const copiarTextoParaClipboard = async (copyText: any) => {
+    await Clipboard.setString(copyText);
+    showToast('Texto copiado para a área de transferência');
+  };
+
 
   const handleDeletePix = async (pix: number) => {
     setLoading(true);
@@ -77,7 +83,7 @@ function KeysList({ id, keyTitle, keySubtitle }: keyInfo) {
       </BoxNameAndKey>
       <BoxButtons>
         <BtnCopyKey
-          onPress={() => handleCopyClick(keySubtitle)}
+          onPress={() => copiarTextoParaClipboard(keySubtitle)}
           disabled={loading}
         >
           <Icon name="copy" size={40} color="#F08E34" />

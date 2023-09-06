@@ -1,4 +1,4 @@
-import React ,{ useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Modal, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -21,12 +21,17 @@ import {
   CameraMain,
   FlipCamera,
   BoxError,
-  Text
+  Text,
+  BoxPage1,
 } from "./styles";
 import { convertToBase64 } from "../../utils/convertToBase64 ";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../../../App";
-import validCPFForReal, { cpfMask, cpfMaskRemove, formatRG } from "../../utils/cfp-mask";
+import validCPFForReal, {
+  cpfMask,
+  cpfMaskRemove,
+  formatRG,
+} from "../../utils/cfp-mask";
 import { validadata } from "../../utils/validBirthdate";
 import { saveClient, verifyEmail, verifyPhohe } from "../../service/Apiroutes";
 import { showToast } from "../../utils/toast";
@@ -58,7 +63,9 @@ function Signup() {
   const [openPoliticallyExposed, setOpenPoliticallyExposed] = useState(false);
   const [valueGender, setValueGender] = useState<any>(null);
   const [valueState, setValueState] = useState<any>(null);
-  const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState<any>(null);
+  const [valuePoliticallyExposed, setValuePoliticallyExposed] = useState<any>(
+    null
+  );
 
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -133,77 +140,80 @@ function Signup() {
   const [emailIsError, setEmailIsError] = useState(false);
   const [phoneIsError, setPhoneIsError] = useState(false);
 
-  const cpfIsError = useMemo(() => !validCPFForReal(documentId) || documentId === "", [documentId])
+  const cpfIsError = useMemo(
+    () => validCPFForReal(documentId) || documentId === "",
+    [documentId]
+  );
 
   //Validate Steps
-  const step1 = useMemo(() => 
-    emailIsError || 
-    phoneIsError ||
-    fullName === "" ||
-    email === "" ||
-    birthDate === "" ||
-    balance === "" ||
-    phone === "" ||
-    !valueGender ||
-    !valueState
-  ,
-  [
-    emailIsError, phoneIsError,
-    fullName, email,
-    birthDate,balance,
-    phone, valueGender,
-    valueState,
-  ]);
+  const step1 = useMemo(
+    () =>
+      emailIsError ||
+      phoneIsError ||
+      fullName === "" ||
+      email === "" ||
+      birthDate === "" ||
+      balance === "" ||
+      phone === "" ||
+      !valueGender ||
+      !valueState,
+    [
+      emailIsError,
+      phoneIsError,
+      fullName,
+      email,
+      birthDate,
+      balance,
+      phone,
+      valueGender,
+      valueState,
+    ]
+  );
 
-  const step2 = useMemo(() => 
-    cpfIsError ||
-    motherName === "" ||
-    occupation === "" ||
-    placeOfBirth === "" ||
-    !valuePoliticallyExposed ||
-    rg === "" ||
-    orgaoEmissor === ""
-  ,
-  [
-    cpfIsError,
-    motherName,
-    occupation,
-    placeOfBirth,
-    valuePoliticallyExposed,
-    rg,
-    orgaoEmissor
-  ]);
+  const step2 = useMemo(
+    () =>
+      cpfIsError ||
+      motherName === "" ||
+      occupation === "" ||
+      placeOfBirth === "" ||
+      !valuePoliticallyExposed ||
+      rg === "" ||
+      orgaoEmissor === "",
+    [
+      cpfIsError,
+      motherName,
+      occupation,
+      placeOfBirth,
+      valuePoliticallyExposed,
+      rg,
+      orgaoEmissor,
+    ]
+  );
 
-  const step3 = useMemo(() => 
-    add_Address === "" ||
-    add_Neighborhood === "" ||
-    add_StreetNumber === "" ||
-    add_ZipCode === "" ||
-    add_Complement === "" ||
-    add_City === "" ||
-    add_Province === "" 
-  ,
-  [
-    add_Address,
-    add_Neighborhood,
-    add_StreetNumber,
-    add_ZipCode,
-    add_Complement,
-    add_City,
-    add_Province
-  ]);
+  const step3 = useMemo(
+    () =>
+      add_Address === "" ||
+      add_Neighborhood === "" ||
+      add_StreetNumber === "" ||
+      add_ZipCode === "" ||
+      add_Complement === "" ||
+      add_City === "" ||
+      add_Province === "",
+    [
+      add_Address,
+      add_Neighborhood,
+      add_StreetNumber,
+      add_ZipCode,
+      add_Complement,
+      add_City,
+      add_Province,
+    ]
+  );
 
-  const step4 = useMemo(() => 
-    !selfieUri ||
-    !rgFrontUri ||
-    !rgBacktoUri ||
-    !proofOAddressUri
-  ,[
-    selfieUri,
-    rgFrontUri,
-    rgBacktoUri,
-    proofOAddressUri
-  ])
+  const step4 = useMemo(
+    () => !selfieUri || !rgFrontUri || !rgBacktoUri || !proofOAddressUri,
+    [selfieUri, rgFrontUri, rgBacktoUri, proofOAddressUri]
+  );
 
   function formatOrgEmiss(input: string) {
     const regex = /(\w{3})(\w{2})/;
@@ -273,9 +283,9 @@ function Signup() {
     const email_verify = await verifyEmail(email);
 
     if (!email_verify.Sucess) {
-      setEmailIsError(true)
+      setEmailIsError(true);
     } else {
-      setEmailIsError(false)
+      setEmailIsError(false);
     }
   };
 
@@ -287,6 +297,12 @@ function Signup() {
     } else {
       setPhoneIsError(false);
     }
+  };
+
+  const formatBirthDateToISO = (value: string) => {
+    return new Date(
+      value.slice(3, 5) + "/" + value.slice(0, 2) + "/" + value.slice(6)
+    )
   };
 
   const handleRegister = async () => {
@@ -312,7 +328,7 @@ function Signup() {
       Add_Province: add_Province,
       Rg: rg,
       DocumentId: cpfMaskRemove(documentId),
-      BirthDate: new Date(birthDate).toISOString(),
+      BirthDate: String(formatBirthDateToISO(birthDate)),
       MotherName: motherName,
       IsPoliticallyExposed: valuePoliticallyExposed,
       Hashpass: hashpass,
@@ -322,10 +338,9 @@ function Signup() {
       Base64DoBack: rgBacktoB64,
       Base64Proofddress: proofOAddressB64,
       occupation: occupation,
-      OrgaoEmissor: orgaoEmissor?.toUpperCase()
+      OrgaoEmissor: orgaoEmissor?.toUpperCase(),
     };
 
-    //console.log(payload)
     try {
       const response = await saveClient(payload);
       if (!response.data.Sucess) {
@@ -337,16 +352,16 @@ function Signup() {
         };
         await AsyncStorage.setItem("@bdkbank:token", response.data.Object);
         setData(obj);
-        if(obj) {
+        if (obj) {
           navigation.navigate("VerifyStatus", { id: "phone" });
         }
       }
       setLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       showToast(`Falha no cadastro`);
       setLoading(false);
-    } 
+    }
   };
 
   const comparePasswordInitial = (pass: string) => {
@@ -379,7 +394,6 @@ function Signup() {
     }
   };
 
-
   useEffect(() => {
     setCurrentTitle(() => screenTabs.find((i) => i.id === currentPage)!.name);
   }, [currentPage]);
@@ -400,8 +414,10 @@ function Signup() {
     takeSelfie: async () => {
       if (cameraRef) {
         const selfie = await cameraRef.takePictureAsync({ quality: 0 });
+        console.log(selfie)
         setSelfieUri(selfie.uri);
         const base64Image = await convertToBase64(selfie.uri);
+        console.log(base64Image)
         setSelfieB64(base64Image);
         setOpenTakeModal(false);
       }
@@ -446,41 +462,30 @@ function Signup() {
     );
   }
 
-  const verifyPasswordTwo = () => {
-  };
+  const verifyPasswordTwo = () => {};
 
   useEffect(() => {
-    if(hashpass !== ""){
-      if(hashpass === hashpassAgain) {
+    if (hashpass !== "") {
+      if (hashpass === hashpassAgain) {
         setpasswordInitialMessageError(false);
       } else {
         setpasswordInitialMessageError(true);
       }
     }
-  }, [
-    hashpass,
-    hashpassAgain,
-    passwordInitialMessageError
-  ])
+  }, [hashpass, hashpassAgain, passwordInitialMessageError]);
 
   useEffect(() => {
-    if(passwordInitial !== ""){
-      if(passwordInitial === passwordInitialAgain) {
+    if (passwordInitial !== "") {
+      if (passwordInitial === passwordInitialAgain) {
         sethashpassMessageError(false);
       } else {
         sethashpassMessageError(true);
       }
     }
-  }, [
-    passwordInitial,
-    passwordInitialAgain,
-    hashpassMessageError
-  ])
+  }, [passwordInitial, passwordInitialAgain, hashpassMessageError]);
 
   return (
-    <Container
-      onPress={() => Keyboard.dismiss()}
-    >
+    <Container onPress={() => Keyboard.dismiss()}>
       <Title>Registre-se</Title>
 
       <SubTitle>{currentTitle}</SubTitle>
@@ -500,7 +505,7 @@ function Signup() {
               setValue={setemail}
               aria-autocomplete="none"
               onChange={setemail}
-              onBlur={() => handleVerifyEmail()}  
+              onBlur={() => handleVerifyEmail()}
               onFocus={() => setEmailIsError(false)}
               isError={emailIsError}
             />
@@ -567,7 +572,7 @@ function Signup() {
         )}
 
         {currentPage === 1 && (
-          <>
+          <BoxPage1>
             <Input
               keyboardType="decimal-pad"
               placeholder="RG"
@@ -586,7 +591,6 @@ function Signup() {
               aria-autocomplete="none"
               onChange={setdocumentId}
               keyboardType="decimal-pad"
-              isError={cpfIsError}
             />
             <Input
               value={motherName}
@@ -619,9 +623,9 @@ function Signup() {
               setOpen={setOpenPoliticallyExposed}
               setValue={setValuePoliticallyExposed}
               setItems={setisPoliticallyExposed}
-              style={{ borderColor: "grey", marginBottom: 14 }}
+              style={{ borderColor: "grey", marginBottom: 65 }}
             />
-          </>
+          </BoxPage1>
         )}
 
         {currentPage === 2 && (
@@ -802,7 +806,7 @@ function Signup() {
               setValue={sethashpassAgain}
               length={6}
             />
-            {passwordInitialMessageError? (
+            {passwordInitialMessageError ? (
               <>
                 <Text color="#ff0000">Senhas não conferem</Text>
               </>
@@ -856,9 +860,15 @@ function Signup() {
               title="Registrar"
               color="#6EA965"
               onPress={() => {
-                handleRegister()
+                handleRegister();
               }}
-              disabled={hashpassMessageError || passwordInitialMessageError || hashpass === "" || passwordInitial === "" || loading}
+              disabled={
+                hashpassMessageError ||
+                passwordInitialMessageError ||
+                hashpass === "" ||
+                passwordInitial === "" ||
+                loading
+              }
               loading={loading}
             />
           </>
@@ -871,10 +881,15 @@ function Signup() {
                 nextPage();
               }}
               disabled={
-                currentPage === 0 ? step1 : 
-                currentPage === 1 ? step2 : 
-                currentPage === 2 ? step3 : 
-                currentPage === 3 ? step4 : false
+                currentPage === 0
+                  ? step1
+                  : currentPage === 1
+                  ? step2
+                  : currentPage === 2
+                  ? step3
+                  : currentPage === 3
+                  ? step4
+                  : false
               }
             />
           </>

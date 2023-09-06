@@ -20,7 +20,7 @@ export const Main = styled.ScrollView`
 export const Flex = styled.View`
   display: flex;
   flex-direction: row;
-  gap: ${RFValue(50)}px;
+  gap: ${RFValue(30)}px;
   align-items: center;
 `;
 

@@ -38,7 +38,7 @@ import {
 } from "../../service/ApiPaymentsRoutes";
 import { ActivityIndicator, Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
-import { formatMoney } from "../../utils/format-money";
+import { formatCurrency, formatMoney, removeFormatting } from "../../utils/format-money";
 
 interface keyType {
   id: number;
@@ -62,7 +62,7 @@ function TransferPix() {
   const [changeToTransfer, setChangeToTransfer] = useState(1);
   const [keyType, setKeyType] = useState({} as keyType);
   const [keyValue, setKeyValue] = useState("");
-  const [pixAmountValue, setPixAmountValue] = useState("");
+  const [pixAmountValue, setPixAmountValue] = useState(0);
   const navigation = useNavigation<any>();
   const [showPixData, setShowPixData] = useState(false);
   const [valueMoney, setValueMoney] = useState("");
@@ -99,26 +99,6 @@ function TransferPix() {
     }
   };
 
-  const mascaraMoeda = (event: any) => {
-    const onlyDigits = event
-      .split("")
-      .filter((s: any) => /\d/.test(s))
-      .join("")
-      .padStart(3, "0");
-    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2);
-    event = maskCurrency(digitsFloat);
-  };
-
-  const maskCurrency = (valor: any, locale = "pt-BR", currency = "BRL") => {
-    const newValue = parseFloat(valor);
-    setPixAmountValue(String(newValue));
-    return new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency,
-    })
-      .format(valor)
-      .slice(2);
-  };
 
   function handleClearFields() {
     setKeyValue("");
@@ -180,7 +160,6 @@ function TransferPix() {
       })
       .catch(() => {
         setShowPixData(false);
-        showToast("Pix Inválido!");
       })
       .finally(() => {
         setLoadingKeyPix(false);
@@ -236,7 +215,7 @@ function TransferPix() {
         ToKeyPix: keyPixProfileData.KeyPix,
         TypeKeyPix: validateTypePixNumber(keyPixProfileData.TypeKey),
         Name: keyPixProfileData.Name,
-        Value: parseFloat(pixAmountValue),
+        Value: removeFormatting(pixAmountValue),
         SaveContact: addContact,
         Message: messagePix,
         Password: passwordToValidate,
@@ -249,7 +228,7 @@ function TransferPix() {
             const payloadSuccess = {
               Identificacao: res.data.Object.Identificacao,
               Data: new Date().toLocaleString(),
-              Valor: parseFloat(pixAmountValue),
+              Valor: removeFormatting(pixAmountValue),
               Mensagem:
                 "Seu pix está sendo processado, verifique o extrato para mais detalhes.",
             };
@@ -282,7 +261,7 @@ function TransferPix() {
         setChangeToTransfer(3);
         break;
       case 1:
-        setKeyType({ id: 2, name: "CNPJ" });
+        setKeyType({ id: 1, name: "CNPJ" });
         setChangeToTransfer(3);
         break;
       case 2:
@@ -300,6 +279,12 @@ function TransferPix() {
       default:
         break;
     }
+  };
+
+  const handleTextChange = (text: any) => {
+    const formattedText = formatCurrency(text);
+    // @ts-ignore
+    setPixAmountValue(formattedText);
   };
 
   return (
@@ -369,7 +354,11 @@ function TransferPix() {
         <Box>
           <Title>Qual a chave pix?</Title>
           <Box>
-            <Input overTitle={keyType.name} setValue={setKeyValue} />
+            <Input
+              overTitle={keyType.name}
+              setValue={setKeyValue}
+              keyboardType={keyType.id !== 2 || 4 ? "numeric" : "default"}
+            />
           </Box>
           <Box>
             <BtnNewTransactionPix onPress={() => handleConsultKeyPix(keyValue)}>
@@ -442,8 +431,8 @@ function TransferPix() {
             <Input
               overTitle="Digite o valor"
               value={pixAmountValue}
-              setValue={setPixAmountValue}
-              onChange={setPixAmountValue}
+              setValue={handleTextChange}
+              keyboardType="numeric"
             />
           </Box>
           <Title>Adicionar contato?</Title>

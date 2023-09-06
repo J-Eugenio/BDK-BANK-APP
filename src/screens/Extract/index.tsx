@@ -163,10 +163,7 @@ function Extract() {
               </LabelBox>
             </BtnDateOpen>
             <AmountValue>
-              {dateFilterInit.toLocaleDateString("pt-BR") ===
-              new Date().toLocaleDateString()
-                ? "----"
-                : dateFilterInit.toLocaleDateString("pt-BR")}
+            {dateFilterInit.toLocaleDateString("pt-BR")}
             </AmountValue>
           </Box>
           <Box>
@@ -177,11 +174,13 @@ function Extract() {
               </LabelBox>
             </BtnDateOpen>
             <AmountValue>
-              {dateFilterEnd.toLocaleDateString("pt-BR") ===
-              new Date().toLocaleDateString()
-                ? "----"
-                : dateFilterEnd.toLocaleDateString("pt-BR")}
+              {dateFilterEnd.toLocaleDateString("pt-BR")}
             </AmountValue>
+          </Box>
+          <Box>
+            <BtnDateOpen onPress={() => ExtractLists(String(dateFilterInit), String(dateFilterEnd))}>
+              <Icon name="search" size={20} color="#00214E" />
+            </BtnDateOpen>
           </Box>
         </Flex>
         {showDateInit ? (

@@ -37,6 +37,7 @@ import validCPFForReal, { cpfMask } from "../../utils/cfp-mask";
 import { showToast } from "../../utils/toast";
 import { bankCode } from "../../utils/bankCode";
 import SelectDropdown from "react-native-select-dropdown";
+import { formatCurrency, removeFormatting } from "../../utils/format-money";
 
 function Transfer() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -133,7 +134,7 @@ function Transfer() {
           Nome: name,
           Password: isPassword,
           TipoPessoa: personType,
-          Valor: Number(value),
+          Valor: removeFormatting(value),
         });
 
         if (ted.data.Sucess) {
@@ -210,6 +211,14 @@ function Transfer() {
       .slice(2);
   }
 
+  
+  const handleTextChange = (text: any) => {
+    const formattedText = formatCurrency(text);
+    // @ts-ignore
+    setPixAmountValue(formattedText);
+  };
+
+
   return (
     <Container>
       <Header />
@@ -273,12 +282,19 @@ function Transfer() {
                 dropdownStyle={dropdownStyle} // Passa o estilo personalizado para o dropdown
               />
             </InputView>
-            <Input
+            {/* <Input
               overTitle="Valor"
               value={String(value)}
               setValue={setValue}
               onChange={mascaraMoeda}
-            />
+            /> */}
+
+            <Input
+              overTitle="Digite o valor"
+              value={value}
+              setValue={handleTextChange}
+              keyboardType="numeric"
+            />  
 
             {/* <Separator />
 

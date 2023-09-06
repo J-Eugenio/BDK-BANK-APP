@@ -136,3 +136,7 @@ export const ButtonCheckPix = styled.TouchableOpacity`
 export const Text = styled.Text`
   font-size: ${RFValue(16)}px;
 `
+
+export const BoxButtonFinal = styled.View`
+  margin-top: 10px;
+`;

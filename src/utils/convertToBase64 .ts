@@ -12,7 +12,6 @@ const resizeImage = async (uri: string) => {
 };
 const convertToBase64 = async (imageUri: string): Promise<string> => {
   try {
-    
     const resizedPhoto = await resizeImage(imageUri);
     const base64Image = await FileSystem.readAsStringAsync(resizedPhoto, {
       encoding: FileSystem.EncodingType.Base64,

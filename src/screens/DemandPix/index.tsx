@@ -22,6 +22,7 @@ import { CreateQrCode, ListKeyPix } from "../../service/ApiPaymentsRoutes";
 import { TextInput } from "react-native";
 import { Input } from "../../components/Input";
 import SelectDropdown from "react-native-select-dropdown";
+import { formatCurrency, removeFormatting } from "../../utils/format-money";
 
 interface ListKeysDTO {
   Id: number;
@@ -96,7 +97,7 @@ function DemandPix() {
     CreateQrCode({
       descricao: qrCodeDescription,
       KeyPixSelected: qrCodeKey,
-      valor: qrCodeValue,
+      valor: removeFormatting(qrCodeValue),
     }).then((res) => {
       if (res?.data.Sucess) {
         setQrCodeInfo({
@@ -146,6 +147,13 @@ function DemandPix() {
     borderRadius: 12,
     border: "3px solid #DDDDDD",
   };
+
+  const handleTextChange = (text: any) => {
+    const formattedText = formatCurrency(text);
+    // @ts-ignore
+    setPixAmountValue(formattedText);
+  };
+
 
   return (
     <Container>
@@ -202,9 +210,9 @@ function DemandPix() {
             <BoxInputs>
               <Text>Valor R$</Text>
               <Input
-                value={String(qrCodeValue)}
-                setValue={setQrCodeValue}
-                onChange={setQrCodeValue}
+                value={qrCodeValue}
+                keyboardType="numeric"
+                onChange={handleTextChange}
               />
 
               <Text>Descricao</Text>

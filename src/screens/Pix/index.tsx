@@ -24,6 +24,7 @@ import {
   SecondaryTitleModal,
   LabelStrong,
   BoxToOpenModal,
+  FlexTitle,
 } from "./styles";
 import { MainActionBtn } from "../../components/MainActionBtn";
 import { DateInput } from "../../components/DateInput";
@@ -140,7 +141,12 @@ function Pix() {
           <MainActionBtn title="Chaves" iconName="key" page="KeysPix" />
         </MainActionContainer>
 
-        <Title>Últimos Pix</Title>
+        <FlexTitle>
+          <Title>Últimos Pix</Title>
+          <BtnDateOpen onPress={() => ExtractLists(initialDate, lastDate)}>
+            <Icon name="refresh" size={20} color="#00214E" />
+          </BtnDateOpen>
+        </FlexTitle>
         <Flex>
           <Box>
             <BtnDateOpen onPress={() => setShowDateInit(true)}>
@@ -163,6 +169,11 @@ function Pix() {
             <AmountValue>
               {dateFilterEnd.toLocaleDateString("pt-BR")}
             </AmountValue>
+          </Box>
+          <Box>
+            <BtnDateOpen onPress={() => ExtractLists(String(dateFilterInit), String(dateFilterEnd))}>
+              <Icon name="search" size={20} color="#00214E" />
+            </BtnDateOpen>
           </Box>
         </Flex>
         {showDateInit ? (
