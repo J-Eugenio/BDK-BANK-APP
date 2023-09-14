@@ -284,6 +284,7 @@ function TransferPix() {
   const handleTextChange = (text: any) => {
     const formattedText = formatCurrency(text);
     // @ts-ignore
+    
     setPixAmountValue(formattedText);
   };
 

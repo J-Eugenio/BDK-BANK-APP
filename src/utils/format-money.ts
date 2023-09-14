@@ -5,11 +5,12 @@ const formatMoney = new Intl.NumberFormat("pt-BR", {
 });
 
 const formatCurrency = (value: any) => {
+  
   // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/[^0-9]/g, "");
 
   // Converte o valor para um número
-  const numberValue = parseFloat(numericValue) / 100; // Dividido por 100 para tratar centavos
+  const numberValue = parseFloat(numericValue || '0') / 100; // Dividido por 100 para tratar centavos
 
   // Formata o valor em reais (R$) no estilo brasileiro
   const formattedValue = numberValue.toLocaleString("pt-BR", {
